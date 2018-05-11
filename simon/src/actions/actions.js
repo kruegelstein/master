@@ -2,4 +2,4 @@
 
 import { DUMMY } from "../constants/ActionTypes.js";
 
-export const dummyAction = () => ({ type: DUMMY, payload: {} });
+export const dummyAction = id => ({ type: DUMMY, payload: { id } });
