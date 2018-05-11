@@ -20,5 +20,11 @@ export const theme = {
     small: ".5rem",
     medium: "1rem",
     large: "2rem"
+  },
+  borderRadius: "100%",
+  borderSpacing: "0.5rem",
+  darkShadowColor: "rgba(93, 93, 93, 0.6)",
+  shadows: {
+    singleButton: "0px 2px 6px"
   }
 };
