@@ -7,11 +7,15 @@ import Circle from "../circle/CircleContainer.js";
 
 // Styled Components
 import AppComp from "./App.js";
+import TableComp from "../table/Table.js";
+import TableBodyComp from "../table/TableBody.js";
+import TrComp from "../table/Tr.js";
+import TdComp from "../table/Td.js";
 
 class App extends Component {
   state = {
     shapes: [],
-    numberOfShapes: 10
+    numberOfShapes: 12
   };
   componentWillMount() {
     let i = 0;
@@ -74,7 +78,6 @@ class App extends Component {
         );
       }
     }
-    console.log("###", this.state.shapes);
   }
 
   generateID() {
@@ -86,11 +89,29 @@ class App extends Component {
     );
   }
   render() {
-    let index = 0;
-    const numberOfShapes = 10;
     return (
       <ThemeProvider theme={this.props.theme}>
-        <AppComp>{this.state.shapes.map(shape => shape)}</AppComp>
+        <AppComp>
+          <TableComp>
+            <TableBodyComp>
+              <TrComp>
+                {this.state.shapes
+                  .slice(0, 4)
+                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+              </TrComp>
+              <TrComp>
+                {this.state.shapes
+                  .slice(4, 8)
+                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+              </TrComp>
+              <TrComp>
+                {this.state.shapes
+                  .slice(8, 12)
+                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+              </TrComp>
+            </TableBodyComp>
+          </TableComp>
+        </AppComp>
       </ThemeProvider>
     );
   }
