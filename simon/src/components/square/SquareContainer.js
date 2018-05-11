@@ -3,7 +3,7 @@
 import { connect } from "react-redux";
 
 // Wrapped component
-import Circle from "./Circle.jsx";
+import Square from "./Square.jsx";
 
 // Actions
 import { dummyAction } from "../../actions/actions.js";
@@ -18,4 +18,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Circle);
+export default connect(mapStateToProps, mapDispatchToProps)(Square);

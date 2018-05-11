@@ -5,7 +5,8 @@ import { combineReducers } from "redux";
 import { DUMMY } from "../constants/ActionTypes.js";
 
 const initialTest1State = {
-  init: true
+  init: true,
+  id: null
 };
 
 const initialTest2State = {
@@ -15,9 +16,11 @@ const initialTest2State = {
 export const test1 = (state = initialTest1State, action = {}) => {
   switch (action.type) {
     case DUMMY:
+      console.log("+++", action);
       return {
         ...state,
-        init: action.type
+        init: action.type,
+        id: action.payload.id
       };
     default:
       return { ...state };
