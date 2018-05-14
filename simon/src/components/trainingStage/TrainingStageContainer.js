@@ -6,15 +6,28 @@ import { connect } from "react-redux";
 import TrainingStage from "./TrainingStage.jsx";
 
 // Actions
-import { startTraining } from "../../actions/actions.js";
+import {
+  startTraining,
+  writeElementsToState,
+  writePatternToState
+} from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  userId: state.user.id
+  userId: state.user.id,
+  elements: state.environment.elements,
+  pattern: state.environment.pattern,
+  training: state.environment.training
 });
 
 const mapDispatchToProps = dispatch => ({
   onStartTraining: () => {
     dispatch(startTraining());
+  },
+  onWriteElementsToState: elements => {
+    dispatch(writeElementsToState(elements));
+  },
+  onWritePatternToState: pattern => {
+    dispatch(writePatternToState(pattern));
   }
 });
 

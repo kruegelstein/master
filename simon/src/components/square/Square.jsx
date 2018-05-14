@@ -9,7 +9,11 @@ class Square extends Component {
         size={this.props.size}
         color={this.props.color}
         margin={this.props.margin}
-        onClick={() => this.props.onUseDummyAction(this.props.key)}
+        onClick={() =>
+          this.props.training
+            ? this.props.onUseDummyAction(this.props.key)
+            : null
+        }
       />
     );
   }
