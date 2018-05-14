@@ -1,9 +1,5 @@
 import React, { Component } from "react";
 
-// Components
-import Square from "../square/SquareContainer.js";
-import Circle from "../circle/CircleContainer.js";
-
 // Styled Components
 import TrainingStageComp from "./TrainingStage.js";
 import Button from "../general/Button.js";
@@ -12,108 +8,108 @@ import TableBodyComp from "../table/TableBody.js";
 import TrComp from "../table/Tr.js";
 import TdComp from "../table/Td.js";
 
+// Utils
+import { createElements } from "../../utils/elements.js";
+import { createPattern } from "../../utils/lightUp.js";
+
+const PATTERN_SIZE = 3;
+const PATTERN_PACE = 1000;
+
 class TrainingStage extends Component {
   state = {
-    shapes: [],
-    numberOfShapes: 12
+    activeElement: null
   };
   componentWillMount() {
-    let i = 0;
-    for (i = 0; i < this.state.numberOfShapes; i++) {
-      if (Math.floor(Math.random() * 2) === 0) {
-        this.state.shapes.push(
-          <Square
-            active={false}
-            key={this.generateID()}
-            color={
-              this.props.theme.baseColors[
-                Object.keys(this.props.theme.baseColors)[
-                  Math.floor(Math.random() * 6)
-                ]
-              ]
-            }
-            size={
-              this.props.theme.sizes[
-                Object.keys(this.props.theme.sizes)[
-                  Math.floor(Math.random() * 4)
-                ]
-              ]
-            }
-            margin={
-              this.props.theme.margin[
-                Object.keys(this.props.theme.margin)[
-                  Math.floor(Math.random() * 3)
-                ]
-              ]
-            }
-          />
-        );
-      } else {
-        this.state.shapes.push(
-          <Circle
-            active={false}
-            key={this.generateID()}
-            color={
-              this.props.theme.baseColors[
-                Object.keys(this.props.theme.baseColors)[
-                  Math.floor(Math.random() * 6)
-                ]
-              ]
-            }
-            size={
-              this.props.theme.sizes[
-                Object.keys(this.props.theme.sizes)[
-                  Math.floor(Math.random() * 4)
-                ]
-              ]
-            }
-            margin={
-              this.props.theme.margin[
-                Object.keys(this.props.theme.margin)[
-                  Math.floor(Math.random() * 3)
-                ]
-              ]
-            }
-          />
-        );
-      }
+    this.props.onWriteElementsToState(createElements(12));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.elements === null && nextProps.elements.length > 1) {
+      this.props.onWritePatternToState(
+        createPattern(PATTERN_SIZE, nextProps.elements)
+      );
+    }
+    if (!this.props.training && nextProps.training) {
+      this.lightUpElements();
     }
   }
 
-  generateID() {
-    return (
-      "_" +
-      Math.random()
-        .toString(36)
-        .substr(2, 9)
-    );
+  lightUpElements() {
+    this.initiateTimeOut(0);
   }
+
+  initiateTimeOut(i) {
+    setTimeout(() => {
+      this.light(i);
+    }, PATTERN_PACE);
+  }
+
+  light(i) {
+    this.setState({ activeElement: this.props.pattern[i] });
+    i++;
+    if (i <= this.props.pattern.length) {
+      this.initiateTimeOut(i);
+    }
+  }
+
   render() {
-    if (this.props.userId) {
+    if (this.props.userId && this.props.training) {
       return (
         <TrainingStageComp>
           <TableComp>
             <TableBodyComp>
               <TrComp>
-                {this.state.shapes
-                  .slice(0, 4)
-                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+                {this.props.elements.slice(0, 4).map((element, key) => {
+                  if (element.key === this.state.activeElement) {
+                    const newElement = {
+                      ...element,
+                      props: {
+                        ...element.props,
+                        active: true,
+                        onClick: () => {}
+                      }
+                    };
+                    return <TdComp key={key}>{newElement}</TdComp>;
+                  } else return <TdComp key={key}>{element}</TdComp>;
+                })}
               </TrComp>
               <TrComp>
-                {this.state.shapes
-                  .slice(4, 8)
-                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+                {this.props.elements.slice(4, 8).map((element, key) => {
+                  if (element.key === this.state.activeElement) {
+                    const newElement = {
+                      ...element,
+                      props: {
+                        ...element.props,
+                        active: true,
+                        onClick: () => {}
+                      }
+                    };
+                    return <TdComp key={key}>{newElement}</TdComp>;
+                  } else return <TdComp key={key}>{element}</TdComp>;
+                })}
               </TrComp>
               <TrComp>
-                {this.state.shapes
-                  .slice(8, 12)
-                  .map((shape, key) => <TdComp key={key}>{shape}</TdComp>)}
+                {this.props.elements.slice(8, 12).map((element, key) => {
+                  if (element.key === this.state.activeElement) {
+                    const newElement = {
+                      ...element,
+                      props: {
+                        ...element.props,
+                        active: true,
+                        onClick: () => {}
+                      }
+                    };
+                    return <TdComp key={key}>{newElement}</TdComp>;
+                  } else return <TdComp key={key}>{element}</TdComp>;
+                })}
               </TrComp>
             </TableBodyComp>
           </TableComp>
-          <Button onClick={this.props.onStartTraining}>Train!</Button>
+          <Button onClick={() => this.lightUpElements()}>Repeat</Button>
         </TrainingStageComp>
       );
+    } else if (this.props.userId && !this.props.training) {
+      return <Button onClick={this.props.onStartTraining}>Train!</Button>;
     } else return null;
   }
 }

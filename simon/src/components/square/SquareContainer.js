@@ -9,7 +9,8 @@ import Square from "./Square.jsx";
 import { dummyAction } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  test: state.test
+  test: state.test,
+  training: state.environment.training
 });
 
 const mapDispatchToProps = dispatch => ({
