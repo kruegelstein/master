@@ -2,8 +2,8 @@
 
 import { combineReducers } from "redux";
 
-import test from "./test.js";
+import user from "./user.js";
 
 export default combineReducers({
-  test
+  user
 });
