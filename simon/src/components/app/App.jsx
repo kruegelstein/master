@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 // Components
 import TrainingStage from "../trainingStage/TrainingStageContainer.js";
 import UserIdInput from "../userIdInput/UserIdInputContainer.js";
+import UserInputStage from "../userInputStage/UserInputStageContainer.js";
 
 // Styled components
 import AppComp from "./App.js";
@@ -15,6 +16,7 @@ class App extends Component {
         <AppComp>
           <UserIdInput />
           <TrainingStage theme={this.props.theme} />
+          <UserInputStage />
         </AppComp>
       </ThemeProvider>
     );

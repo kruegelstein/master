@@ -5,7 +5,9 @@ import {
   SET_USER_ID,
   START_TRAINING,
   WRITE_ELEMENTS_TO_STATE,
-  WRITE_PATTERN_TO_STATE
+  WRITE_PATTERN_TO_STATE,
+  SELECT_ELEMENT,
+  START_USER_INPUT
 } from "../constants/ActionTypes.js";
 
 export const dummyAction = id => ({ type: DUMMY, payload: { id } });
@@ -22,4 +24,14 @@ export const writeElementsToState = elements => ({
 export const writePatternToState = pattern => ({
   type: WRITE_PATTERN_TO_STATE,
   payload: { pattern }
+});
+
+export const selectElement = key => ({
+  type: SELECT_ELEMENT,
+  payload: { key }
+});
+
+export const startUserInput = () => ({
+  type: START_USER_INPUT,
+  payload: {}
 });

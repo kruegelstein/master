@@ -9,14 +9,16 @@ import TrainingStage from "./TrainingStage.jsx";
 import {
   startTraining,
   writeElementsToState,
-  writePatternToState
+  writePatternToState,
+  startUserInput
 } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id,
   elements: state.environment.elements,
   pattern: state.environment.pattern,
-  training: state.environment.training
+  training: state.environment.training,
+  userInput: state.environment.userInput
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,6 +30,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onWritePatternToState: pattern => {
     dispatch(writePatternToState(pattern));
+  },
+  onStartUserInput: () => {
+    dispatch(startUserInput());
   }
 });
 
