@@ -7,7 +7,8 @@ import {
   WRITE_ELEMENTS_TO_STATE,
   WRITE_PATTERN_TO_STATE,
   SELECT_ELEMENT,
-  START_USER_INPUT
+  START_USER_INPUT,
+  SHOW_RESULTS
 } from "../constants/ActionTypes.js";
 
 export const dummyAction = id => ({ type: DUMMY, payload: { id } });
@@ -33,5 +34,10 @@ export const selectElement = key => ({
 
 export const startUserInput = () => ({
   type: START_USER_INPUT,
+  payload: {}
+});
+
+export const showResults = () => ({
+  type: SHOW_RESULTS,
   payload: {}
 });

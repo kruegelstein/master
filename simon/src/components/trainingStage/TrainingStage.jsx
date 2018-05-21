@@ -12,8 +12,8 @@ import TdComp from "../table/Td.js";
 import { createElements } from "../../utils/elements.js";
 import { createPattern } from "../../utils/lightUp.js";
 
-const PATTERN_SIZE = 3;
-const PATTERN_PACE = 1000;
+// Constants
+import { PATTERN_PACE, PATTERN_SIZE } from "../../constants/Pattern.js";
 
 class TrainingStage extends Component {
   state = {
@@ -109,7 +109,8 @@ class TrainingStage extends Component {
     } else if (
       this.props.userId &&
       !this.props.training &&
-      !this.props.userInput
+      !this.props.userInput &&
+      !this.props.showResults
     ) {
       return <Button onClick={this.props.onStartTraining}>Train!</Button>;
     } else return null;

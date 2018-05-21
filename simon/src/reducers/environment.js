@@ -5,7 +5,8 @@ import {
   WRITE_ELEMENTS_TO_STATE,
   WRITE_PATTERN_TO_STATE,
   START_TRAINING,
-  START_USER_INPUT
+  START_USER_INPUT,
+  SHOW_RESULTS
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   patternSize: null,
   pattern: null,
   training: false,
-  userInput: false
+  userInput: false,
+  results: false
 };
 
 export const environment = (state = initialState, action = {}) => {
@@ -38,6 +40,13 @@ export const environment = (state = initialState, action = {}) => {
       return {
         ...state,
         userInput: true,
+        training: false
+      };
+    case SHOW_RESULTS:
+      return {
+        ...state,
+        results: true,
+        userInput: false,
         training: false
       };
     default:
