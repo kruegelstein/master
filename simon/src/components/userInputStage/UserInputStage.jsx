@@ -8,6 +8,12 @@ import TrComp from "../table/Tr.js";
 import TdComp from "../table/Td.js";
 
 class UserInputStage extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedElements.length === 3) {
+      this.props.onShowResults();
+    }
+  }
+
   render() {
     if (this.props.userInput) {
       return (

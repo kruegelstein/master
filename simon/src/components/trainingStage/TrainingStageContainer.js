@@ -18,7 +18,8 @@ const mapStateToProps = state => ({
   elements: state.environment.elements,
   pattern: state.environment.pattern,
   training: state.environment.training,
-  userInput: state.environment.userInput
+  userInput: state.environment.userInput,
+  showResults: state.environment.results
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,17 +6,20 @@ import { connect } from "react-redux";
 import UserInputStage from "./UserInputStage.jsx";
 
 // Actions
-import { selectElement } from "../../actions/actions.js";
+import { selectElement, showResults } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   elements: state.environment.elements,
-  userInput: state.environment.userInput
+  userInput: state.environment.userInput,
+  selectedElements: state.input.selected
 });
 
 const mapDispatchToProps = dispatch => ({
   onSelectElement: key => {
-    console.log("###", key);
     dispatch(selectElement(key));
+  },
+  onShowResults: () => {
+    dispatch(showResults());
   }
 });
 

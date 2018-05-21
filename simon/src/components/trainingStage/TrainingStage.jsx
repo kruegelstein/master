@@ -109,7 +109,8 @@ class TrainingStage extends Component {
     } else if (
       this.props.userId &&
       !this.props.training &&
-      !this.props.userInput
+      !this.props.userInput &&
+      !this.props.showResults
     ) {
       return <Button onClick={this.props.onStartTraining}>Train!</Button>;
     } else return null;
