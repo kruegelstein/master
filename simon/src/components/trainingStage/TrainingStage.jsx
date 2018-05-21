@@ -65,8 +65,7 @@ class TrainingStage extends Component {
                       ...element,
                       props: {
                         ...element.props,
-                        active: true,
-                        onClick: () => {}
+                        active: true
                       }
                     };
                     return <TdComp key={key}>{newElement}</TdComp>;
@@ -80,8 +79,7 @@ class TrainingStage extends Component {
                       ...element,
                       props: {
                         ...element.props,
-                        active: true,
-                        onClick: () => {}
+                        active: true
                       }
                     };
                     return <TdComp key={key}>{newElement}</TdComp>;
@@ -95,8 +93,7 @@ class TrainingStage extends Component {
                       ...element,
                       props: {
                         ...element.props,
-                        active: true,
-                        onClick: () => {}
+                        active: true
                       }
                     };
                     return <TdComp key={key}>{newElement}</TdComp>;
@@ -106,9 +103,14 @@ class TrainingStage extends Component {
             </TableBodyComp>
           </TableComp>
           <Button onClick={() => this.lightUpElements()}>Repeat</Button>
+          <Button onClick={this.props.onStartUserInput}>Start</Button>
         </TrainingStageComp>
       );
-    } else if (this.props.userId && !this.props.training) {
+    } else if (
+      this.props.userId &&
+      !this.props.training &&
+      !this.props.userInput
+    ) {
       return <Button onClick={this.props.onStartTraining}>Train!</Button>;
     } else return null;
   }
