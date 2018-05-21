@@ -7,9 +7,12 @@ import TableBodyComp from "../table/TableBody.js";
 import TrComp from "../table/Tr.js";
 import TdComp from "../table/Td.js";
 
+// Constants
+import { PATTERN_SIZE } from "../../constants/Pattern.js";
+
 class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedElements.length === 3) {
+    if (nextProps.selectedElements.length === PATTERN_SIZE) {
       this.props.onShowResults();
     }
   }
