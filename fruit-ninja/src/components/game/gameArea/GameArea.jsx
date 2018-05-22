@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
 // Styled componets
-import GameComp from "./Game.js";
+import GameComp from "../Game.js";
 import GameAreaComp from "./GameArea.js";
-import StatusBarComp from "./StatusBar.js";
+import StatusBarComp from "../statusBar//StatusBar.js";
 // Components
-import StatusBar from "./StatusBar.jsx";
-import Game from "./Game.jsx";
+import StatusBar from "../statusBar/StatusBar.jsx";
+import Game from "../Game.jsx";
 
 class GameArea extends Component {
   render() {

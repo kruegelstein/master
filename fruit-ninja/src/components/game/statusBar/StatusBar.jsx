@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 // Styled componets
-import BlockContainer from "../general/BlockContainer.js";
-import Title from "../general/Title.js";
-import Paragraph from "../general/Paragraph.js";
+import BlockContainer from "../../general/BlockContainer.js";
+import Title from "../../general/Title.js";
+import Paragraph from "../../general/Paragraph.js";
 
 class StatusBar extends Component {
   render() {

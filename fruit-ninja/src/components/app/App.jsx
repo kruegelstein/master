@@ -4,7 +4,7 @@ import { ThemeProvider } from "styled-components";
 
 // Components
 import UserIdInput from "../userIdInput/UserIdInputContainer.js";
-import GameArea from "../game/GameAreaContainer.js";
+import GameArea from "../game/gameArea/GameAreaContainer.js";
 
 // Styled components
 import AppComp from "./App.js";
