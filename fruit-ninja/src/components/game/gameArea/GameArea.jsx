@@ -6,7 +6,8 @@ import GameAreaComp from "./GameArea.js";
 import StatusBarComp from "../statusBar//StatusBar.js";
 // Components
 import StatusBar from "../statusBar/StatusBar.jsx";
-import Game from "../Game.jsx";
+import Game from "../GameContainer.js";
+import GameOver from "../gameOver/GameOver.jsx";
 
 class GameArea extends Component {
   render() {
@@ -14,7 +15,7 @@ class GameArea extends Component {
       return (
         <GameAreaComp>
           <GameComp>
-            <Game />
+            {this.props.lives !== 0 ? <Game /> : <GameOver />}
           </GameComp>
           <StatusBarComp>
             <StatusBar

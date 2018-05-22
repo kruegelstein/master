@@ -1,6 +1,7 @@
 // @flow
 
 // Constants
+import { ADD_POINT, GAIN_LIVE, LOSE_LIVE } from "../constants/ActionTypes.js";
 
 const initialState = {
   level: 1,
@@ -10,6 +11,21 @@ const initialState = {
 
 export const game = (state = initialState, action = {}) => {
   switch (action.type) {
+    case ADD_POINT:
+      return {
+        ...state,
+        points: state.points + 1
+      };
+    case GAIN_LIVE:
+      return {
+        ...state,
+        live: state.live + 1
+      };
+    case LOSE_LIVE:
+      return {
+        ...state,
+        live: state.live - 1
+      };
     default:
       return { ...state };
   }

@@ -10,25 +10,25 @@ class Game extends Component {
     return (
       <InlineBlockContainer>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
         <Row>
-          <Element />
+          <Element onClick={() => this.props.onLoseLive()} />
         </Row>
       </InlineBlockContainer>
     );
