@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
 // Styled componets
+import Element from "./Element.js";
 
 class Game extends Component {
   render() {
-    return <div>Game</div>;
+    return <Element />;
   }
 }
 
