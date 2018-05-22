@@ -3,7 +3,7 @@
 import { connect } from "react-redux";
 
 // Wrapped component
-import Game from "./Game.jsx";
+import GameArea from "./GameArea.jsx";
 
 // Actions
 
@@ -13,4 +13,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(GameArea);
