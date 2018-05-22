@@ -10,8 +10,7 @@ const down = keyframes`
 const element = styled.div`
   width: 5rem;
   height: 5rem;
-  background: url(${(props: PropsType) => props.theme.images.skull}) no-repeat
-    center center;
+  background: url(${(props: PropsType) => props.icon}) no-repeat center center;
   background-size: 5rem 5rem;
   animation: ${down} 4s linear infinite;
 `;
