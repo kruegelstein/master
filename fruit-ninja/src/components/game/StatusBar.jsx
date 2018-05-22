@@ -11,6 +11,9 @@ class StatusBar extends Component {
       <BlockContainer>
         <Title>Stats</Title>
         <BlockContainer>
+          <Paragraph>Lives: {this.props.lives}</Paragraph>
+        </BlockContainer>
+        <BlockContainer>
           <Paragraph>Level: {this.props.level}</Paragraph>
         </BlockContainer>
         <BlockContainer>

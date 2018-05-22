@@ -17,7 +17,11 @@ class GameArea extends Component {
             <Game />
           </GameComp>
           <StatusBarComp>
-            <StatusBar level={this.props.level} points={this.props.points} />
+            <StatusBar
+              level={this.props.level}
+              points={this.props.points}
+              lives={this.props.lives}
+            />
           </StatusBarComp>
         </GameAreaComp>
       );
