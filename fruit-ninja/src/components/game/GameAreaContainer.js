@@ -8,7 +8,9 @@ import GameArea from "./GameArea.jsx";
 // Actions
 
 const mapStateToProps = state => ({
-  userId: state.user.id
+  userId: state.user.id,
+  level: state.game.level,
+  points: state.game.points
 });
 
 const mapDispatchToProps = dispatch => ({});

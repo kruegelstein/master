@@ -11,10 +11,10 @@ class StatusBar extends Component {
       <BlockContainer>
         <Title>Stats</Title>
         <BlockContainer>
-          <Paragraph>Level: Implement!</Paragraph>
+          <Paragraph>Level: {this.props.level}</Paragraph>
         </BlockContainer>
         <BlockContainer>
-          <Paragraph>Points: Implement!</Paragraph>
+          <Paragraph>Points: {this.props.points}</Paragraph>
         </BlockContainer>
       </BlockContainer>
     );
