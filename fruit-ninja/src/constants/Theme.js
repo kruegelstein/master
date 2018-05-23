@@ -45,7 +45,7 @@ export const theme = {
     skull: Skull,
     dynamite: Dynamite,
     bomb: Bomb,
-    bioharzard: Biohazard,
+    biohazard: Biohazard,
     tennis: Tennis,
     soccer: Soccer,
     football: Football,

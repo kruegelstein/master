@@ -6,13 +6,19 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 // Actions
-import { loseLive } from "../../actions/actions.js";
+import { loseLive, gainLive, addPoint } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
   onLoseLive: () => {
     dispatch(loseLive());
+  },
+  onGainLive: () => {
+    dispatch(gainLive());
+  },
+  onAddPoint: () => {
+    dispatch(addPoint());
   }
 });
 
