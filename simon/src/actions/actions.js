@@ -8,10 +8,13 @@ import {
   WRITE_PATTERN_TO_STATE,
   SELECT_ELEMENT,
   START_USER_INPUT,
-  SHOW_RESULTS
+  SHOW_RESULTS,
+  START_COUNTDOWN
 } from "../constants/ActionTypes.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
+
+export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 

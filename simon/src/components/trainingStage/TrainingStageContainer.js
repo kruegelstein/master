@@ -7,10 +7,9 @@ import TrainingStage from "./TrainingStage.jsx";
 
 // Actions
 import {
-  startTraining,
   writeElementsToState,
   writePatternToState,
-  startUserInput
+  startCountdown
 } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -20,17 +19,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onStartTraining: () => {
-    dispatch(startTraining());
-  },
   onWriteElementsToState: elements => {
     dispatch(writeElementsToState(elements));
   },
   onWritePatternToState: pattern => {
     dispatch(writePatternToState(pattern));
   },
-  onStartUserInput: () => {
-    dispatch(startUserInput());
+  onStartCountdown: () => {
+    dispatch(startCountdown());
   }
 });
 

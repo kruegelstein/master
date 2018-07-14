@@ -10,7 +10,7 @@ import { selectElement, showResults } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   elements: state.environment.elements,
-  userInput: state.environment.userInput,
+  userInput: state.navigation.userInput,
   selectedElements: state.input.selected
 });
 

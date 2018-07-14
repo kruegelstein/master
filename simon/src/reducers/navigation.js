@@ -1,12 +1,16 @@
 // Constants
-import { GO_TO_INTRO, START_TRAINING } from "../constants/ActionTypes.js";
+import {
+  GO_TO_INTRO,
+  START_TRAINING,
+  START_COUNTDOWN,
+  START_USER_INPUT
+} from "../constants/ActionTypes.js";
 
 const initialState = {
-  stage: {
-    intro: false,
-    training: false,
-    userInput: false
-  }
+  intro: false,
+  training: false,
+  countdown: false,
+  userInput: false
 };
 
 export const navigation = (state = initialState, action = {}) => {
@@ -21,6 +25,18 @@ export const navigation = (state = initialState, action = {}) => {
         ...state,
         intro: false,
         training: true
+      };
+    case START_COUNTDOWN:
+      return {
+        ...state,
+        training: false,
+        countdown: true
+      };
+    case START_USER_INPUT:
+      return {
+        ...state,
+        countdown: false,
+        userInput: true
       };
     default:
       return { ...state };
