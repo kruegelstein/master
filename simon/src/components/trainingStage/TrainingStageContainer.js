@@ -14,12 +14,9 @@ import {
 } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  userId: state.user.id,
   elements: state.environment.elements,
   pattern: state.environment.pattern,
-  training: state.environment.training,
-  userInput: state.environment.userInput,
-  showResults: state.environment.results
+  training: state.navigation.training
 });
 
 const mapDispatchToProps = dispatch => ({

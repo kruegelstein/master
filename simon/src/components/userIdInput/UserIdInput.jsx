@@ -26,14 +26,13 @@ class UserIdInput extends Component {
   submit() {
     this.props.onSubmitUserId(this.state.inputValue);
   }
+
   render() {
     if (!this.props.userId) {
       return (
         <UserIdInputComp>
           <Title>Simon says</Title>
-          <Paragraph margin="0 1rem 1rem .5rem">
-            Please enter a user id:
-          </Paragraph>
+          <Paragraph>Please enter a user id:</Paragraph>
           <Input
             onChange={this.onTextinputChange}
             value={this.state.inputValue}

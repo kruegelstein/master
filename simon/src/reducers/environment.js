@@ -3,19 +3,13 @@
 // Constants
 import {
   WRITE_ELEMENTS_TO_STATE,
-  WRITE_PATTERN_TO_STATE,
-  START_TRAINING,
-  START_USER_INPUT,
-  SHOW_RESULTS
+  WRITE_PATTERN_TO_STATE
 } from "../constants/ActionTypes.js";
 
 const initialState = {
   elements: null,
   patternSize: null,
-  pattern: null,
-  training: false,
-  userInput: false,
-  results: false
+  pattern: null
 };
 
 export const environment = (state = initialState, action = {}) => {
@@ -30,24 +24,6 @@ export const environment = (state = initialState, action = {}) => {
         ...state,
         patternSize: action.payload.pattern.length,
         pattern: action.payload.pattern
-      };
-    case START_TRAINING:
-      return {
-        ...state,
-        training: true
-      };
-    case START_USER_INPUT:
-      return {
-        ...state,
-        userInput: true,
-        training: false
-      };
-    case SHOW_RESULTS:
-      return {
-        ...state,
-        results: true,
-        userInput: false,
-        training: false
       };
     default:
       return { ...state };
