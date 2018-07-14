@@ -50,7 +50,7 @@ class TrainingStage extends Component {
     if (i <= this.props.pattern.length) {
       this.initiateTimeOut(i);
     }
-    if (i === this.props.pattern.length) {
+    if (i > this.props.pattern.length) {
       this.props.onStartCountdown();
     }
   }
