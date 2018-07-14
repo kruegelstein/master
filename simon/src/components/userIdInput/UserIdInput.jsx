@@ -31,11 +31,14 @@ class UserIdInput extends Component {
       return (
         <UserIdInputComp>
           <Title>Simon says</Title>
-          <Paragraph>Please enter a user id:</Paragraph>
+          <Paragraph margin="0 1rem 1rem .5rem">
+            Please enter a user id:
+          </Paragraph>
           <Input
             onChange={this.onTextinputChange}
             value={this.state.inputValue}
             onKeyUp={this.checkForEnter}
+            placeholder="Enter ID"
             autoFocus
           />
         </UserIdInputComp>
