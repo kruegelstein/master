@@ -2,9 +2,10 @@ import React, { Component } from "react";
 
 import { ThemeProvider } from "styled-components";
 // Components
-import TrainingStage from "../trainingStage/TrainingStageContainer.js";
-import IntroScreen from "../introScreen/IntroScreenContainer.js";
 import UserIdInput from "../userIdInput/UserIdInputContainer.js";
+import IntroScreen from "../introScreen/IntroScreenContainer.js";
+import TrainingStage from "../trainingStage/TrainingStageContainer.js";
+import Countdown from "../countdown/CountdownContainer.js";
 import UserInputStage from "../userInputStage/UserInputStageContainer.js";
 import Results from "../results/ResultsContainer.js";
 
@@ -19,6 +20,7 @@ class App extends Component {
           <UserIdInput />
           <IntroScreen />
           <TrainingStage theme={this.props.theme} />
+          <Countdown />
           <UserInputStage />
           <Results />
         </AppComp>

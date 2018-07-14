@@ -49,6 +49,8 @@ class TrainingStage extends Component {
     i++;
     if (i <= this.props.pattern.length) {
       this.initiateTimeOut(i);
+    } else {
+      this.props.onStartCountdown();
     }
   }
 
@@ -102,11 +104,10 @@ class TrainingStage extends Component {
               </TrComp>
             </TableBodyComp>
           </TableComp>
-          <Button onClick={() => this.lightUpElements()}>Repeat</Button>
-          <Button onClick={this.props.onStartUserInput}>Start</Button>
         </TrainingStageComp>
       );
-    } else return null;
+    }
+    return null;
   }
 }
 
