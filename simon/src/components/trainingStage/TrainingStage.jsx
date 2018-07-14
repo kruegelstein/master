@@ -53,7 +53,7 @@ class TrainingStage extends Component {
   }
 
   render() {
-    if (this.props.userId && this.props.training) {
+    if (this.props.training) {
       return (
         <TrainingStageComp>
           <TableComp>
@@ -106,13 +106,6 @@ class TrainingStage extends Component {
           <Button onClick={this.props.onStartUserInput}>Start</Button>
         </TrainingStageComp>
       );
-    } else if (
-      this.props.userId &&
-      !this.props.training &&
-      !this.props.userInput &&
-      !this.props.showResults
-    ) {
-      return <Button onClick={this.props.onStartTraining}>Train!</Button>;
     } else return null;
   }
 }

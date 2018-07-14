@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  DUMMY,
+  GO_TO_INTRO,
   SET_USER_ID,
   START_TRAINING,
   WRITE_ELEMENTS_TO_STATE,
@@ -11,7 +11,7 @@ import {
   SHOW_RESULTS
 } from "../constants/ActionTypes.js";
 
-export const dummyAction = id => ({ type: DUMMY, payload: { id } });
+export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 

@@ -6,10 +6,12 @@ import input from "./input.js";
 import user from "./user.js";
 import training from "./training.js";
 import environment from "./environment.js";
+import navigation from "./navigation.js";
 
 export default combineReducers({
   input,
   user,
   training,
-  environment
+  environment,
+  navigation
 });

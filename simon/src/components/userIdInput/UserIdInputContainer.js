@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import UserIdInput from "./UserIdInput.jsx";
 
 // Actions
-import { submitUserId } from "../../actions/actions.js";
+import { submitUserId, goToIntro } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id
@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onSubmitUserId: id => {
     dispatch(submitUserId(id));
+    dispatch(goToIntro());
   }
 });
 
