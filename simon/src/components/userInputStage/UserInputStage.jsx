@@ -16,19 +16,29 @@ class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedElements.length === PATTERN_SIZE) {
       // There are 3 rounds for each user
-      if (this.props.currentRound <= NUMBER_OF_ROUNDS) {
-        this.nextRound();
+      if (this.props.round <= NUMBER_OF_ROUNDS) {
+        this.save();
       } else {
         this.props.onShowResults();
       }
     }
+    // As soon as the endTime is set the round is over
+    if (nextProps.currentRound.endTime !== null) {
+      this.nextRound(nextProps);
+    }
   }
 
-  nextRound() {
-    const userInput = this.props.selectedElements;
-    this.props.onSaveInput(userInput, this.props.currentRound);
-    this.props.onStopTime(this.props.currentRound);
+  nextRound(props) {
+    const results = props.currentRound;
+    this.props.onWriteToResults(results, props.round);
     this.props.onNextRound();
+  }
+
+  save() {
+    const userInput = this.props.selectedElements;
+    const round = this.props.round;
+    this.props.onSaveInput(userInput, this.props.round);
+    this.props.onStopTime(this.props.round);
   }
 
   render() {

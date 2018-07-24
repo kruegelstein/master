@@ -1,11 +1,11 @@
 // Constants
-import { SAVE_RESULT } from "../constants/ActionTypes.js";
+import { WRITE_TO_RESULTS } from "../constants/ActionTypes.js";
 
 const initialState = {};
 
 export const results = (state = initialState, action = {}) => {
   switch (action.type) {
-    case SAVE_RESULT: {
+    case WRITE_TO_RESULTS: {
       return {
         ...state,
         [action.payload.round]: action.payload.results

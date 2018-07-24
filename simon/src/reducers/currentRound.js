@@ -3,7 +3,8 @@ import {
   START_TIME,
   STOP_TIME,
   SAVE_INPUT,
-  WRITE_PATTERN_TO_STATE
+  WRITE_PATTERN_TO_STATE,
+  NEXT_ROUND
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -37,6 +38,8 @@ export const currentRound = (state = initialState, action = {}) => {
         ...state,
         userInput: action.payload.userInput
       };
+    case NEXT_ROUND:
+      return initialState;
     default:
       return { ...state };
   }

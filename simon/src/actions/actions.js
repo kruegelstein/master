@@ -14,16 +14,17 @@ import {
   START_TIME,
   STOP_TIME,
   SAVE_INPUT,
-  NEXT_ROUND
+  NEXT_ROUND,
+  WRITE_TO_RESULTS
 } from "../constants/ActionTypes.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
 export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
 
-export const startTime = currentRound => ({
+export const startTime = round => ({
   type: START_TIME,
-  payload: { currentRound }
+  payload: { round }
 });
 
 export const showPreTraining = () => ({
@@ -31,14 +32,19 @@ export const showPreTraining = () => ({
   payload: {}
 });
 
-export const stopTime = currentRound => ({
+export const stopTime = round => ({
   type: STOP_TIME,
-  payload: { currentRound }
+  payload: { round }
 });
 
-export const saveInput = (userInput, currentRound) => ({
+export const saveInput = (userInput, round) => ({
   type: SAVE_INPUT,
-  payload: { userInput, currentRound }
+  payload: { userInput, round }
+});
+
+export const writeToResults = (results, round) => ({
+  type: WRITE_TO_RESULTS,
+  payload: { results, round }
 });
 
 export const nextRound = () => ({

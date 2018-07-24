@@ -11,14 +11,16 @@ import {
   showResults,
   stopTime,
   saveInput,
-  nextRound
+  nextRound,
+  writeToResults
 } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   elements: state.environment.elements,
   userInput: state.navigation.userInput,
   selectedElements: state.input.selected,
-  currentRound: state.navigation.round
+  round: state.navigation.round,
+  currentRound: state.currentRound
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,6 +32,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onSaveInput: (userInput, currentRound) => {
     dispatch(saveInput(userInput, currentRound));
+  },
+  onWriteToResults: (results, round) => {
+    dispatch(writeToResults(results, round));
   },
   onNextRound: () => {
     dispatch(nextRound());
