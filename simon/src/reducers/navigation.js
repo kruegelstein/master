@@ -1,6 +1,7 @@
 // Constants
 import {
   GO_TO_INTRO,
+  PRE_TRAINING,
   START_TRAINING,
   START_COUNTDOWN,
   START_USER_INPUT,
@@ -9,6 +10,7 @@ import {
 
 const initialState = {
   intro: false,
+  preTraining: false,
   training: false,
   countdown: false,
   userInput: false,
@@ -22,10 +24,16 @@ export const navigation = (state = initialState, action = {}) => {
         ...state,
         intro: true
       };
-    case START_TRAINING:
+    case PRE_TRAINING:
       return {
         ...state,
         intro: false,
+        preTraining: true
+      };
+    case START_TRAINING:
+      return {
+        ...state,
+        preTraining: false,
         training: true
       };
     case START_COUNTDOWN:
@@ -45,7 +53,7 @@ export const navigation = (state = initialState, action = {}) => {
         ...state,
         round: state.round + 1,
         userInput: false,
-        training: true
+        preTraining: true
       };
     default:
       return { ...state };

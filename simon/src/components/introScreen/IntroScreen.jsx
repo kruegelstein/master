@@ -23,7 +23,7 @@ class IntroScreen extends Component {
           <Paragraph>
             Be careful and ready - The pattern will not be repeated.
           </Paragraph>
-          <Button onClick={() => this.props.onStartTraining()}>Start</Button>
+          <Button onClick={() => this.props.onPreTraining()}>Start</Button>
         </IntroScreenComp>
       );
     } else return null;

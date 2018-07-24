@@ -3,6 +3,7 @@
 import {
   GO_TO_INTRO,
   SET_USER_ID,
+  PRE_TRAINING,
   START_TRAINING,
   WRITE_ELEMENTS_TO_STATE,
   WRITE_PATTERN_TO_STATE,
@@ -23,6 +24,11 @@ export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
 export const startTime = currentRound => ({
   type: START_TIME,
   payload: { currentRound }
+});
+
+export const showPreTraining = () => ({
+  type: PRE_TRAINING,
+  payload: {}
 });
 
 export const stopTime = currentRound => ({
