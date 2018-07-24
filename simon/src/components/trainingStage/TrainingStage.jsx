@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 // Styled Components
 import TrainingStageComp from "./TrainingStage.js";
-import Button from "../general/Button.js";
 import TableComp from "../table/Table.js";
 import TableBodyComp from "../table/TableBody.js";
 import TrComp from "../table/Tr.js";

@@ -10,7 +10,8 @@ const initialState = {
   intro: false,
   training: false,
   countdown: false,
-  userInput: false
+  userInput: false,
+  round: 1
 };
 
 export const navigation = (state = initialState, action = {}) => {

@@ -9,12 +9,18 @@ import {
   SELECT_ELEMENT,
   START_USER_INPUT,
   SHOW_RESULTS,
-  START_COUNTDOWN
+  START_COUNTDOWN,
+  START_TIME
 } from "../constants/ActionTypes.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
 export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
+
+export const startTime = currentRound => ({
+  type: START_TIME,
+  payload: { currentRound }
+});
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 

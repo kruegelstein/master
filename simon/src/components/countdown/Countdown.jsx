@@ -15,7 +15,9 @@ class Countdown extends Component {
             alpha={1}
             size={500}
             showMilliseconds={false}
-            onComplete={this.props.onStartUserInput}
+            onComplete={() =>
+              this.props.onStartUserInput(this.props.currentRound)
+            }
           />
         </CountDownComp>
       );
