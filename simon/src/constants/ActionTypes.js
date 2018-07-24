@@ -16,3 +16,4 @@ export const START_TIME: "START_TIME" = "START_TIME";
 export const STOP_TIME: "STOP_TIME" = "STOP_TIME";
 export const SAVE_INPUT: "SAVE_INPUT" = "SAVE_INPUT";
 export const NEXT_ROUND: "NEXT_ROUND" = "NEXT_ROUND";
+export const SAVE_RESULT: "SAVE_RESULT" = "SAVE_RESULT";

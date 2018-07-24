@@ -7,27 +7,15 @@ import TableBodyComp from "../table/TableBody.js";
 import TrComp from "../table/Tr.js";
 import TdComp from "../table/Td.js";
 
-// Utils
-import { createElements } from "../../utils/elements.js";
-import { createPattern } from "../../utils/lightUp.js";
-
 // Constants
-import { PATTERN_PACE, PATTERN_SIZE } from "../../constants/Pattern.js";
+import { PATTERN_PACE } from "../../constants/Pattern.js";
 
 class TrainingStage extends Component {
   state = {
     activeElement: null
   };
-  componentWillMount() {
-    this.props.onWriteElementsToState(createElements(12));
-  }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.elements === null && nextProps.elements.length > 1) {
-      this.props.onWritePatternToState(
-        createPattern(PATTERN_SIZE, nextProps.elements)
-      );
-    }
     if (!this.props.training && nextProps.training) {
       this.lightUpElements();
     }
@@ -44,9 +32,13 @@ class TrainingStage extends Component {
   }
 
   light(i) {
-    this.setState({ activeElement: this.props.pattern[i] });
+    console.log("CURRENTROUND", this.props.currentRound);
+    console.log("ROUND", this.props.round);
+    this.setState({
+      activeElement: this.props.currentRound.pattern[i]
+    });
     i++;
-    if (i <= this.props.pattern.length) {
+    if (i <= this.props.currentRound.pattern.length) {
       this.initiateTimeOut(i);
     } else {
       this.props.onStartCountdown();

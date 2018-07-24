@@ -10,11 +10,13 @@ import TdComp from "../table/Td.js";
 // Constants
 import { PATTERN_SIZE } from "../../constants/Pattern.js";
 
+const NUMBER_OF_ROUNDS = 3;
+
 class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedElements.length === PATTERN_SIZE) {
-      // There are 5 rounds for each user
-      if (this.props.currentRound <= 5) {
+      // There are 3 rounds for each user
+      if (this.props.currentRound <= NUMBER_OF_ROUNDS) {
         this.nextRound();
       } else {
         this.props.onShowResults();

@@ -6,9 +6,7 @@ import { connect } from "react-redux";
 import Results from "./Results.jsx";
 
 const mapStateToProps = state => ({
-  showResults: state.environment.results,
-  pattern: state.environment.pattern,
-  selectedElements: state.input.selected
+  showResults: state.navigation.results
 });
 
 const mapDispatchToProps = dispatch => ({});
