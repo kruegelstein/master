@@ -1,5 +1,5 @@
 // Constants
-import { START_TIME } from "../constants/ActionTypes.js";
+import { START_TIME, STOP_TIME, SAVE_INPUT } from "../constants/ActionTypes.js";
 
 const initialState = {
   rounds: {}
@@ -8,13 +8,38 @@ const initialState = {
 export const results = (state = initialState, action = {}) => {
   switch (action.type) {
     case START_TIME:
-      const time = Date.now();
-      const round = action.payload.currentRound;
+      const startTime = Date.now();
       return {
         ...state,
         rounds: {
-          [round]: {
-            startTime: time
+          ...state.rounds,
+          [action.payload.currentRound]: {
+            ...state.rounds[action.payload.currentRound],
+            startTime: startTime
+          }
+        }
+      };
+    case STOP_TIME:
+      const endTime = Date.now();
+      return {
+        ...state,
+        rounds: {
+          ...state.rounds,
+          [action.payload.currentRound]: {
+            ...state.rounds[action.payload.currentRound],
+            stopTime: endTime
+          }
+        }
+      };
+    case SAVE_INPUT:
+      const userInput = action.payload.userInput;
+      return {
+        ...state,
+        rounds: {
+          ...state.rounds,
+          [action.payload.currentRound]: {
+            ...state.rounds[action.payload.currentRound],
+            userInput: userInput
           }
         }
       };

@@ -10,7 +10,10 @@ import {
   START_USER_INPUT,
   SHOW_RESULTS,
   START_COUNTDOWN,
-  START_TIME
+  START_TIME,
+  STOP_TIME,
+  SAVE_INPUT,
+  NEXT_ROUND
 } from "../constants/ActionTypes.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
@@ -20,6 +23,21 @@ export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
 export const startTime = currentRound => ({
   type: START_TIME,
   payload: { currentRound }
+});
+
+export const stopTime = currentRound => ({
+  type: STOP_TIME,
+  payload: { currentRound }
+});
+
+export const saveInput = (userInput, currentRound) => ({
+  type: SAVE_INPUT,
+  payload: { userInput, currentRound }
+});
+
+export const nextRound = () => ({
+  type: NEXT_ROUND,
+  payload: {}
 });
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });

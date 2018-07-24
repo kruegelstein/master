@@ -1,7 +1,7 @@
 // @flow
 
 // Constants
-import { SELECT_ELEMENT } from "../constants/ActionTypes.js";
+import { SELECT_ELEMENT, NEXT_ROUND } from "../constants/ActionTypes.js";
 
 const initialState = {
   selected: []
@@ -14,6 +14,8 @@ export const selected = (state = initialState, action = {}) => {
         ...state,
         selected: [...state.selected, action.payload.key]
       };
+    case NEXT_ROUND:
+      return initialState;
     default:
       return { ...state };
   }

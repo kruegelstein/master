@@ -3,7 +3,8 @@ import {
   GO_TO_INTRO,
   START_TRAINING,
   START_COUNTDOWN,
-  START_USER_INPUT
+  START_USER_INPUT,
+  NEXT_ROUND
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -38,6 +39,13 @@ export const navigation = (state = initialState, action = {}) => {
         ...state,
         countdown: false,
         userInput: true
+      };
+    case NEXT_ROUND:
+      return {
+        ...state,
+        round: state.round + 1,
+        userInput: false,
+        training: true
       };
     default:
       return { ...state };

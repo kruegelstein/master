@@ -13,8 +13,20 @@ import { PATTERN_SIZE } from "../../constants/Pattern.js";
 class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedElements.length === PATTERN_SIZE) {
-      this.props.onShowResults();
+      // There are 5 rounds for each user
+      if (this.props.currentRound <= 5) {
+        this.nextRound();
+      } else {
+        this.props.onShowResults();
+      }
     }
+  }
+
+  nextRound() {
+    const userInput = this.props.selectedElements;
+    this.props.onSaveInput(userInput, this.props.currentRound);
+    this.props.onStopTime(this.props.currentRound);
+    this.props.onNextRound();
   }
 
   render() {
