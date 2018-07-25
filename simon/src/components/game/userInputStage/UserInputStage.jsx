@@ -10,7 +10,7 @@ import TdComp from "../../table/Td.js";
 // Constants
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
 
-const NUMBER_OF_ROUNDS = 3;
+const NUMBER_OF_ROUNDS = 1;
 
 class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
@@ -18,7 +18,7 @@ class UserInputStage extends Component {
       nextProps.selectedElements.length === PATTERN_SIZE &&
       !nextProps.currentRound.userInput
     ) {
-      this.save();
+      this.save(nextProps.selectedElements);
     }
     // As soon as the endTime is set the round is over
     if (nextProps.currentRound.endTime !== null) {
@@ -41,8 +41,8 @@ class UserInputStage extends Component {
     this.props.onNextRound();
   }
 
-  save() {
-    const userInput = this.props.selectedElements;
+  save(selectedElements) {
+    const userInput = selectedElements;
     const round = this.props.round;
     this.props.onSaveInput(userInput, round);
     this.props.onStopTime(round);
