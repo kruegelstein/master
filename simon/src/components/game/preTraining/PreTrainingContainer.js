@@ -6,11 +6,13 @@ import { connect } from "react-redux";
 import PreTraining from "./PreTraining.jsx";
 
 // Actions
-import { startTraining, writePatternToState } from "../../actions/actions.js";
+import {
+  startTraining,
+  writePatternToState
+} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  preTraining: state.navigation.preTraining,
-  currentRound: state.navigation.round,
+  round: state.navigation.round,
   elements: state.environment.elements
 });
 

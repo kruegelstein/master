@@ -13,14 +13,15 @@ import {
   saveInput,
   nextRound,
   writeToResults
-} from "../../actions/actions.js";
+} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   elements: state.environment.elements,
   userInput: state.navigation.userInput,
   selectedElements: state.input.selected,
   round: state.navigation.round,
-  currentRound: state.currentRound
+  currentRound: state.currentRound,
+  showResults: state.navigation.results
 });
 
 const mapDispatchToProps = dispatch => ({

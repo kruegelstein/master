@@ -10,11 +10,12 @@ class Results extends Component {
     if (this.props.showResults) {
       return (
         <ResultsComp>
-          <Title>Results</Title>
-          <Paragraph>DONE!</Paragraph>
+          <Title>Thank you for participating!</Title>
+          <Paragraph>Your results have been saved</Paragraph>
         </ResultsComp>
       );
-    } else return null;
+    }
+    return null;
   }
 }
 

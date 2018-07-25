@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import Results from "./Results.jsx";
 
 const mapStateToProps = state => ({
-  showResults: state.navigation.results
+  showResults: state.navigation.results,
+  results: state.results
 });
 
 const mapDispatchToProps = dispatch => ({});

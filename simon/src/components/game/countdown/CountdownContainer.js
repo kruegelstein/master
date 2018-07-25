@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Countdown from "./Countdown.jsx";
 
 // Actions
-import { startUserInput, startTime } from "../../actions/actions.js";
+import { startUserInput, startTime } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   countdown: state.navigation.countdown,
