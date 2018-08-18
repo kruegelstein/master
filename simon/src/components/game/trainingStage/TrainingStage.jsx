@@ -16,6 +16,10 @@ class TrainingStage extends Component {
   };
 
   componentDidMount() {
+    console.log("Training starts...");
+    console.log("The pattern pace is: ", PATTERN_PACE);
+    console.log("Round: ", this.props.round);
+    // setNewPace()
     this.lightUpElements();
   }
 

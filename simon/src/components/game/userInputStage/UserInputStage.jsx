@@ -10,7 +10,7 @@ import TdComp from "../../table/Td.js";
 // Constants
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
 
-const NUMBER_OF_ROUNDS = 1;
+const NUMBER_OF_ROUNDS = 2;
 
 class UserInputStage extends Component {
   componentWillReceiveProps(nextProps) {
