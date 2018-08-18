@@ -7,6 +7,7 @@ const app = styled.div`
   height: 42.5rem;
   width: 100%;
   color: white;
+  text-align: center;
 `;
 
 export default app;
