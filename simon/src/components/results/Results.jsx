@@ -6,32 +6,16 @@ import Title from "../general/Title.js";
 import Paragraph from "../general/Paragraph.js";
 
 class Results extends Component {
-  calculateCorrectElements() {
-    const pattern = this.props.pattern;
-    const selected = this.props.selectedElements;
-    let correctElements = 0;
-
-    pattern.map(element => {
-      const position = pattern.indexOf(element);
-      if (selected[position] === element) {
-        correctElements++;
-      }
-    });
-    return correctElements;
-  }
-
   render() {
     if (this.props.showResults) {
-      const numberOfCorrectElements = this.calculateCorrectElements();
       return (
         <ResultsComp>
-          <Title>Results</Title>
-          <Paragraph>
-            {numberOfCorrectElements} of {this.props.pattern.length} correct!
-          </Paragraph>
+          <Title>Thank you for participating!</Title>
+          <Paragraph>Your results have been saved</Paragraph>
         </ResultsComp>
       );
-    } else return null;
+    }
+    return null;
   }
 }
 

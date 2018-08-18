@@ -6,14 +6,16 @@ import { connect } from "react-redux";
 import Countdown from "./Countdown.jsx";
 
 // Actions
-import { startUserInput } from "../../actions/actions.js";
+import { startUserInput, startTime } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  countdown: state.navigation.countdown
+  countdown: state.navigation.countdown,
+  currentRound: state.navigation.round
 });
 
 const mapDispatchToProps = dispatch => ({
-  onStartUserInput: () => {
+  onStartUserInput: currentRound => {
+    dispatch(startTime(currentRound));
     dispatch(startUserInput());
   }
 });

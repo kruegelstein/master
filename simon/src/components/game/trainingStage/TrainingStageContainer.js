@@ -6,25 +6,16 @@ import { connect } from "react-redux";
 import TrainingStage from "./TrainingStage.jsx";
 
 // Actions
-import {
-  writeElementsToState,
-  writePatternToState,
-  startCountdown
-} from "../../actions/actions.js";
+import { startCountdown } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   elements: state.environment.elements,
-  pattern: state.environment.pattern,
-  training: state.navigation.training
+  training: state.navigation.training,
+  round: state.navigation.round,
+  currentRound: state.currentRound
 });
 
 const mapDispatchToProps = dispatch => ({
-  onWriteElementsToState: elements => {
-    dispatch(writeElementsToState(elements));
-  },
-  onWritePatternToState: pattern => {
-    dispatch(writePatternToState(pattern));
-  },
   onStartCountdown: () => {
     dispatch(startCountdown());
   }

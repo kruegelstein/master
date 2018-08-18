@@ -6,15 +6,16 @@ import { connect } from "react-redux";
 import IntroScreen from "./IntroScreen.jsx";
 
 // Actions
-import { startTraining } from "../../actions/actions.js";
+import { showPreTraining, nextRound } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   intro: state.navigation.intro
 });
 
 const mapDispatchToProps = dispatch => ({
-  onStartTraining: () => {
-    dispatch(startTraining());
+  onPreTraining: () => {
+    dispatch(showPreTraining());
+    dispatch(nextRound());
   }
 });
 
