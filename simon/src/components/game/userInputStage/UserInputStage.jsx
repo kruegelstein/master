@@ -8,7 +8,7 @@ import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
 
 // Helper
-import { getErrors, getTime, getTimeScore } from "../../../utils/results.js";
+import { getEnrichedResults } from "../../../utils/results.js";
 
 // Constants
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
@@ -34,39 +34,10 @@ class UserInputStage extends Component {
   }
 
   enrichResults(results) {
-    // Results
-    const pattern = results.pattern;
-    const patternSize = results.patternSize;
-    const selectedElements = results.selectedElements;
-    const startTime = results.startTime;
-    const endTime = results.endTime;
-    // Calculate error, success, timeTaken
-    const errors = getErrors(pattern, selectedElements);
-    const errorRate = errors / patternSize * 100;
-    const correct = patternSize - errors;
-    const successRate = correct / patternSize * 100;
-    const timeTakenInSec = getTime(startTime, endTime);
-    // Calculate score
-    const pointScore = correct * 1.5;
-    const timeScore = getTimeScore(timeTakenInSec);
-    const score = pointScore + timeScore;
-
-    const enrichedResults = {
-      pattern,
-      patternSize,
-      selectedElements,
-      startTime,
-      endTime,
-      errors,
-      correct,
-      errorRate,
-      successRate,
-      timeTakenInSec,
-      score
-    };
+    const enrichedResults = getEnrichedResults(results);
     this.props.onWriteToResults(enrichedResults, this.props.round);
     // Decide whether we go to the next round or show results based on score
-    if (score < THRESHOLD) {
+    if (enrichedResults.score < THRESHOLD) {
       this.props.onShowResults();
     } else {
       this.nextRound();

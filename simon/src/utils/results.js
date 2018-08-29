@@ -20,3 +20,38 @@ export const getTimeScore = sec => {
   if (sec < 25) return 1;
   if (sec > 25) return 0;
 };
+
+export const getEnrichedResults = results => {
+  // Results
+  const pattern = results.pattern;
+  const patternSize = results.patternSize;
+  const selectedElements = results.selectedElements;
+  const startTime = results.startTime;
+  const endTime = results.endTime;
+  // Calculate error, success, timeTaken
+  const errors = getErrors(pattern, selectedElements);
+  const errorRate = errors / patternSize * 100;
+  const correct = patternSize - errors;
+  const successRate = correct / patternSize * 100;
+  const timeTakenInSec = getTime(startTime, endTime);
+  // Calculate score
+  const pointScore = correct * 1.5;
+  const timeScore = getTimeScore(timeTakenInSec);
+  const score = pointScore + timeScore;
+
+  const enrichedResults = {
+    pattern,
+    patternSize,
+    selectedElements,
+    startTime,
+    endTime,
+    errors,
+    correct,
+    errorRate,
+    successRate,
+    timeTakenInSec,
+    score
+  };
+
+  return enrichedResults;
+};
