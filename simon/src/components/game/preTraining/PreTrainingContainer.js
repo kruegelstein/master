@@ -12,7 +12,6 @@ import {
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  round: state.navigation.round,
   elements: state.environment.elements
 });
 

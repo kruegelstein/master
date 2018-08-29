@@ -1,10 +1,14 @@
 // @flow
 
 // Constants
-import { SET_USER_ID } from "../constants/ActionTypes.js";
+import { SET_USER_ID, SET_NEW_SPEED } from "../constants/ActionTypes.js";
+
+// Helper
+import { getNewSpeed } from "../utils/lightUp";
 
 const initialState = {
-  id: null
+  id: null,
+  speed: 3000
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -13,6 +17,13 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         id: action.payload.id
+      };
+    case SET_NEW_SPEED:
+      const currentSpeed = action.payload.currentSpeed;
+      const newSpeed = getNewSpeed(currentSpeed);
+      return {
+        ...state,
+        speed: newSpeed
       };
     default:
       return { ...state };

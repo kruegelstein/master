@@ -7,19 +7,12 @@ import TableBodyComp from "../../table/TableBody.js";
 import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
 
-// Constants
-import { PATTERN_PACE } from "../../../constants/Pattern.js";
-
 class TrainingStage extends Component {
   state = {
     activeElement: null
   };
 
   componentDidMount() {
-    console.log("Training starts...");
-    console.log("The pattern pace is: ", PATTERN_PACE);
-    console.log("Round: ", this.props.round);
-    // setNewPace()
     this.lightUpElements();
   }
 
@@ -30,7 +23,7 @@ class TrainingStage extends Component {
   initiateTimeOut(i) {
     setTimeout(() => {
       this.light(i);
-    }, PATTERN_PACE);
+    }, this.props.speed);
   }
 
   light(i) {

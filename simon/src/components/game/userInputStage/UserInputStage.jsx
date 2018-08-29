@@ -7,49 +7,90 @@ import TableBodyComp from "../../table/TableBody.js";
 import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
 
+// Helper
+import { getErrors, getTime, getTimeScore } from "../../../utils/results.js";
+
 // Constants
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
-
-const NUMBER_OF_ROUNDS = 2;
+const THRESHOLD = 9;
 
 class UserInputStage extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.selectedElements.length === PATTERN_SIZE &&
-      !nextProps.currentRound.userInput
-    ) {
-      this.save(nextProps.selectedElements);
-    }
-    // As soon as the endTime is set the round is over
-    if (nextProps.currentRound.endTime !== null) {
-      if (this.props.round + 1 > NUMBER_OF_ROUNDS) {
-        this.showResults(nextProps.currentRound);
-      } else {
-        this.nextRound(nextProps);
-      }
-    }
+  state = {
+    round: this.props.round,
+    startTime: null,
+    endTime: null,
+    patternSize: this.props.currentRound.patternSize,
+    pattern: this.props.currentRound.pattern,
+    selectedElements: []
+  };
+
+  componentWillMount() {
+    this.setState({ startTime: Date.now() });
   }
 
-  showResults(currentRound) {
-    this.props.onWriteToResults(currentRound, this.props.round);
-    this.props.onShowResults();
-  }
-
-  nextRound(props) {
-    const results = props.currentRound;
-    this.props.onWriteToResults(results, props.round);
+  nextRound() {
+    this.props.onSetNewSpeed(this.props.speed);
     this.props.onNextRound();
   }
 
-  save(selectedElements) {
-    const userInput = selectedElements;
-    const round = this.props.round;
-    this.props.onSaveInput(userInput, round);
-    this.props.onStopTime(round);
+  enrichResults(results) {
+    // Results
+    const pattern = results.pattern;
+    const patternSize = results.patternSize;
+    const selectedElements = results.selectedElements;
+    const startTime = results.startTime;
+    const endTime = results.endTime;
+    // Calculate error, success, timeTaken
+    const errors = getErrors(pattern, selectedElements);
+    const errorRate = errors / patternSize * 100;
+    const correct = patternSize - errors;
+    const successRate = correct / patternSize * 100;
+    const timeTakenInSec = getTime(startTime, endTime);
+    // Calculate score
+    const pointScore = correct * 1.5;
+    const timeScore = getTimeScore(timeTakenInSec);
+    const score = pointScore + timeScore;
+
+    const enrichedResults = {
+      pattern,
+      patternSize,
+      selectedElements,
+      startTime,
+      endTime,
+      errors,
+      correct,
+      errorRate,
+      successRate,
+      timeTakenInSec,
+      score
+    };
+    this.props.onWriteToResults(enrichedResults, this.props.round);
+    // Decide whether we go to the next round or show results based on score
+    if (score < THRESHOLD) {
+      this.props.onShowResults();
+    } else {
+      this.nextRound();
+    }
   }
 
   selectElement(key) {
-    this.props.onSelectElement(key);
+    // Build add element to selected elements
+    const oldElements = this.state.selectedElements;
+    const newElement = [key];
+    const selectedElements = oldElements.concat(newElement);
+    this.setState({
+      selectedElements
+    });
+    // At this point check if the round is over
+    if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
+      this.setState({
+        endTime: Date.now()
+      });
+      // Invoke timeout so the state is set
+      setTimeout(() => {
+        this.enrichResults(this.state);
+      }, 1);
+    }
   }
 
   render() {
