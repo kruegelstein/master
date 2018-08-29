@@ -18,11 +18,15 @@ class PreTraining extends Component {
     );
   }
 
+  start() {
+    this.props.onStartTraining();
+  }
+
   render() {
     return (
       <PreTrainingComp>
         <Title>Get Ready!</Title>
-        <Button onClick={() => this.props.onStartTraining()}>Start</Button>
+        <Button onClick={() => this.start()}>Start</Button>
       </PreTrainingComp>
     );
   }

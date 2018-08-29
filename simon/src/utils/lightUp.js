@@ -1,5 +1,7 @@
 // @flow
 
+const LINEAR = true;
+
 export const createPattern = (patternSize, elements) => {
   let availiableElements = elements;
   let pattern = [];
@@ -21,4 +23,12 @@ export const createPattern = (patternSize, elements) => {
     pattern.push(element);
   }
   return pattern;
+};
+
+export const getNewSpeed = currentSpeed => {
+  if (LINEAR) {
+    return currentSpeed - 300;
+  } else {
+    return currentSpeed / 2;
+  }
 };
