@@ -26,6 +26,7 @@ class UserIdInput extends Component {
   submit() {
     this.props.onSubmitUserId(this.state.inputValue);
   }
+
   render() {
     if (!this.props.userId) {
       return (
@@ -36,6 +37,7 @@ class UserIdInput extends Component {
             onChange={this.onTextinputChange}
             value={this.state.inputValue}
             onKeyUp={this.checkForEnter}
+            placeholder="Enter ID"
             autoFocus
           />
         </UserIdInputComp>
