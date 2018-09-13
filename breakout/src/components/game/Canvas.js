@@ -3,11 +3,10 @@
 import styled from "styled-components";
 
 const canvas = styled.canvas`
-  width: ${props => props.width};
-  height: ${props => props.height};;
-  display: ${props => props.userId ? 'initial' : 'none'}
+  width: 100%;
+  height: 95%;
+  display: ${props => (props.userId ? "initial" : "none")}
   background-color: white;
-  margin: 2rem 0;
 `;
 
 export default canvas;
