@@ -10,7 +10,8 @@ import {
   showResults,
   nextRound,
   writeToResults,
-  setNewSpeed
+  setNewSpeed,
+  setRollback
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -21,7 +22,8 @@ const mapStateToProps = state => ({
   currentRound: state.currentRound,
   showResults: state.navigation.results,
   results: state.results,
-  speed: state.user.speed
+  speed: state.user.speed,
+  rollback: state.user.rollback
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,8 +36,11 @@ const mapDispatchToProps = dispatch => ({
   onShowResults: () => {
     dispatch(showResults());
   },
-  onSetNewSpeed: currentSpeed => {
-    dispatch(setNewSpeed(currentSpeed));
+  onSetNewSpeed: (currentSpeed, rollback) => {
+    dispatch(setNewSpeed(currentSpeed, rollback));
+  },
+  onSetRollback: () => {
+    dispatch(setRollback());
   }
 });
 

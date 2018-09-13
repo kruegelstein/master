@@ -12,7 +12,8 @@ import {
   START_COUNTDOWN,
   NEXT_ROUND,
   WRITE_TO_RESULTS,
-  SET_NEW_SPEED
+  SET_NEW_SPEED,
+  SET_ROLLBACK
 } from "../constants/ActionTypes.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
@@ -34,9 +35,14 @@ export const nextRound = score => ({
   payload: { score }
 });
 
-export const setNewSpeed = currentSpeed => ({
+export const setNewSpeed = (currentSpeed, rollback) => ({
   type: SET_NEW_SPEED,
-  payload: { currentSpeed }
+  payload: { currentSpeed, rollback }
+});
+
+export const setRollback = () => ({
+  type: SET_ROLLBACK,
+  payload: {}
 });
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });

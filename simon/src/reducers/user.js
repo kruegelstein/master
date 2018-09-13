@@ -1,13 +1,18 @@
 // @flow
 
 // Constants
-import { SET_USER_ID, SET_NEW_SPEED } from "../constants/ActionTypes.js";
+import {
+  SET_USER_ID,
+  SET_NEW_SPEED,
+  SET_ROLLBACK
+} from "../constants/ActionTypes.js";
 
 // Helper
 import { getNewSpeed } from "../utils/lightUp";
 
 const initialState = {
   id: null,
+  rollback: false,
   speed: 3000
 };
 
@@ -18,9 +23,15 @@ export const user = (state = initialState, action = {}) => {
         ...state,
         id: action.payload.id
       };
+    case SET_ROLLBACK:
+      return {
+        ...state,
+        rollback: true
+      };
     case SET_NEW_SPEED:
       const currentSpeed = action.payload.currentSpeed;
-      const newSpeed = getNewSpeed(currentSpeed);
+      const rollback = action.payload.rollback;
+      const newSpeed = getNewSpeed(currentSpeed, rollback);
       return {
         ...state,
         speed: newSpeed
