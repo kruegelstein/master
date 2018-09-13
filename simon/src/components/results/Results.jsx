@@ -6,6 +6,9 @@ import Title from "../general/Title.js";
 import Paragraph from "../general/Paragraph.js";
 
 class Results extends Component {
+  componentWillMount() {
+    this.props.sendResultsToDb(this.props.results, this.props.userId);
+  }
   render() {
     if (this.props.showResults) {
       return (
