@@ -5,8 +5,8 @@ export const theme = {
     height: 500,
     width: 800,
     bricks: {
-      numberOfBricks: 60,
-      brickWidth: (500/10)-2.25,
+      numberOfBricks: 208,
+      brickWidth: 500 / 10 - 2.25
     }
   }
 };
