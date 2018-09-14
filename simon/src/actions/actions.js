@@ -13,8 +13,13 @@ import {
   NEXT_ROUND,
   WRITE_TO_RESULTS,
   SET_NEW_SPEED,
-  SET_ROLLBACK
+  SET_ROLLBACK,
+  STORE_IN_DB,
+  STORE_IN_DB_SUCCESS,
+  STORE_IN_DB_ERROR
 } from "../constants/ActionTypes.js";
+
+import { firebaseApp, database } from "../firebase.js";
 
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
@@ -68,3 +73,52 @@ export const showResults = () => ({
   type: SHOW_RESULTS,
   payload: {}
 });
+
+// Actions to backend (firebase)
+export const submitResultsToDB = (
+  results,
+  userId,
+  callback = null
+) => dispatch => {
+  dispatch(storeInDB(results));
+  return firebaseApp
+    .database()
+    .ref(`/${userId}`)
+    .set({ results })
+    .then(
+      r => {
+        if (callback) {
+          callback(true, r);
+        }
+        dispatch(storeInDBSuccess(r));
+      },
+      e => {
+        if (callback) {
+          callback(false, e);
+        }
+        dispatch(storeInDBError(e));
+      }
+    );
+};
+
+// actions recieved by success or error
+function storeInDB(results) {
+  return {
+    type: STORE_IN_DB,
+    payload: results
+  };
+}
+
+function storeInDBSuccess(result) {
+  return {
+    type: STORE_IN_DB_SUCCESS,
+    payload: result
+  };
+}
+
+function storeInDBError(error) {
+  return {
+    type: STORE_IN_DB_ERROR,
+    payload: error
+  };
+}
