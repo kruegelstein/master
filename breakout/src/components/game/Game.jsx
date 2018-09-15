@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withTheme } from "styled-components";
+import Hammer from "hammerjs";
 
 // Components
 import Canvas from "./Canvas.js";
@@ -62,6 +63,28 @@ class Game extends Component {
       });
     };
     var keys = new KeyListener();
+
+    var mc = new Hammer(canvas);
+
+    // listen to events...
+    mc.on("tap", () => {
+      // Start game on tap
+      ballOn = true;
+      gameOver = 0;
+    });
+
+    mc.on("panleft", event => {
+      // move left
+      if (paddle1.x > 0) {
+        paddle1.x -= paddle1.speed;
+      }
+    });
+    mc.on("panright", event => {
+      // move right
+      if (paddle1.x + paddle1.w < width) {
+        paddle1.x += paddle1.speed;
+      }
+    });
 
     // create bonus block
     function createBonus(brick) {
