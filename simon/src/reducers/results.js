@@ -1,5 +1,8 @@
 // Constants
-import { WRITE_TO_RESULTS } from "../constants/ActionTypes.js";
+import {
+  WRITE_TO_RESULTS,
+  GO_TO_USER_ID_INPUT
+} from "../constants/ActionTypes.js";
 
 const initialState = {};
 
@@ -14,6 +17,8 @@ export const results = (state = initialState, action = {}) => {
         }
       };
     }
+    case GO_TO_USER_ID_INPUT:
+      return initialState;
     default:
       return { ...state };
   }

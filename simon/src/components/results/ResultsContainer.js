@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Results from "./Results.jsx";
 
 // Actions
-import { submitResultsToDB } from "../../actions/actions.js";
+import { submitResultsToDB, goToUserIdInput } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   showResults: state.navigation.results,
@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   sendResultsToDb: (results, id) => {
     dispatch(submitResultsToDB(results, id));
+    dispatch(goToUserIdInput());
   }
 });
 

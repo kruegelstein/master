@@ -16,11 +16,16 @@ import {
   SET_ROLLBACK,
   STORE_IN_DB,
   STORE_IN_DB_SUCCESS,
-  STORE_IN_DB_ERROR
+  STORE_IN_DB_ERROR,
+  GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
-import { firebaseApp, database } from "../firebase.js";
+import { firebaseApp } from "../firebase.js";
 
+export const goToUserIdInput = () => ({
+  type: GO_TO_USER_ID_INPUT,
+  payload: {}
+});
 export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
 export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });

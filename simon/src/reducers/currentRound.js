@@ -1,7 +1,8 @@
 // Constants
 import {
   WRITE_PATTERN_TO_STATE,
-  NEXT_ROUND
+  NEXT_ROUND,
+  GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -18,6 +19,8 @@ export const currentRound = (state = initialState, action = {}) => {
         pattern: action.payload.pattern
       };
     case NEXT_ROUND:
+      return initialState;
+    case GO_TO_USER_ID_INPUT:
       return initialState;
     default:
       return { ...state };

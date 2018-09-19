@@ -16,7 +16,6 @@ import {
 
 // Constants
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
-const THRESHOLD = 9;
 
 class UserInputStage extends Component {
   state = {
