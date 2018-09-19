@@ -27,8 +27,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onWriteToResults: (results, round) => {
-    dispatch(writeToResults(results, round));
+  onWriteToResults: (results, round, speed) => {
+    dispatch(writeToResults(results, round, speed));
   },
   onNextRound: score => {
     dispatch(nextRound(score));

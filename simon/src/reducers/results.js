@@ -8,7 +8,10 @@ export const results = (state = initialState, action = {}) => {
     case WRITE_TO_RESULTS: {
       return {
         ...state,
-        [action.payload.round]: action.payload.results
+        [action.payload.round]: {
+          results: action.payload.results,
+          speed: action.payload.speed
+        }
       };
     }
     default:

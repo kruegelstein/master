@@ -30,9 +30,9 @@ export const showPreTraining = () => ({
   payload: {}
 });
 
-export const writeToResults = (results, round) => ({
+export const writeToResults = (results, round, speed) => ({
   type: WRITE_TO_RESULTS,
-  payload: { results, round }
+  payload: { results, round, speed }
 });
 
 export const nextRound = score => ({

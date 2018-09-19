@@ -39,12 +39,16 @@ class UserInputStage extends Component {
 
   enrichResults(results) {
     const enrichedResults = getEnrichedResults(results);
-    this.props.onWriteToResults(enrichedResults, this.props.round);
+    this.props.onWriteToResults(
+      enrichedResults,
+      this.props.round,
+      this.props.speed
+    );
     if (this.props.round === 1) {
       this.nextRound();
       return;
     }
-    const lastResults = this.props.results[this.props.round - 1];
+    const lastResults = this.props.results[this.props.round - 1].results;
     const answerScore = getAnswerScore(
       lastResults.correct,
       enrichedResults.correct
