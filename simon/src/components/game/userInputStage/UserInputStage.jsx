@@ -43,8 +43,17 @@ class UserInputStage extends Component {
       this.props.round,
       this.props.speed
     );
+    // Always move on to round two
     if (this.props.round === 1) {
       this.nextRound();
+      return;
+    }
+    // If the rollback is set the user got his second chance already and we show results results after the round
+    if (this.props.rollback) {
+      console.log(
+        "rollback was set the round before so this was the last round"
+      );
+      this.props.onShowResults();
       return;
     }
     const lastResults = this.props.results[this.props.round - 1].results;
@@ -69,7 +78,9 @@ class UserInputStage extends Component {
     }
     if (lastResults.correct < 4 && answerScore === 0) {
       // Die letzen schlechten Ergebnisse konnten nicht verbesert werden!
-      this.props.onShowResults();
+      this.props.onSetRollback();
+      console.log("Rollback just set");
+      this.nextRound(true);
       return;
     }
     if (answerScore === 1 && timeScore > 1) {
@@ -79,32 +90,23 @@ class UserInputStage extends Component {
     }
     if (answerScore === 1 && timeScore < -1) {
       // Die Ergebnisse haben sich etwas verschlechtert und die Zeit hat sich deutlich verschlectert!
-      if (!this.props.rollback) {
-        this.props.onSetRollback();
-        this.nextRound(true);
-      } else {
-        this.props.onShowResults();
-      }
+      this.props.onSetRollback();
+      console.log("Rollback just set");
+      this.nextRound(true);
       return;
     }
     if (answerScore === 1 && timeScore > -1 && timeScore < 1) {
       // Die Ergebnisse haben sich etwas verschlechtert aber die Zeit ist in range!
-      if (!this.props.rollback) {
-        this.props.onSetRollback();
-        this.nextRound(true);
-      } else {
-        this.props.onShowResults();
-      }
+      this.props.onSetRollback();
+      console.log("Rollback just set");
+      this.nextRound(true);
       return;
     }
     if (answerScore > 1) {
       // Die Ergebnisse haben sich verschlechtert!
-      if (!this.props.rollback) {
-        this.props.onSetRollback();
-        this.nextRound(true);
-      } else {
-        this.props.onShowResults();
-      }
+      this.props.onSetRollback();
+      console.log("Rollback just set");
+      this.nextRound(true);
       return;
     }
   }
