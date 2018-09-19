@@ -6,7 +6,8 @@ import {
   START_COUNTDOWN,
   START_USER_INPUT,
   SHOW_RESULTS,
-  NEXT_ROUND
+  NEXT_ROUND,
+  GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -63,6 +64,8 @@ export const navigation = (state = initialState, action = {}) => {
         userInput: false,
         results: true
       };
+    case GO_TO_USER_ID_INPUT:
+      return initialState;
     default:
       return { ...state };
   }

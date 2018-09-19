@@ -4,7 +4,8 @@
 import {
   SET_USER_ID,
   SET_NEW_SPEED,
-  SET_ROLLBACK
+  SET_ROLLBACK,
+  GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
 // Helper
@@ -23,6 +24,8 @@ export const user = (state = initialState, action = {}) => {
         ...state,
         id: action.payload.id
       };
+    case GO_TO_USER_ID_INPUT:
+      return initialState;
     case SET_ROLLBACK:
       return {
         ...state,
