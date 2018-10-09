@@ -7,7 +7,6 @@ export const createBricks = () => {
   let brickX = 2;
   let brickY = 10;
   let j = 0;
-  let a = 0;
   let i = 0;
   for (i; i < theme.game.bricks.numberOfBricks; i++) {
     let brick = {

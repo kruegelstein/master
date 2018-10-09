@@ -8,9 +8,6 @@ import Canvas from "./Canvas.js";
 // Utils
 import { createBricks } from "../../utils/game.js";
 
-// Constants
-import { brickColors } from "../../constants/Colors.js";
-
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +55,6 @@ class Game extends Component {
     this.bricks = [];
     this.bonuses = [];
     this.ballOn = false;
-    this.color;
     this.gameOver = 0; // 1 you lost - 2 you win
 
     function KeyListener() {
@@ -77,7 +73,7 @@ class Game extends Component {
     };
     KeyListener.prototype.addKeyPressListener = function(keyCode, callback) {
       document.addEventListener("keypress", function(e) {
-        if (e.keyCode == keyCode) callback(e);
+        if (e.keyCode === keyCode) callback(e);
       });
     };
     this.keys = new KeyListener();
@@ -252,35 +248,35 @@ class Game extends Component {
         this.bricks[i].h
       );
     }
-    for (var i = 0; i < this.bonuses.length; i++) {
+    for (var j = 0; j < this.bonuses.length; j++) {
       // reduce paddle
-      if (this.bonuses[i].type === 1) {
+      if (this.bonuses[j].type === 1) {
         this.color = "#c0392b";
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(
-          this.bonuses[i].x,
-          this.bonuses[i].y,
-          this.bonuses[i].w,
-          this.bonuses[i].h
+          this.bonuses[j].x,
+          this.bonuses[j].y,
+          this.bonuses[j].w,
+          this.bonuses[j].h
         );
-      } else if (this.bonuses[i].type === 2) {
+      } else if (this.bonuses[j].type === 2) {
         // increase paddle
         this.color = "#27ae60";
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(
-          this.bonuses[i].x - this.bonuses[i].w / 2,
-          this.bonuses[i].y,
-          this.bonuses[i].w * 2,
-          this.bonuses[i].h
+          this.bonuses[j].x - this.bonuses[j].w / 2,
+          this.bonuses[j].y,
+          this.bonuses[j].w * 2,
+          this.bonuses[j].h
         );
-      } else if (this.bonuses[i].type === 3) {
+      } else if (this.bonuses[j].type === 3) {
         // ball speedY --
         this.color = "#2980b9";
         this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
         this.ctx.arc(
-          this.bonuses[i].x,
-          this.bonuses[i].y,
+          this.bonuses[j].x,
+          this.bonuses[j].y,
           this.ball.radius - 2,
           0,
           Math.PI * 2
@@ -292,8 +288,8 @@ class Game extends Component {
         this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
         this.ctx.arc(
-          this.bonuses[i].x,
-          this.bonuses[i].y,
+          this.bonuses[j].x,
+          this.bonuses[j].y,
           this.ball.radius + 2,
           0,
           Math.PI * 2
@@ -338,7 +334,7 @@ class Game extends Component {
   };
 
   checkCollision = (obj1, obj2) => {
-    if (obj1 != this.ball) {
+    if (obj1 !== this.ball) {
       if (
         obj1.y >= obj2.y &&
         obj1.y <= obj2.y + obj2.h &&
