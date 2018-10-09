@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 const mapStateToProps = state => ({
-  userId: state.user.id
+  userId: state.user.id,
+  adaptationDimension: state.adaptation.dimension
 });
 
 const mapDispatchToProps = dispatch => ({});
