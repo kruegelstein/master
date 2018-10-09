@@ -327,7 +327,10 @@ class Game extends Component {
     for (var i = 0; i < this.bricks.length; i++) {
       if (this.checkCollision(this.ball, this.bricks[i])) {
         this.ball.speedY = -this.ball.speedY;
-        this.createBonus(this.bricks[i]);
+        // No bonuses in the speed dimension
+        if (this.props.adaptationDimension !== "speed") {
+          this.createBonus(this.bricks[i]);
+        }
         this.bricks.splice(i, 1);
       }
     }
