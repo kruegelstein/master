@@ -1,6 +1,6 @@
 const initialState = {
   dimension: "speed",
-  speed: 3000
+  speed: 6
 };
 
 export const adaptation = (state = initialState, action = {}) => {

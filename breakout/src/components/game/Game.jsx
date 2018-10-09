@@ -8,6 +8,8 @@ import Canvas from "./Canvas.js";
 // Utils
 import { createBricks } from "../../utils/game.js";
 
+const BALL_OFFSET = 8;
+
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -91,11 +93,11 @@ class Game extends Component {
 
   setupGameElements = () => {
     this.ball = {
-      x: this.width / 2 - 3,
-      y: this.height / 2 - 3,
+      x: this.width / 2,
+      y: this.height / 2,
       radius: 6,
       speedX: 0,
-      speedY: 6
+      speedY: this.props.speed
     };
     this.paddle = {
       w: 100,
@@ -432,6 +434,7 @@ class Game extends Component {
 
   checkCollision = (obj1, obj2) => {
     if (obj1 !== this.ball) {
+      // Bonus and paddle
       if (
         obj1.y >= obj2.y &&
         obj1.y <= obj2.y + obj2.h &&
@@ -441,11 +444,12 @@ class Game extends Component {
         return true;
       }
     } else {
+      // Ball and brick
       if (
-        obj1.y + obj1.radius >= obj2.y &&
-        obj1.y - obj1.radius <= obj2.y + obj2.h &&
-        obj1.x - obj1.radius >= obj2.x &&
-        obj1.x + obj1.radius <= obj2.x + obj2.w
+        obj1.y + obj1.radius >= obj2.y - BALL_OFFSET &&
+        obj1.y - obj1.radius <= obj2.y + obj2.h + BALL_OFFSET &&
+        obj1.x - obj1.radius >= obj2.x - BALL_OFFSET &&
+        obj1.x + obj1.radius <= obj2.x + obj2.w + BALL_OFFSET
       ) {
         return true;
       }
