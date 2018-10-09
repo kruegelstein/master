@@ -107,6 +107,8 @@ class UserInputStage extends Component {
     this.setState({
       selectedElements
     });
+    // Give feedback
+    window.navigator.vibrate(200);
     // At this point check if the round is over
     if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
       this.setState({
