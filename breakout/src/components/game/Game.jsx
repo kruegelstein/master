@@ -93,7 +93,7 @@ class Game extends Component {
 
   setupGameElements = () => {
     this.ball = {
-      x: this.width / 2,
+      x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
       y: this.height / 2,
       radius: 6,
       speedX: 0,
@@ -220,9 +220,10 @@ class Game extends Component {
 
   checkPaddleHit = () => {
     if (
-      this.ball.y + this.ball.radius >= this.paddle.y &&
-      this.ball.x - this.ball.radius >= this.paddle.x &&
-      this.ball.x + this.ball.radius <= this.paddle.x + this.paddle.w
+      this.ball.y + this.ball.radius >= this.paddle.y - BALL_OFFSET &&
+      this.ball.x - this.ball.radius >= this.paddle.x - BALL_OFFSET &&
+      this.ball.x + this.ball.radius <=
+        this.paddle.x + this.paddle.w + BALL_OFFSET
     ) {
       this.ball.speedY = -this.ball.speedY;
       let deltaX = this.ball.x - (this.paddle.x + this.paddle.w / 2);
@@ -456,7 +457,6 @@ class Game extends Component {
     }
   };
 
-  // Create bonus block
   createBonus = brick => {
     let chance = Math.floor(Math.random() * (10 - 1 + 1) + 1);
     if (chance === 1) {
