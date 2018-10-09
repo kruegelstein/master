@@ -19,6 +19,7 @@ export const getEnrichedResults = results => {
   const selectedElements = results.selectedElements;
   const startTime = results.startTime;
   const endTime = results.endTime;
+  const clicks = results.clicks;
   // Calculate error, success, timeTaken
   const errors = getErrors(pattern, selectedElements);
   const errorRate = errors / patternSize * 100;
@@ -32,6 +33,7 @@ export const getEnrichedResults = results => {
     selectedElements,
     startTime,
     endTime,
+    clicks,
     errors,
     correct,
     errorRate,

@@ -24,7 +24,8 @@ class UserInputStage extends Component {
     endTime: null,
     patternSize: this.props.currentRound.patternSize,
     pattern: this.props.currentRound.pattern,
-    selectedElements: []
+    selectedElements: [],
+    clicks: []
   };
 
   componentWillMount() {
@@ -50,9 +51,6 @@ class UserInputStage extends Component {
     }
     // If the rollback is set the user got his second chance already and we show results results after the round
     if (this.props.rollback) {
-      console.log(
-        "rollback was set the round before so this was the last round"
-      );
       this.props.onShowResults();
       return;
     }
@@ -96,10 +94,12 @@ class UserInputStage extends Component {
         this.nextRound();
         return;
       }
+      this.props.onSetRollback();
+      this.nextRound(true);
     }
   }
 
-  selectElement(key) {
+  selectElement(key, event) {
     // Build add element to selected elements
     const oldElements = this.state.selectedElements;
     const newElement = [key];
@@ -119,9 +119,24 @@ class UserInputStage extends Component {
     }
   }
 
+  registerClick(event) {
+    const xCoordinate = event.clientX;
+    const yCoordinate = event.clientY;
+    const clickInfo = {
+      x: xCoordinate,
+      y: yCoordinate
+    };
+    const oldClicks = this.state.clicks;
+    const newClick = [clickInfo];
+    const clicks = oldClicks.concat(newClick);
+    this.setState({
+      clicks
+    });
+  }
+
   render() {
     return (
-      <TrainingStageComp>
+      <TrainingStageComp onClick={event => this.registerClick(event)}>
         <TableComp>
           <TableBodyComp>
             <TrComp>
