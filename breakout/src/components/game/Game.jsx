@@ -9,6 +9,8 @@ import Canvas from "./Canvas.js";
 import { createBricks } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
+// Interval to adapt the speed is 10sec
+const SPEED_INTERVAL = 10000;
 
 class Game extends Component {
   constructor(props) {
@@ -27,9 +29,16 @@ class Game extends Component {
     this.keys = null;
     this.pressedKeys = null;
   }
+  state = {
+    brickCount: 0
+  };
 
   componentDidMount() {
     this.setup();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("******", nextProps);
   }
 
   setup() {
@@ -72,6 +81,7 @@ class Game extends Component {
       // Start game on tap
       this.ballOn = true;
       this.gameOver = 0;
+      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
     });
 
     mc.on("panleft", event => {
@@ -90,6 +100,11 @@ class Game extends Component {
     // Start
     requestAnimationFrame(this.loop);
   }
+
+  increaseBallSpeed = () => {
+    console.log("INCREASING SPEED");
+    this.props.onSetNewSpeed();
+  };
 
   setupGameElements = () => {
     this.ball = {
@@ -165,19 +180,20 @@ class Game extends Component {
       (this.keys.isPressed(65) || this.keys.isPressed(37)) &&
       this.paddle.x > 0
     ) {
-      // LEFT
+      // Left
       this.paddle.x -= this.paddle.speed;
     } else if (
       (this.keys.isPressed(68) || this.keys.isPressed(39)) &&
       this.paddle.x + this.paddle.w < this.width
     ) {
-      // RIGHT
+      // Right
       this.paddle.x += this.paddle.speed;
     }
-    // start ball on space key
+    // Start game with space key
     if (this.keys.isPressed(32) && this.ballOn === false) {
       this.ballOn = true;
       this.gameOver = 0;
+      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
     }
   };
 
@@ -226,14 +242,15 @@ class Game extends Component {
         this.paddle.x + this.paddle.w + BALL_OFFSET
     ) {
       this.ball.speedY = -this.ball.speedY;
-      let deltaX = this.ball.x - (this.paddle.x + this.paddle.w / 2);
-      this.ball.speedX = deltaX * 0.15;
+      const angle = this.ball.x - (this.paddle.x + this.paddle.w / 2);
+      this.ball.speedX = angle * 0.15;
     }
   };
 
   checkLost = (ball, height) => {
     if (ball.y > height) {
       this.gameOver = 1;
+      console.log("destroyed bricks: ", this.state.brickCount);
       this.newGame();
     }
   };
@@ -418,6 +435,7 @@ class Game extends Component {
 
   newGame = () => {
     this.setupGameElements();
+    this.setState({ brickCount: 0 });
   };
 
   destroyBrick = () => {
@@ -429,6 +447,7 @@ class Game extends Component {
           this.createBonus(this.bricks[i]);
         }
         this.bricks.splice(i, 1);
+        this.setState({ brickCount: this.state.brickCount + 1 });
       }
     }
   };
