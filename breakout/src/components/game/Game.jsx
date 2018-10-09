@@ -28,6 +28,7 @@ class Game extends Component {
     this.gameOver = null;
     this.keys = null;
     this.pressedKeys = null;
+    this.interval = null;
   }
   state = {
     brickCount: 0
@@ -38,7 +39,14 @@ class Game extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("******", nextProps);
+    if (nextProps.speed !== this.props.speed) {
+      // Consider the current direction of the ball when adapting the speed
+      if (this.ball.speedY > 0) {
+        this.ball.speedY = nextProps.speed;
+      } else {
+        this.ball.speedY = -nextProps.speed;
+      }
+    }
   }
 
   setup() {
@@ -193,7 +201,7 @@ class Game extends Component {
     if (this.keys.isPressed(32) && this.ballOn === false) {
       this.ballOn = true;
       this.gameOver = 0;
-      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+      this.interval = setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
     }
   };
 
@@ -434,8 +442,12 @@ class Game extends Component {
   };
 
   newGame = () => {
+    // Setup the elements again
     this.setupGameElements();
+    // Reset the brickCount to start fresh in new game
     this.setState({ brickCount: 0 });
+    // Clear the interval to start fresh in new game
+    clearInterval(this.interval);
   };
 
   destroyBrick = () => {
