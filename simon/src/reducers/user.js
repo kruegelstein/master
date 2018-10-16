@@ -5,7 +5,8 @@ import {
   SET_USER_ID,
   SET_NEW_SPEED,
   SET_ROLLBACK,
-  GO_TO_USER_ID_INPUT
+  GO_TO_USER_ID_INPUT,
+  SET_DIMENSION
 } from "../constants/ActionTypes.js";
 
 // Helper
@@ -13,6 +14,7 @@ import { getNewSpeed } from "../utils/lightUp";
 
 const initialState = {
   id: null,
+  adaptation: "",
   rollback: false,
   speed: 3000
 };
@@ -23,6 +25,11 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         id: action.payload.id
+      };
+    case SET_DIMENSION:
+      return {
+        ...state,
+        dimension: action.payload.dimension
       };
     case GO_TO_USER_ID_INPUT:
       return initialState;
