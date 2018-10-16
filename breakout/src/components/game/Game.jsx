@@ -8,40 +8,58 @@ import Canvas from "./Canvas.js";
 // Utils
 import { createBricks } from "../../utils/game.js";
 
-// Constants
-import { brickColors } from "../../constants/Colors.js";
+const BALL_OFFSET = 8;
+// Interval to adapt the speed is 10sec
+const SPEED_INTERVAL = 10000;
 
 class Game extends Component {
+  constructor(props) {
+    super(props);
+    this.width = null;
+    this.height = null;
+    this.canvas = null;
+    this.ctx = null;
+    this.ball = null;
+    this.paddle = null;
+    this.bricks = null;
+    this.bonuses = null;
+    this.ballOn = null;
+    this.color = null;
+    this.gameOver = null;
+    this.keys = null;
+    this.pressedKeys = null;
+    this.interval = null;
+  }
+  state = {
+    brickCount: 0
+  };
+
   componentDidMount() {
-    this.update();
+    this.setup();
   }
 
-  update() {
-    // Setup the game elements
-    const width = this.props.theme.game.width;
-    const height = this.props.theme.game.height;
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const brickWidth = this.props.theme.game.bricks.brickWidth;
-    let ball = {
-        x: width / 2 - 3,
-        y: height / 2 - 3,
-        radius: 6,
-        speedX: 0,
-        speedY: 6
-      },
-      paddle1 = {
-        w: 100,
-        h: 10,
-        x: width / 2 - 100 / 2, // 100 is paddle.w
-        y: height - 10,
-        speed: 6
-      },
-      bricks = [],
-      bonuses = [],
-      ballOn = false,
-      color,
-      gameOver = 0; // 1 you lost - 2 you win
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.speed !== this.props.speed) {
+      // Consider the current direction of the ball when adapting the speed
+      if (this.ball.speedY > 0) {
+        this.ball.speedY = nextProps.speed;
+      } else {
+        this.ball.speedY = -nextProps.speed;
+      }
+    }
+  }
+
+  setup() {
+    // Setup game area
+    this.width = this.props.theme.game.width;
+    this.height = this.props.theme.game.height;
+    this.canvas = document.getElementById("gameCanvas");
+    this.ctx = this.canvas.getContext("2d");
+
+    // Setup game elements
+    this.setupGameElements();
+
+    this.gameOver = 0; // 1 => lost; 2 => win
 
     function KeyListener() {
       this.pressedKeys = [];
@@ -59,267 +77,431 @@ class Game extends Component {
     };
     KeyListener.prototype.addKeyPressListener = function(keyCode, callback) {
       document.addEventListener("keypress", function(e) {
-        if (e.keyCode == keyCode) callback(e);
+        if (e.keyCode === keyCode) callback(e);
       });
     };
-    var keys = new KeyListener();
+    this.keys = new KeyListener();
 
-    var mc = new Hammer(canvas);
+    const mc = new Hammer(this.canvas);
 
-    // listen to events...
+    // Listen to touch events...
     mc.on("tap", () => {
       // Start game on tap
-      ballOn = true;
-      gameOver = 0;
+      this.ballOn = true;
+      this.gameOver = 0;
+      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
     });
 
     mc.on("panleft", event => {
-      // move left
-      if (paddle1.x > 0) {
-        paddle1.x -= paddle1.speed;
+      // Move paddle left
+      if (this.paddle.x > 0) {
+        this.paddle.x -= this.paddle.speed;
       }
     });
     mc.on("panright", event => {
-      // move right
-      if (paddle1.x + paddle1.w < width) {
-        paddle1.x += paddle1.speed;
+      // Move paddle right
+      if (this.paddle.x + this.paddle.w < this.width) {
+        this.paddle.x += this.paddle.speed;
       }
     });
 
-    // create bonus block
-    function createBonus(brick) {
-      let chance = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-      if (chance === 1) {
-        let randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1),
-          bonus = {
-            x: brick.x + brick.w / 2 - 5,
-            y: brick.y,
-            w: 10,
-            h: 10,
-            type: randomNum
-          };
-        bonuses.push(bonus);
-      }
-    }
-
-    // Create bricks
-    bricks = createBricks();
-
-    // Check collision !!ball must be first!!
-    function checkCollision(obj1, obj2) {
-      if (obj1 != ball) {
-        if (
-          obj1.y >= obj2.y &&
-          obj1.y <= obj2.y + obj2.h &&
-          obj1.x >= obj2.x &&
-          obj1.x <= obj2.x + obj2.w
-        ) {
-          return true;
-        }
-      } else {
-        if (
-          obj1.y + obj1.radius >= obj2.y &&
-          obj1.y - obj1.radius <= obj2.y + obj2.h &&
-          obj1.x - obj1.radius >= obj2.x &&
-          obj1.x + obj1.radius <= obj2.x + obj2.w
-        ) {
-          return true;
-        }
-      }
-    }
-    // if ball touch brick destroy
-    function destroyBrick() {
-      for (var i = 0; i < bricks.length; i++) {
-        if (checkCollision(ball, bricks[i])) {
-          ball.speedY = -ball.speedY;
-          createBonus(bricks[i]);
-          bricks.splice(i, 1);
-        }
-      }
-    }
-    // reset everything for a new gme
-    function newGame() {
-      bricks = [];
-      bonuses = [];
-      bricks = createBricks();
-      ball.x = width / 2 - 3;
-      ball.y = height / 2 - 3;
-      ball.speedX = 0;
-      ballOn = false;
-      ball = {
-        x: width / 2 - 3,
-        y: height / 2 - 3,
-        radius: 6,
-        speedX: 0,
-        speedY: 6
-      };
-      paddle1 = {
-        w: 100,
-        h: 10,
-        x: width / 2 - 100 / 2, // 100 is paddle.w
-        y: height - 10,
-        speed: 6
-      };
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#333";
-      ctx.fillRect(0, 0, width, height);
-      // paddle
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(paddle1.x, paddle1.y, paddle1.w, paddle1.h);
-
-      if (ballOn === false) {
-        ctx.font = "14px Roboto Mono";
-        ctx.textAlign = "center";
-        ctx.fillText(
-          "Press spacebar to start a new game.",
-          width / 2,
-          height / 2 - 25
-        );
-        ctx.font = "12px Roboto Mono";
-        ctx.fillText(
-          "Move with arrow keys or A & D.",
-          width / 2,
-          height / 2 + 25
-        );
-        if (gameOver === 1) {
-          ctx.font = "52px Roboto Mono";
-          ctx.fillText("YOU LOST!", width / 2, height / 2 - 90);
-          ctx.font = "36px Roboto Mono";
-          ctx.fillText("Keep trying!", width / 2, height / 2 - 50);
-        } else if (gameOver === 2) {
-          ctx.font = "52px Roboto Mono";
-          ctx.fillText("YOU WON!", width / 2, height / 2 - 90);
-          ctx.font = "36px Roboto Mono";
-          ctx.fillText("Congratulations!", width / 2, height / 2 - 50);
-        }
-      }
-      // ball
-      ctx.beginPath();
-      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-      ctx.fill();
-      //bricks
-      for (var i = 0; i < bricks.length; i++) {
-        ctx.fillStyle = bricks[i].color;
-        ctx.fillRect(bricks[i].x, bricks[i].y, bricks[i].w, bricks[i].h);
-      }
-      for (var i = 0; i < bonuses.length; i++) {
-        // reduce paddle
-        if (bonuses[i].type === 1) {
-          color = "#c0392b";
-          ctx.fillStyle = color;
-          ctx.fillRect(bonuses[i].x, bonuses[i].y, bonuses[i].w, bonuses[i].h);
-        } else if (bonuses[i].type === 2) {
-          // increase paddle
-          color = "#27ae60";
-          ctx.fillStyle = color;
-          ctx.fillRect(
-            bonuses[i].x - bonuses[i].w / 2,
-            bonuses[i].y,
-            bonuses[i].w * 2,
-            bonuses[i].h
-          );
-        } else if (bonuses[i].type === 3) {
-          // ball speedY --
-          color = "#2980b9";
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          ctx.arc(bonuses[i].x, bonuses[i].y, ball.radius - 2, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          // ball speedY ++
-          color = "#f1c40f";
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          ctx.arc(bonuses[i].x, bonuses[i].y, ball.radius + 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-    }
-
-    function move() {
-      // bonus fall
-      for (var i = 0; i < bonuses.length; i++) {
-        bonuses[i].y += 4;
-        if (checkCollision(bonuses[i], paddle1)) {
-          if (bonuses[i].type === 1) {
-            paddle1.w -= 10;
-          } else if (bonuses[i].type === 2) {
-            paddle1.w += 10;
-          } else if (bonuses[i].type === 3) {
-            ball.radius -= 1;
-          } else {
-            ball.radius += 1;
-          }
-          bonuses.splice(i, 1);
-          return;
-        }
-        if (bonuses[i].y > height) {
-          bonuses.splice(i, 1);
-        }
-      }
-      // paddle movement
-      if ((keys.isPressed(65) || keys.isPressed(37)) && paddle1.x > 0) {
-        // LEFT
-        paddle1.x -= paddle1.speed;
-      } else if (
-        (keys.isPressed(68) || keys.isPressed(39)) &&
-        paddle1.x + paddle1.w < width
-      ) {
-        // RIGHT
-        paddle1.x += paddle1.speed;
-      }
-      // start ball on space key
-      if (keys.isPressed(32) && ballOn === false) {
-        ballOn = true;
-        gameOver = 0;
-      }
-      // ball movement
-      if (ballOn === true) {
-        ball.x += ball.speedX;
-        ball.y += ball.speedY;
-        // check ball hit ceiling
-        if (ball.y <= 0) {
-          ball.speedY = -ball.speedY;
-        }
-        // check ball hit paddle and angle
-        if (
-          ball.y + ball.radius >= paddle1.y &&
-          ball.x - ball.radius >= paddle1.x &&
-          ball.x + ball.radius <= paddle1.x + paddle1.w
-        ) {
-          ball.speedY = -ball.speedY;
-          let deltaX = ball.x - (paddle1.x + paddle1.w / 2);
-          ball.speedX = deltaX * 0.15;
-        }
-        // check ball hit wall left-right
-        if (ball.x >= width || ball.x <= 0) {
-          ball.speedX = -ball.speedX;
-        }
-        // check if lost
-        if (ball.y > height) {
-          gameOver = 1;
-          newGame();
-        }
-        destroyBrick();
-        // check if win
-        if (bricks.length < 1) {
-          gameOver = 2;
-          newGame();
-        }
-      }
-    }
-
-    function loop() {
-      move();
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    requestAnimationFrame(loop);
+    // Start
+    requestAnimationFrame(this.loop);
   }
+
+  increaseBallSpeed = () => {
+    console.log("INCREASING SPEED");
+    this.props.onSetNewSpeed();
+  };
+
+  setupGameElements = () => {
+    this.ball = {
+      x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
+      y: this.height / 2,
+      radius: 6,
+      speedX: 0,
+      speedY: this.props.speed
+    };
+    this.paddle = {
+      w: 100,
+      h: 10,
+      x: this.width / 2 - 100 / 2, // 100 => paddle.w
+      y: this.height - 10,
+      speed: 6
+    };
+    this.bricks = [];
+    this.bonuses = [];
+    this.ballOn = false;
+    this.bricks = createBricks();
+  };
+
+  loop = () => {
+    // Movements
+    this.move();
+
+    // Drawings
+    this.draw();
+
+    // Looping
+    requestAnimationFrame(this.loop);
+  };
+
+  animation = loop => {
+    requestAnimationFrame(loop);
+  };
+
+  move = () => {
+    // Bonus fall - not relevant for speed dimension
+    this.bonusFall();
+
+    // Paddle movement - only for keyboard inputs
+    this.movePaddleWithKeys();
+
+    // Ball movement
+    this.moveBall();
+  };
+
+  bonusFall = () => {
+    for (let i = 0; i < this.bonuses.length; i++) {
+      this.bonuses[i].y += 4;
+      if (this.checkCollision(this.bonuses[i], this.paddle)) {
+        if (this.bonuses[i].type === 1) {
+          this.paddle.w -= 10;
+        } else if (this.bonuses[i].type === 2) {
+          this.paddle.w += 10;
+        } else if (this.bonuses[i].type === 3) {
+          this.ball.radius -= 1;
+        } else {
+          this.ball.radius += 1;
+        }
+        this.bonuses.splice(i, 1);
+        return;
+      }
+      if (this.bonuses[i].y > this.height) {
+        this.bonuses.splice(i, 1);
+      }
+    }
+  };
+
+  movePaddleWithKeys = () => {
+    if (
+      (this.keys.isPressed(65) || this.keys.isPressed(37)) &&
+      this.paddle.x > 0
+    ) {
+      // Left
+      this.paddle.x -= this.paddle.speed;
+    } else if (
+      (this.keys.isPressed(68) || this.keys.isPressed(39)) &&
+      this.paddle.x + this.paddle.w < this.width
+    ) {
+      // Right
+      this.paddle.x += this.paddle.speed;
+    }
+    // Start game with space key
+    if (this.keys.isPressed(32) && this.ballOn === false) {
+      this.ballOn = true;
+      this.gameOver = 0;
+      this.interval = setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+    }
+  };
+
+  moveBall = () => {
+    if (this.ballOn === true) {
+      this.ball.x += this.ball.speedX;
+      this.ball.y += this.ball.speedY;
+
+      // Check if ball hit the ceiling
+      this.checkCeilingHit();
+
+      // Check if ball hit the paddle and consider angle
+      this.checkPaddleHit();
+
+      // Check if ball hit the wall - left and right
+      this.checkWallHit();
+
+      // Check for lost
+      this.checkLost(this.ball, this.height);
+
+      // Destroy brick
+      this.destroyBrick();
+
+      // Check for win
+      this.checkWin(this.bricks);
+    }
+  };
+
+  checkCeilingHit = () => {
+    if (this.ball.y <= 0) {
+      this.ball.speedY = -this.ball.speedY;
+    }
+  };
+
+  checkWallHit = () => {
+    if (this.ball.x >= this.width || this.ball.x <= 0) {
+      this.ball.speedX = -this.ball.speedX;
+    }
+  };
+
+  checkPaddleHit = () => {
+    if (
+      this.ball.y + this.ball.radius >= this.paddle.y - BALL_OFFSET &&
+      this.ball.x - this.ball.radius >= this.paddle.x - BALL_OFFSET &&
+      this.ball.x + this.ball.radius <=
+        this.paddle.x + this.paddle.w + BALL_OFFSET
+    ) {
+      this.ball.speedY = -this.ball.speedY;
+      const angle = this.ball.x - (this.paddle.x + this.paddle.w / 2);
+      this.ball.speedX = angle * 0.15;
+    }
+  };
+
+  checkLost = (ball, height) => {
+    if (ball.y > height) {
+      this.gameOver = 1;
+      console.log("destroyed bricks: ", this.state.brickCount);
+      this.newGame();
+    }
+  };
+
+  checkWin = bricks => {
+    if (bricks.length < 1) {
+      this.gameOver = 2;
+      this.newGame();
+    }
+  };
+
+  draw = () => {
+    // Game
+    this.drawGame();
+
+    // Paddle
+    this.drawPaddle();
+
+    // Text
+    this.drawText();
+
+    // Ball
+    this.drawBall();
+
+    // Bricks
+    this.drawBricks();
+
+    // Bonuses
+    this.drawBonuses();
+  };
+
+  drawGame = () => {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.fillStyle = "#333";
+    this.ctx.fillRect(0, 0, this.width, this.height);
+  };
+
+  drawPaddle = () => {
+    this.ctx.fillStyle = "#fff";
+    this.ctx.fillRect(
+      this.paddle.x,
+      this.paddle.y,
+      this.paddle.w,
+      this.paddle.h
+    );
+  };
+
+  drawStartText = () => {
+    this.ctx.font = "18px Roboto Mono";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(
+      "Tab the screen to start a new game.",
+      this.width / 2,
+      this.height / 2 - 20
+    );
+    this.ctx.font = "12px Roboto Mono";
+    this.ctx.fillText(
+      "Move the paddle sliding your finger over the screen.",
+      this.width / 2,
+      this.height / 2 + 20
+    );
+  };
+
+  drawLostText = () => {
+    this.ctx.font = "20px Roboto Mono";
+    this.ctx.fillText(
+      "YOU LOST! Keep trying!",
+      this.width / 2,
+      this.height / 2 - 50
+    );
+  };
+
+  drawWinText = () => {
+    this.ctx.font = "20px Roboto Mono";
+    this.ctx.fillText(
+      "Congratulations! YOU WON!",
+      this.width / 2,
+      this.height / 2 - 50
+    );
+  };
+
+  drawText = () => {
+    if (this.ballOn === false) {
+      // Start
+      this.drawStartText();
+
+      if (this.gameOver === 1) {
+        // Lost
+        this.drawLostText();
+      } else if (this.gameOver === 2) {
+        // Win
+        this.drawWinText();
+      }
+    }
+  };
+
+  drawBall = () => {
+    this.ctx.beginPath();
+    this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
+    this.ctx.fill();
+  };
+
+  drawBricks = () => {
+    for (var i = 0; i < this.bricks.length; i++) {
+      this.ctx.fillStyle = this.bricks[i].color;
+      this.ctx.fillRect(
+        this.bricks[i].x,
+        this.bricks[i].y,
+        this.bricks[i].w,
+        this.bricks[i].h
+      );
+    }
+  };
+
+  drawBonuses = () => {
+    for (var j = 0; j < this.bonuses.length; j++) {
+      if (this.bonuses[j].type === 1) {
+        // Reduce paddle bonus
+        this.reducePaddleLengthBonus(j);
+      } else if (this.bonuses[j].type === 2) {
+        // Increase paddle bonus
+        this.increasePaddleLengthBonus(j);
+      } else if (this.bonuses[j].type === 3) {
+        // Reduce ball speed bonus
+        this.reduceBallSpeedBonus(j);
+      } else {
+        // Increase ball speed bonus
+        this.increaseBallSpeedBonus(j);
+      }
+    }
+  };
+
+  reducePaddleLengthBonus = j => {
+    this.color = "#c0392b";
+    this.ctx.fillStyle = this.color;
+    this.ctx.fillRect(
+      this.bonuses[j].x,
+      this.bonuses[j].y,
+      this.bonuses[j].w,
+      this.bonuses[j].h
+    );
+  };
+
+  increasePaddleLengthBonus = j => {
+    this.color = "#27ae60";
+    this.ctx.fillStyle = this.color;
+    this.ctx.fillRect(
+      this.bonuses[j].x - this.bonuses[j].w / 2,
+      this.bonuses[j].y,
+      this.bonuses[j].w * 2,
+      this.bonuses[j].h
+    );
+  };
+
+  reduceBallSpeedBonus = j => {
+    this.color = "#2980b9";
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.bonuses[j].x,
+      this.bonuses[j].y,
+      this.ball.radius - 2,
+      0,
+      Math.PI * 2
+    );
+    this.ctx.fill();
+  };
+
+  increaseBallSpeedBonus = j => {
+    this.color = "#f1c40f";
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.bonuses[j].x,
+      this.bonuses[j].y,
+      this.ball.radius + 2,
+      0,
+      Math.PI * 2
+    );
+    this.ctx.fill();
+  };
+
+  newGame = () => {
+    // Setup the elements again
+    this.setupGameElements();
+    // Reset the brickCount to start fresh in new game
+    this.setState({ brickCount: 0 });
+    // Clear the interval to start fresh in new game
+    clearInterval(this.interval);
+  };
+
+  destroyBrick = () => {
+    for (var i = 0; i < this.bricks.length; i++) {
+      if (this.checkCollision(this.ball, this.bricks[i])) {
+        this.ball.speedY = -this.ball.speedY;
+        // No bonuses in the speed dimension
+        if (this.props.adaptationDimension !== "speed") {
+          this.createBonus(this.bricks[i]);
+        }
+        this.bricks.splice(i, 1);
+        this.setState({ brickCount: this.state.brickCount + 1 });
+      }
+    }
+  };
+
+  checkCollision = (obj1, obj2) => {
+    if (obj1 !== this.ball) {
+      // Bonus and paddle
+      if (
+        obj1.y >= obj2.y &&
+        obj1.y <= obj2.y + obj2.h &&
+        obj1.x >= obj2.x &&
+        obj1.x <= obj2.x + obj2.w
+      ) {
+        return true;
+      }
+    } else {
+      // Ball and brick
+      if (
+        obj1.y + obj1.radius >= obj2.y - BALL_OFFSET &&
+        obj1.y - obj1.radius <= obj2.y + obj2.h + BALL_OFFSET &&
+        obj1.x - obj1.radius >= obj2.x - BALL_OFFSET &&
+        obj1.x + obj1.radius <= obj2.x + obj2.w + BALL_OFFSET
+      ) {
+        return true;
+      }
+    }
+  };
+
+  createBonus = brick => {
+    let chance = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+    if (chance === 1) {
+      let randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1),
+        bonus = {
+          x: brick.x + brick.w / 2 - 5,
+          y: brick.y,
+          w: 10,
+          h: 10,
+          type: randomNum
+        };
+      this.bonuses.push(bonus);
+    }
+  };
 
   render() {
     return (
