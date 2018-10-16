@@ -2,6 +2,8 @@
 
 import styled from "styled-components";
 
-const blockContainer = styled.div``;
+const BlockContainer = styled.div`
+  margin: ${props => (props.margin ? props.margin : "")};
+`;
 
-export default blockContainer;
+export default BlockContainer;
