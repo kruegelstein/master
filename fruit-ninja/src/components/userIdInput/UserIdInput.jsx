@@ -5,11 +5,17 @@ import UserIdInputComp from "./UserIdInput.js";
 import Input from "../general/Input.js";
 import Title from "../general/Title.js";
 import Paragraph from "../general/Paragraph.js";
+import BlockContainer from "../general/BlockContainer.js";
+import Button from "../general/Button.js";
+import Dimension from "./Dimension.js";
 
-const ENTER_KEY_CODE = 13;
+const ADAPTATION_DIMENSIONS = ["Speed", "Content", "Interface", "Incentives"];
 
 class UserIdInput extends Component {
-  state = { inputValue: "" };
+  state = {
+    inputValue: "",
+    selectedDimension: "Speed"
+  };
   onTextinputChange = (event: Event) => {
     const newInput = event.target.value;
     this.setState({
@@ -17,29 +23,42 @@ class UserIdInput extends Component {
     });
   };
 
-  checkForEnter = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === ENTER_KEY_CODE) {
-      this.submit();
-    }
-  };
+  onSubmit() {
+    this.props.onStart(this.state.inputValue, this.state.selectedDimension);
+  }
 
-  submit() {
-    this.props.onSubmitUserId(this.state.inputValue);
+  selectDimension(dimension) {
+    this.setState({ selectedDimension: dimension });
   }
 
   render() {
     if (!this.props.userId) {
       return (
         <UserIdInputComp>
-          <Title>Fruit ninja</Title>
-          <Paragraph>Please enter a user id:</Paragraph>
-          <Input
-            onChange={this.onTextinputChange}
-            value={this.state.inputValue}
-            onKeyUp={this.checkForEnter}
-            placeholder="Enter ID"
-            autoFocus
-          />
+          <Title>Fruit Ninja</Title>
+          <BlockContainer>
+            <Paragraph>Please enter a user id:</Paragraph>
+            <Input
+              onChange={this.onTextinputChange}
+              value={this.state.inputValue}
+              placeholder="Enter ID"
+              autoFocus
+            />
+          </BlockContainer>
+          <BlockContainer margin="4rem 0 0 0">
+            {ADAPTATION_DIMENSIONS.map((dimension, index) => (
+              <Dimension
+                key={index}
+                selected={this.state.selectedDimension === dimension}
+                onClick={() => this.selectDimension(dimension)}
+              >
+                {dimension}
+              </Dimension>
+            ))}
+          </BlockContainer>
+          <BlockContainer margin="4rem 0 0 0">
+            <Button onClick={() => this.onSubmit()}>Start!</Button>
+          </BlockContainer>
         </UserIdInputComp>
       );
     } else return null;

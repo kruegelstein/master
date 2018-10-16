@@ -17,7 +17,8 @@ import {
   STORE_IN_DB,
   STORE_IN_DB_SUCCESS,
   STORE_IN_DB_ERROR,
-  GO_TO_USER_ID_INPUT
+  GO_TO_USER_ID_INPUT,
+  SET_DIMENSION
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -77,6 +78,11 @@ export const startUserInput = () => ({
 export const showResults = () => ({
   type: SHOW_RESULTS,
   payload: {}
+});
+
+export const selectDimension = dimension => ({
+  type: SET_DIMENSION,
+  payload: { dimension }
 });
 
 // Actions to backend (firebase)
