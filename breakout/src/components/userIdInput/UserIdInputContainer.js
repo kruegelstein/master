@@ -6,15 +6,16 @@ import { connect } from "react-redux";
 import UserIdInput from "./UserIdInput.jsx";
 
 // Actions
-import { submitUserId } from "../../actions/actions.js";
+import { submitUserId, selectDimension } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmitUserId: id => {
+  onStart: (id, dimension) => {
     dispatch(submitUserId(id));
+    dispatch(selectDimension(dimension));
   }
 });
 
