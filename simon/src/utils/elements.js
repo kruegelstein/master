@@ -23,7 +23,7 @@ export const createElements = numberToCreate => {
       <Circle
         active={false}
         key={generateID()}
-        color="black"
+        color="#373242"
         // This will generate circles of random color
         // color={
         //   theme.baseColors[

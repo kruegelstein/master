@@ -10,9 +10,7 @@ const square = styled.div`
   width: ${props => props.size};
   margin: ${props => props.margin};
   border-radius: 50%;
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 `;
 
 export default square;

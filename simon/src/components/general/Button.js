@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 const Button = styled.a`
-  border: 1px solid red;
+  border: 1px solid black;
   border-radius: 5px;
   margin: ${props => props.theme.borderSpacing};
   background: white;
@@ -12,7 +12,7 @@ const Button = styled.a`
   height: 2rem;
   font-weight: bold;
   font-size: 20px;
-  color: ${props => props.theme.baseColors.green};
+  color: black;
   padding: 0.5rem;
   cursor: pointer;
   pointer-events: auto;
