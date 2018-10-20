@@ -1,7 +1,6 @@
 // @flow
 import React from "react";
 
-import Square from "../components/square/Square.jsx";
 import Circle from "../components/circle/Circle.jsx";
 
 // Constants
@@ -24,11 +23,13 @@ export const createElements = numberToCreate => {
       <Circle
         active={false}
         key={generateID()}
-        color={
-          theme.baseColors[
-            Object.keys(theme.baseColors)[Math.floor(Math.random() * 6)]
-          ]
-        }
+        color="black"
+        // This will generate circles of random color
+        // color={
+        //   theme.baseColors[
+        //     Object.keys(theme.baseColors)[Math.floor(Math.random() * 6)]
+        //   ]
+        // }
         size={theme.sizes.xl}
         // This will generate circles of random size
         // size={
@@ -48,6 +49,7 @@ export const createElements = numberToCreate => {
 };
 
 /*
+import Square from "../components/square/Square.jsx";
 If we want to create a Square element use:
 <Square
   active={false}
