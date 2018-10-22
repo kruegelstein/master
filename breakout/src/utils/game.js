@@ -1,6 +1,5 @@
 // Constants
 import { theme } from "../constants/Theme.js";
-import { brickColors } from "../constants/Colors.js";
 
 export const createBricks = () => {
   const bricks = [];
@@ -14,7 +13,10 @@ export const createBricks = () => {
       y: brickY,
       w: theme.game.bricks.brickWidth,
       h: 10,
-      color: brickColors[j]
+      color: "#000"
+      // Use line below to use other brickColors
+      // import { brickColors } from "../constants/Colors.js";
+      // color: brickColors[j]
     };
     bricks.push(brick);
     brickX += theme.game.bricks.brickWidth + 2;

@@ -110,7 +110,6 @@ class Game extends Component {
   }
 
   increaseBallSpeed = () => {
-    console.log("INCREASING SPEED");
     this.props.onSetNewSpeed();
   };
 
@@ -292,12 +291,12 @@ class Game extends Component {
 
   drawGame = () => {
     this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.fillStyle = "#333";
+    this.ctx.fillStyle = "#fff";
     this.ctx.fillRect(0, 0, this.width, this.height);
   };
 
   drawPaddle = () => {
-    this.ctx.fillStyle = "#fff";
+    this.ctx.fillStyle = "#000";
     this.ctx.fillRect(
       this.paddle.x,
       this.paddle.y,
@@ -316,7 +315,7 @@ class Game extends Component {
     );
     this.ctx.font = "12px Roboto Mono";
     this.ctx.fillText(
-      "Move the paddle sliding your finger over the screen.",
+      "Move the paddle by sliding your finger over the screen.",
       this.width / 2,
       this.height / 2 + 20
     );
@@ -358,6 +357,7 @@ class Game extends Component {
   drawBall = () => {
     this.ctx.beginPath();
     this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
+    this.ctx.fillStyle = "#0600ff";
     this.ctx.fill();
   };
 
