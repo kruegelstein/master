@@ -100,7 +100,7 @@ class UserInputStage extends Component {
   }
 
   selectElement(key, event) {
-    // Build add element to selected elements
+    // Add element to selected elements
     const oldElements = this.state.selectedElements;
     const newElement = [key];
     const selectedElements = oldElements.concat(newElement);
@@ -108,7 +108,7 @@ class UserInputStage extends Component {
       selectedElements
     });
     // Give feedback
-    window.navigator.vibrate(200);
+    // window.navigator.vibrate(200);
     // At this point check if the round is over
     if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
       this.setState({
