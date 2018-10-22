@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-const square = styled.div`
+const circle = styled.div`
   display: inline-block;
   background-color: ${props =>
     props.active ? props.theme.highlightColor : props.color};
@@ -13,4 +13,4 @@ const square = styled.div`
   cursor: pointer;
 `;
 
-export default square;
+export default circle;
