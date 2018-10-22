@@ -146,6 +146,22 @@ class UserInputStage extends Component {
     });
   }
 
+  getElement(element) {
+    if (
+      element.key ===
+      this.state.selectedElements[this.state.selectedElements.length - 1]
+    ) {
+      const newElement = {
+        ...element,
+        props: {
+          ...element.props,
+          active: true
+        }
+      };
+      return newElement;
+    } else return element;
+  }
+
   render() {
     return (
       <TrainingStageComp onClick={event => this.registerClick(event)}>
@@ -158,7 +174,7 @@ class UserInputStage extends Component {
                     key={key}
                     onClick={() => this.selectElement(element.key)}
                   >
-                    {element}
+                    {this.getElement(element)}
                   </TdComp>
                 );
               })}
@@ -170,7 +186,7 @@ class UserInputStage extends Component {
                     key={key}
                     onClick={() => this.selectElement(element.key)}
                   >
-                    {element}
+                    {this.getElement(element)}
                   </TdComp>
                 );
               })}
@@ -182,7 +198,7 @@ class UserInputStage extends Component {
                     key={key}
                     onClick={() => this.selectElement(element.key)}
                   >
-                    {element}
+                    {this.getElement(element)}
                   </TdComp>
                 );
               })}

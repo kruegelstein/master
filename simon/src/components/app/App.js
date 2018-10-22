@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 const app = styled.div`
-  background-color: black;
+  background-color: white;
   height: 100%;
   width: 100%;
 `;

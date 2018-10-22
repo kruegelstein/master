@@ -9,7 +9,7 @@ export const theme = {
     orange: "#FFA81C",
     pink: "#FF1CEC"
   },
-  highlightColor: "#ffffff",
+  highlightColor: "#1C37FF",
   sizes: {
     s: "2rem",
     m: "4rem",
