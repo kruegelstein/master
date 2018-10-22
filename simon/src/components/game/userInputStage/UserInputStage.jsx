@@ -7,6 +7,8 @@ import TableBodyComp from "../../table/TableBody.js";
 import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
 
+import click from "../../../sound/click.mov";
+
 // Helper
 import {
   getEnrichedResults,
@@ -18,15 +20,19 @@ import {
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
 
 class UserInputStage extends Component {
-  state = {
-    round: this.props.round,
-    startTime: null,
-    endTime: null,
-    patternSize: this.props.currentRound.patternSize,
-    pattern: this.props.currentRound.pattern,
-    selectedElements: [],
-    clicks: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      round: this.props.round,
+      startTime: null,
+      endTime: null,
+      patternSize: this.props.currentRound.patternSize,
+      pattern: this.props.currentRound.pattern,
+      selectedElements: [],
+      clicks: []
+    };
+    this.clicking = new Audio(click);
+  }
 
   componentWillMount() {
     this.setState({ startTime: Date.now() });
@@ -99,7 +105,13 @@ class UserInputStage extends Component {
     }
   }
 
+  giveFeedback() {
+    // Give feedback
+    this.clicking.play();
+  }
+
   selectElement(key, event) {
+    this.giveFeedback();
     // Build add element to selected elements
     const oldElements = this.state.selectedElements;
     const newElement = [key];
@@ -107,8 +119,6 @@ class UserInputStage extends Component {
     this.setState({
       selectedElements
     });
-    // Give feedback
-    window.navigator.vibrate(200);
     // At this point check if the round is over
     if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
       this.setState({
