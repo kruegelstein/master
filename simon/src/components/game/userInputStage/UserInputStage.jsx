@@ -52,10 +52,21 @@ class UserInputStage extends Component {
 
   processResults(results) {
     const enrichedResults = getEnrichedResults(results);
+    let dimensionProperty;
+    switch (this.props.dimension) {
+      case "Speed":
+        dimensionProperty = this.props.speed;
+        break;
+      case "Object clarity":
+        dimensionProperty = this.props.opacity;
+        break;
+      default:
+        null;
+    }
     this.props.onWriteToResults(
       enrichedResults,
       this.props.round,
-      this.props.speed
+      dimensionProperty
     );
     this.adapt(enrichedResults);
   }

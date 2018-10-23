@@ -15,7 +15,7 @@ import { getNewSpeed, getNewOpacity } from "../utils/lightUp";
 
 const initialState = {
   id: null,
-  adaptation: "",
+  dimension: "",
   rollback: false,
   speed: 3000,
   opacity: 1

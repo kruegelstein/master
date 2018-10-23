@@ -37,9 +37,9 @@ export const showPreTraining = () => ({
   payload: {}
 });
 
-export const writeToResults = (results, round, speed) => ({
+export const writeToResults = (results, round, dimensionProperty) => ({
   type: WRITE_TO_RESULTS,
-  payload: { results, round, speed }
+  payload: { results, round, dimensionProperty }
 });
 
 export const nextRound = score => ({
