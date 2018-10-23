@@ -10,7 +10,7 @@ class Countdown extends Component {
       <CountDownComp>
         <ReactCountdownClock
           seconds={4}
-          color="#758073"
+          color="#373242"
           alpha={1}
           size={500}
           showMilliseconds={false}
