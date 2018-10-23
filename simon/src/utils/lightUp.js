@@ -30,11 +30,27 @@ export const getNewSpeed = (currentSpeed, rollback) => {
     if (currentSpeed - linearStepSize > 0) {
       return currentSpeed - linearStepSize;
     } else {
-      // Do not get reduce speed more that 75ms
+      // Do not reduce speed if speed is 75ms
       if (currentSpeed === 75) return currentSpeed;
       currentSpeed / 2;
     }
   } else {
     return currentSpeed + linearStepSize / 2;
+  }
+};
+
+export const getNewOpacity = (currentOpacity, rollback) => {
+  const linearStepSize = 0.1;
+  if (!rollback) {
+    // Preventing nevative opacity
+    if (currentOpacity - linearStepSize > 0) {
+      return currentOpacity - linearStepSize;
+    } else {
+      // Do not reduce opacity if opacity is 0.1
+      if (currentOpacity === 0.1) return currentOpacity;
+      currentOpacity / 2;
+    }
+  } else {
+    return currentOpacity + linearStepSize / 2;
   }
 };

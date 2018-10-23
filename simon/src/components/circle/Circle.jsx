@@ -6,6 +6,7 @@ class Circle extends Component {
     return (
       <CircleComp
         active={this.props.active}
+        opacity={this.props.opacity}
         size={this.props.size}
         color={this.props.color}
         margin={this.props.margin}
