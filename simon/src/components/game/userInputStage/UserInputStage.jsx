@@ -39,17 +39,41 @@ class UserInputStage extends Component {
   }
 
   nextRound(rollback) {
-    this.props.onSetNewSpeed(this.props.speed, rollback || false);
+    switch (this.props.dimension) {
+      case "Speed":
+        this.props.onSetNewSpeed(this.props.speed, rollback || false);
+        break;
+      case "Object clarity":
+        this.props.onSetNewOpacity(this.props.opacity, rollback || false);
+        break;
+      default:
+        null;
+    }
     this.props.onNextRound();
   }
 
-  enrichResults(results) {
+  processResults(results) {
     const enrichedResults = getEnrichedResults(results);
+    let dimensionProperty;
+    switch (this.props.dimension) {
+      case "Speed":
+        dimensionProperty = this.props.speed;
+        break;
+      case "Object clarity":
+        dimensionProperty = this.props.opacity;
+        break;
+      default:
+        null;
+    }
     this.props.onWriteToResults(
       enrichedResults,
       this.props.round,
-      this.props.speed
+      dimensionProperty
     );
+    this.adapt(enrichedResults);
+  }
+
+  adapt(enrichedResults) {
     // Always move on to round two
     if (this.props.round < 3) {
       this.nextRound();
@@ -112,7 +136,7 @@ class UserInputStage extends Component {
 
   selectElement(key, event) {
     this.giveFeedback();
-    // Build add element to selected elements
+    // Add element to selected elements
     const oldElements = this.state.selectedElements;
     const newElement = [key];
     const selectedElements = oldElements.concat(newElement);
@@ -126,7 +150,7 @@ class UserInputStage extends Component {
       });
       // Invoke timeout so the state is set
       setTimeout(() => {
-        this.enrichResults(this.state);
+        this.processResults(this.state);
       }, 1);
     }
   }
@@ -146,22 +170,6 @@ class UserInputStage extends Component {
     });
   }
 
-  getElement(element) {
-    if (
-      element.key ===
-      this.state.selectedElements[this.state.selectedElements.length - 1]
-    ) {
-      const newElement = {
-        ...element,
-        props: {
-          ...element.props,
-          active: true
-        }
-      };
-      return newElement;
-    } else return element;
-  }
-
   render() {
     return (
       <TrainingStageComp onClick={event => this.registerClick(event)}>
@@ -169,36 +177,108 @@ class UserInputStage extends Component {
           <TableBodyComp>
             <TrComp>
               {this.props.elements.slice(0, 4).map((element, key) => {
+                let enhancedElement;
+                if (
+                  element.key ===
+                  this.state.selectedElements[
+                    this.state.selectedElements.length - 1
+                  ]
+                ) {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      active: true,
+                      opacity: this.props.opacity
+                    }
+                  };
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
                 return (
                   <TdComp
                     key={key}
-                    onClick={() => this.selectElement(element.key)}
+                    onClick={() => this.selectElement(enhancedElement.key)}
                   >
-                    {this.getElement(element)}
+                    {enhancedElement}
                   </TdComp>
                 );
               })}
             </TrComp>
             <TrComp>
               {this.props.elements.slice(4, 8).map((element, key) => {
+                let enhancedElement;
+                if (
+                  element.key ===
+                  this.state.selectedElements[
+                    this.state.selectedElements.length - 1
+                  ]
+                ) {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      active: true,
+                      opacity: this.props.opacity
+                    }
+                  };
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
                 return (
                   <TdComp
                     key={key}
-                    onClick={() => this.selectElement(element.key)}
+                    onClick={() => this.selectElement(enhancedElement.key)}
                   >
-                    {this.getElement(element)}
+                    {enhancedElement}
                   </TdComp>
                 );
               })}
             </TrComp>
             <TrComp>
               {this.props.elements.slice(8, 12).map((element, key) => {
+                let enhancedElement;
+                if (
+                  element.key ===
+                  this.state.selectedElements[
+                    this.state.selectedElements.length - 1
+                  ]
+                ) {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      active: true,
+                      opacity: this.props.opacity
+                    }
+                  };
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
                 return (
                   <TdComp
                     key={key}
-                    onClick={() => this.selectElement(element.key)}
+                    onClick={() => this.selectElement(enhancedElement.key)}
                   >
-                    {this.getElement(element)}
+                    {enhancedElement}
                   </TdComp>
                 );
               })}

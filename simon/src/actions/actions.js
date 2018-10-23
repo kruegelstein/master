@@ -13,6 +13,7 @@ import {
   NEXT_ROUND,
   WRITE_TO_RESULTS,
   SET_NEW_SPEED,
+  SET_NEW_OPACITY,
   SET_ROLLBACK,
   STORE_IN_DB,
   STORE_IN_DB_SUCCESS,
@@ -36,9 +37,9 @@ export const showPreTraining = () => ({
   payload: {}
 });
 
-export const writeToResults = (results, round, speed) => ({
+export const writeToResults = (results, round, dimensionProperty) => ({
   type: WRITE_TO_RESULTS,
-  payload: { results, round, speed }
+  payload: { results, round, dimensionProperty }
 });
 
 export const nextRound = score => ({
@@ -49,6 +50,11 @@ export const nextRound = score => ({
 export const setNewSpeed = (currentSpeed, rollback) => ({
   type: SET_NEW_SPEED,
   payload: { currentSpeed, rollback }
+});
+
+export const setNewOpacity = (currentOpacity, rollback) => ({
+  type: SET_NEW_OPACITY,
+  payload: { currentOpacity, rollback }
 });
 
 export const setRollback = () => ({

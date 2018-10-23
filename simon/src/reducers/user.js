@@ -4,19 +4,21 @@
 import {
   SET_USER_ID,
   SET_NEW_SPEED,
+  SET_NEW_OPACITY,
   SET_ROLLBACK,
   GO_TO_USER_ID_INPUT,
   SET_DIMENSION
 } from "../constants/ActionTypes.js";
 
 // Helper
-import { getNewSpeed } from "../utils/lightUp";
+import { getNewSpeed, getNewOpacity } from "../utils/lightUp";
 
 const initialState = {
   id: null,
-  adaptation: "",
+  dimension: "",
   rollback: false,
-  speed: 3000
+  speed: 3000,
+  opacity: 1
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -27,6 +29,14 @@ export const user = (state = initialState, action = {}) => {
         id: action.payload.id
       };
     case SET_DIMENSION:
+      const dimension = action.payload.dimension;
+      if (dimension === "Object clarity") {
+        return {
+          ...state,
+          dimension,
+          speed: 1000
+        };
+      }
       return {
         ...state,
         dimension: action.payload.dimension
@@ -40,11 +50,19 @@ export const user = (state = initialState, action = {}) => {
       };
     case SET_NEW_SPEED:
       const currentSpeed = action.payload.currentSpeed;
-      const rollback = action.payload.rollback;
-      const newSpeed = getNewSpeed(currentSpeed, rollback);
+      const speedRollback = action.payload.rollback;
+      const newSpeed = getNewSpeed(currentSpeed, speedRollback);
       return {
         ...state,
         speed: newSpeed
+      };
+    case SET_NEW_OPACITY:
+      const currentOpacity = action.payload.currentOpacity;
+      const opacityRollback = action.payload.rollback;
+      const newOpacity = getNewOpacity(currentOpacity, opacityRollback);
+      return {
+        ...state,
+        opacity: newOpacity
       };
     default:
       return { ...state };

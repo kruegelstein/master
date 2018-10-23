@@ -45,44 +45,74 @@ class TrainingStage extends Component {
           <TableBodyComp>
             <TrComp>
               {this.props.elements.slice(0, 4).map((element, key) => {
+                let enhancedElement;
                 if (element.key === this.state.activeElement) {
-                  const newElement = {
+                  enhancedElement = {
                     ...element,
                     props: {
                       ...element.props,
-                      active: true
+                      active: true,
+                      opacity: this.props.opacity
                     }
                   };
-                  return <TdComp key={key}>{newElement}</TdComp>;
-                } else return <TdComp key={key}>{element}</TdComp>;
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
+                return <TdComp key={key}>{enhancedElement}</TdComp>;
               })}
             </TrComp>
             <TrComp>
               {this.props.elements.slice(4, 8).map((element, key) => {
+                let enhancedElement;
                 if (element.key === this.state.activeElement) {
-                  const newElement = {
+                  enhancedElement = {
                     ...element,
                     props: {
                       ...element.props,
-                      active: true
+                      active: true,
+                      opacity: this.props.opacity
                     }
                   };
-                  return <TdComp key={key}>{newElement}</TdComp>;
-                } else return <TdComp key={key}>{element}</TdComp>;
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
+                return <TdComp key={key}>{enhancedElement}</TdComp>;
               })}
             </TrComp>
             <TrComp>
               {this.props.elements.slice(8, 12).map((element, key) => {
+                let enhancedElement;
                 if (element.key === this.state.activeElement) {
-                  const newElement = {
+                  enhancedElement = {
                     ...element,
                     props: {
                       ...element.props,
-                      active: true
+                      active: true,
+                      opacity: this.props.opacity
                     }
                   };
-                  return <TdComp key={key}>{newElement}</TdComp>;
-                } else return <TdComp key={key}>{element}</TdComp>;
+                } else {
+                  enhancedElement = {
+                    ...element,
+                    props: {
+                      ...element.props,
+                      opacity: this.props.opacity
+                    }
+                  };
+                }
+                return <TdComp key={key}>{enhancedElement}</TdComp>;
               })}
             </TrComp>
           </TableBodyComp>

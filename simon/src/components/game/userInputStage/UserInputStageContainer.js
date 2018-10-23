@@ -11,6 +11,7 @@ import {
   nextRound,
   writeToResults,
   setNewSpeed,
+  setNewOpacity,
   setRollback
 } from "../../../actions/actions.js";
 
@@ -23,12 +24,14 @@ const mapStateToProps = state => ({
   showResults: state.navigation.results,
   results: state.results,
   speed: state.user.speed,
+  opacity: state.user.opacity,
+  dimension: state.user.dimension,
   rollback: state.user.rollback
 });
 
 const mapDispatchToProps = dispatch => ({
-  onWriteToResults: (results, round, speed) => {
-    dispatch(writeToResults(results, round, speed));
+  onWriteToResults: (results, round, dimensionProperty) => {
+    dispatch(writeToResults(results, round, dimensionProperty));
   },
   onNextRound: score => {
     dispatch(nextRound(score));
@@ -41,6 +44,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onSetRollback: () => {
     dispatch(setRollback());
+  },
+  onSetNewOpacity: (currentOpacity, rollback) => {
+    dispatch(setNewOpacity(currentOpacity, rollback));
   }
 });
 

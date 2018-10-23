@@ -11,6 +11,7 @@ const circle = styled.div`
   margin: ${props => props.margin};
   border-radius: 50%;
   cursor: pointer;
+  opacity: ${props => (props.opacity ? props.opacity : "")};
 `;
 
 export default circle;

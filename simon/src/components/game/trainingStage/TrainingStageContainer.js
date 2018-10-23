@@ -13,7 +13,8 @@ const mapStateToProps = state => ({
   training: state.navigation.training,
   round: state.navigation.round,
   currentRound: state.currentRound,
-  speed: state.user.speed
+  speed: state.user.speed,
+  opacity: state.user.opacity
 });
 
 const mapDispatchToProps = dispatch => ({
