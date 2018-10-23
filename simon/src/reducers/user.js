@@ -27,6 +27,14 @@ export const user = (state = initialState, action = {}) => {
         id: action.payload.id
       };
     case SET_DIMENSION:
+      const dimension = action.payload.dimension;
+      if (dimension === "Object clarity") {
+        return {
+          ...state,
+          dimension,
+          speed: 1000
+        };
+      }
       return {
         ...state,
         dimension: action.payload.dimension

@@ -9,7 +9,12 @@ import BlockContainer from "../general/BlockContainer.js";
 import Button from "../general/RoundButton.js";
 import Dimension from "./Dimension.js";
 
-const ADAPTATION_DIMENSIONS = ["Speed", "Content", "Interface", "Incentives"];
+const ADAPTATION_DIMENSIONS = [
+  "Speed",
+  "Object clarity",
+  "Content",
+  "Incentives"
+];
 
 class UserIdInput extends Component {
   state = {
