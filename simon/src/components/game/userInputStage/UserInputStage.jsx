@@ -42,8 +42,10 @@ class UserInputStage extends Component {
     switch (this.props.dimension) {
       case "Speed":
         this.props.onSetNewSpeed(this.props.speed, rollback || false);
+        break;
       case "Object clarity":
         this.props.onSetNewOpacity(this.props.opacity, rollback || false);
+        break;
       default:
         null;
     }
