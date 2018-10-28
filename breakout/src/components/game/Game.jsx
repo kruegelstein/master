@@ -125,6 +125,8 @@ class Game extends Component {
     }
   };
 
+  changeBallColor = () => {};
+
   saveRound = state => {
     const destroyedBricks = state.brickCount;
     const losses = state.losses;
@@ -247,6 +249,9 @@ class Game extends Component {
     switch (this.props.adaptationDimension) {
       case "Speed":
         this.increaseBallSpeed();
+        break;
+      case "Object clarity":
+        this.changeBallColor();
         break;
       default:
         null;
@@ -406,7 +411,7 @@ class Game extends Component {
   drawBall = () => {
     this.ctx.beginPath();
     this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
-    this.ctx.fillStyle = "#0600ff";
+    this.ctx.fillStyle = "rgb(0, 94, 255)";
     this.ctx.fill();
   };
 
