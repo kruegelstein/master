@@ -9,8 +9,8 @@ import Canvas from "./Canvas.js";
 import { createBricks } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
-// Interval to adapt the speed is 10sec
-const SPEED_INTERVAL = 10000;
+// Interval to adapt the speed is 15sec
+const SPEED_INTERVAL = 15000;
 
 class Game extends Component {
   constructor(props) {
@@ -136,6 +136,25 @@ class Game extends Component {
     this.bonuses = [];
     this.ballOn = false;
     this.bricks = createBricks();
+  };
+
+  continue = () => {
+    this.ball = {
+      x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
+      y: this.height / 2,
+      radius: 6,
+      speedX: 0,
+      speedY: this.props.speed
+    };
+    this.paddle = {
+      w: 100,
+      h: 10,
+      x: this.width / 2 - 100 / 2, // 100 => paddle.w
+      y: this.height - 10,
+      speed: 6
+    };
+    this.bonuses = [];
+    this.ballOn = false;
   };
 
   loop = () => {
@@ -447,7 +466,8 @@ class Game extends Component {
 
   newGame = () => {
     // Setup the elements again
-    this.setupGameElements();
+    // this.setupGameElements();
+    this.continue();
     // Reset the brickCount to start fresh in new game
     this.setState({ brickCount: 0, losses: 0 });
     // Clear the interval to start fresh in new game
