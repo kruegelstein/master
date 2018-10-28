@@ -9,8 +9,8 @@ import Canvas from "./Canvas.js";
 import { createBricks } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
-// Interval to adapt the speed is 15sec
-const SPEED_INTERVAL = 15000;
+// Interval to adapt is 15sec
+const ADAPTION_INTERVAL = 15000;
 
 class Game extends Component {
   constructor(props) {
@@ -90,7 +90,7 @@ class Game extends Component {
       // Start game on tap
       this.ballOn = true;
       this.gameOver = 0;
-      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+      setInterval(this.adapt, ADAPTION_INTERVAL);
     });
 
     mc.on("panleft", event => {
@@ -113,8 +113,24 @@ class Game extends Component {
   increaseBallSpeed = () => {
     // Only increase the ball speed if the game is active
     if (this.gameOver === 0) {
+      // Save results for the round
+      this.saveRound(this.state);
+      this.setState({ brickCount: 0, losses: 0 });
+      // stop adapting after 8 rounds
+      if (this.props.round === 8) {
+        this.props.goToResults();
+        return;
+      }
       this.props.onSetNewSpeed();
     }
+  };
+
+  saveRound = state => {
+    const destroyedBricks = state.brickCount;
+    const losses = state.losses;
+    const round = this.props.round;
+    const speed = this.props.speed;
+    this.props.onSaveRound(round, destroyedBricks, losses, speed);
   };
 
   setupGameElements = () => {
@@ -223,7 +239,17 @@ class Game extends Component {
     if (this.keys.isPressed(32) && this.ballOn === false) {
       this.ballOn = true;
       this.gameOver = 0;
-      this.interval = setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+      this.interval = setInterval(this.adapt, ADAPTION_INTERVAL);
+    }
+  };
+
+  adapt = () => {
+    switch (this.props.adaptationDimension) {
+      case "Speed":
+        this.increaseBallSpeed();
+        break;
+      default:
+        null;
     }
   };
 
@@ -466,12 +492,7 @@ class Game extends Component {
 
   newGame = () => {
     // Setup the elements again
-    // this.setupGameElements();
     this.continue();
-    // Reset the brickCount to start fresh in new game
-    this.setState({ brickCount: 0, losses: 0 });
-    // Clear the interval to start fresh in new game
-    clearInterval(this.interval);
   };
 
   destroyBrick = () => {
@@ -528,14 +549,17 @@ class Game extends Component {
   };
 
   render() {
-    return (
-      <Canvas
-        width={this.props.theme.game.width}
-        height={this.props.theme.game.height}
-        id="gameCanvas"
-        userId={this.props.userId}
-      />
-    );
+    if (!this.props.isResults) {
+      return (
+        <Canvas
+          width={this.props.theme.game.width}
+          height={this.props.theme.game.height}
+          id="gameCanvas"
+          userId={this.props.userId}
+        />
+      );
+    }
+    return null;
   }
 }
 

@@ -6,17 +6,25 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 // Actions
-import { setNewSpeed } from "../../actions/actions.js";
+import { setNewSpeed, saveRound, goToResults } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id,
   adaptationDimension: state.adaptation.dimension,
-  speed: state.adaptation.speed
+  speed: state.adaptation.speed,
+  round: state.adaptation.round,
+  isResults: state.navigation.results
 });
 
 const mapDispatchToProps = dispatch => ({
   onSetNewSpeed: () => {
     dispatch(setNewSpeed());
+  },
+  onSaveRound: (round, destroyedBricks, losses, speed) => {
+    dispatch(saveRound(round, destroyedBricks, losses, speed));
+  },
+  goToResults: () => {
+    dispatch(goToResults());
   }
 });
 
