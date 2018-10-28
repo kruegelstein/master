@@ -111,7 +111,10 @@ class Game extends Component {
   }
 
   increaseBallSpeed = () => {
-    this.props.onSetNewSpeed();
+    // Only increase the ball speed if the game is active
+    if (this.gameOver === 0) {
+      this.props.onSetNewSpeed();
+    }
   };
 
   setupGameElements = () => {
@@ -152,7 +155,7 @@ class Game extends Component {
 
   move = () => {
     // Bonus fall - not relevant for speed dimension
-    this.bonusFall();
+    // this.bonusFall();
 
     // Paddle movement - only for keyboard inputs
     this.movePaddleWithKeys();
@@ -161,27 +164,27 @@ class Game extends Component {
     this.moveBall();
   };
 
-  bonusFall = () => {
-    for (let i = 0; i < this.bonuses.length; i++) {
-      this.bonuses[i].y += 4;
-      if (this.checkCollision(this.bonuses[i], this.paddle)) {
-        if (this.bonuses[i].type === 1) {
-          this.paddle.w -= 10;
-        } else if (this.bonuses[i].type === 2) {
-          this.paddle.w += 10;
-        } else if (this.bonuses[i].type === 3) {
-          this.ball.radius -= 1;
-        } else {
-          this.ball.radius += 1;
-        }
-        this.bonuses.splice(i, 1);
-        return;
-      }
-      if (this.bonuses[i].y > this.height) {
-        this.bonuses.splice(i, 1);
-      }
-    }
-  };
+  // bonusFall = () => {
+  //   for (let i = 0; i < this.bonuses.length; i++) {
+  //     this.bonuses[i].y += 4;
+  //     if (this.checkCollision(this.bonuses[i], this.paddle)) {
+  //       if (this.bonuses[i].type === 1) {
+  //         this.paddle.w -= 10;
+  //       } else if (this.bonuses[i].type === 2) {
+  //         this.paddle.w += 10;
+  //       } else if (this.bonuses[i].type === 3) {
+  //         this.ball.radius -= 1;
+  //       } else {
+  //         this.ball.radius += 1;
+  //       }
+  //       this.bonuses.splice(i, 1);
+  //       return;
+  //     }
+  //     if (this.bonuses[i].y > this.height) {
+  //       this.bonuses.splice(i, 1);
+  //     }
+  //   }
+  // };
 
   movePaddleWithKeys = () => {
     if (
@@ -287,7 +290,7 @@ class Game extends Component {
     this.drawBricks();
 
     // Bonuses
-    this.drawBonuses();
+    // this.drawBonuses();
   };
 
   drawGame = () => {
@@ -374,23 +377,23 @@ class Game extends Component {
     }
   };
 
-  drawBonuses = () => {
-    for (var j = 0; j < this.bonuses.length; j++) {
-      if (this.bonuses[j].type === 1) {
-        // Reduce paddle bonus
-        this.reducePaddleLengthBonus(j);
-      } else if (this.bonuses[j].type === 2) {
-        // Increase paddle bonus
-        this.increasePaddleLengthBonus(j);
-      } else if (this.bonuses[j].type === 3) {
-        // Reduce ball speed bonus
-        this.reduceBallSpeedBonus(j);
-      } else {
-        // Increase ball speed bonus
-        this.increaseBallSpeedBonus(j);
-      }
-    }
-  };
+  // drawBonuses = () => {
+  //   for (var j = 0; j < this.bonuses.length; j++) {
+  //     if (this.bonuses[j].type === 1) {
+  //       // Reduce paddle bonus
+  //       this.reducePaddleLengthBonus(j);
+  //     } else if (this.bonuses[j].type === 2) {
+  //       // Increase paddle bonus
+  //       this.increasePaddleLengthBonus(j);
+  //     } else if (this.bonuses[j].type === 3) {
+  //       // Reduce ball speed bonus
+  //       this.reduceBallSpeedBonus(j);
+  //     } else {
+  //       // Increase ball speed bonus
+  //       this.increaseBallSpeedBonus(j);
+  //     }
+  //   }
+  // };
 
   reducePaddleLengthBonus = j => {
     this.color = "#c0392b";
