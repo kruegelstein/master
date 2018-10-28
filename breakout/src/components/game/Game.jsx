@@ -9,8 +9,8 @@ import Canvas from "./Canvas.js";
 import { createBricks } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
-// Interval to adapt the speed is 10sec
-const SPEED_INTERVAL = 10000;
+// Interval to adapt is 15sec
+const ADAPTION_INTERVAL = 15000;
 
 class Game extends Component {
   constructor(props) {
@@ -31,7 +31,8 @@ class Game extends Component {
     this.interval = null;
   }
   state = {
-    brickCount: 0
+    brickCount: 0,
+    losses: 0
   };
 
   componentDidMount() {
@@ -89,7 +90,7 @@ class Game extends Component {
       // Start game on tap
       this.ballOn = true;
       this.gameOver = 0;
-      setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+      setInterval(this.adapt, ADAPTION_INTERVAL);
     });
 
     mc.on("panleft", event => {
@@ -110,7 +111,26 @@ class Game extends Component {
   }
 
   increaseBallSpeed = () => {
-    this.props.onSetNewSpeed();
+    // Only increase the ball speed if the game is active
+    if (this.gameOver === 0) {
+      // Save results for the round
+      this.saveRound(this.state);
+      this.setState({ brickCount: 0, losses: 0 });
+      // stop adapting after 8 rounds
+      if (this.props.round === 8) {
+        this.props.goToResults();
+        return;
+      }
+      this.props.onSetNewSpeed();
+    }
+  };
+
+  saveRound = state => {
+    const destroyedBricks = state.brickCount;
+    const losses = state.losses;
+    const round = this.props.round;
+    const speed = this.props.speed;
+    this.props.onSaveRound(round, destroyedBricks, losses, speed);
   };
 
   setupGameElements = () => {
@@ -134,6 +154,25 @@ class Game extends Component {
     this.bricks = createBricks();
   };
 
+  continue = () => {
+    this.ball = {
+      x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
+      y: this.height / 2,
+      radius: 6,
+      speedX: 0,
+      speedY: this.props.speed
+    };
+    this.paddle = {
+      w: 100,
+      h: 10,
+      x: this.width / 2 - 100 / 2, // 100 => paddle.w
+      y: this.height - 10,
+      speed: 6
+    };
+    this.bonuses = [];
+    this.ballOn = false;
+  };
+
   loop = () => {
     // Movements
     this.move();
@@ -151,7 +190,7 @@ class Game extends Component {
 
   move = () => {
     // Bonus fall - not relevant for speed dimension
-    this.bonusFall();
+    // this.bonusFall();
 
     // Paddle movement - only for keyboard inputs
     this.movePaddleWithKeys();
@@ -160,27 +199,27 @@ class Game extends Component {
     this.moveBall();
   };
 
-  bonusFall = () => {
-    for (let i = 0; i < this.bonuses.length; i++) {
-      this.bonuses[i].y += 4;
-      if (this.checkCollision(this.bonuses[i], this.paddle)) {
-        if (this.bonuses[i].type === 1) {
-          this.paddle.w -= 10;
-        } else if (this.bonuses[i].type === 2) {
-          this.paddle.w += 10;
-        } else if (this.bonuses[i].type === 3) {
-          this.ball.radius -= 1;
-        } else {
-          this.ball.radius += 1;
-        }
-        this.bonuses.splice(i, 1);
-        return;
-      }
-      if (this.bonuses[i].y > this.height) {
-        this.bonuses.splice(i, 1);
-      }
-    }
-  };
+  // bonusFall = () => {
+  //   for (let i = 0; i < this.bonuses.length; i++) {
+  //     this.bonuses[i].y += 4;
+  //     if (this.checkCollision(this.bonuses[i], this.paddle)) {
+  //       if (this.bonuses[i].type === 1) {
+  //         this.paddle.w -= 10;
+  //       } else if (this.bonuses[i].type === 2) {
+  //         this.paddle.w += 10;
+  //       } else if (this.bonuses[i].type === 3) {
+  //         this.ball.radius -= 1;
+  //       } else {
+  //         this.ball.radius += 1;
+  //       }
+  //       this.bonuses.splice(i, 1);
+  //       return;
+  //     }
+  //     if (this.bonuses[i].y > this.height) {
+  //       this.bonuses.splice(i, 1);
+  //     }
+  //   }
+  // };
 
   movePaddleWithKeys = () => {
     if (
@@ -200,7 +239,17 @@ class Game extends Component {
     if (this.keys.isPressed(32) && this.ballOn === false) {
       this.ballOn = true;
       this.gameOver = 0;
-      this.interval = setInterval(this.increaseBallSpeed, SPEED_INTERVAL);
+      this.interval = setInterval(this.adapt, ADAPTION_INTERVAL);
+    }
+  };
+
+  adapt = () => {
+    switch (this.props.adaptationDimension) {
+      case "Speed":
+        this.increaseBallSpeed();
+        break;
+      default:
+        null;
     }
   };
 
@@ -257,7 +306,7 @@ class Game extends Component {
   checkLost = (ball, height) => {
     if (ball.y > height) {
       this.gameOver = 1;
-      console.log("destroyed bricks: ", this.state.brickCount);
+      this.setState({ losses: this.state.losses + 1 });
       this.newGame();
     }
   };
@@ -286,7 +335,7 @@ class Game extends Component {
     this.drawBricks();
 
     // Bonuses
-    this.drawBonuses();
+    // this.drawBonuses();
   };
 
   drawGame = () => {
@@ -373,23 +422,23 @@ class Game extends Component {
     }
   };
 
-  drawBonuses = () => {
-    for (var j = 0; j < this.bonuses.length; j++) {
-      if (this.bonuses[j].type === 1) {
-        // Reduce paddle bonus
-        this.reducePaddleLengthBonus(j);
-      } else if (this.bonuses[j].type === 2) {
-        // Increase paddle bonus
-        this.increasePaddleLengthBonus(j);
-      } else if (this.bonuses[j].type === 3) {
-        // Reduce ball speed bonus
-        this.reduceBallSpeedBonus(j);
-      } else {
-        // Increase ball speed bonus
-        this.increaseBallSpeedBonus(j);
-      }
-    }
-  };
+  // drawBonuses = () => {
+  //   for (var j = 0; j < this.bonuses.length; j++) {
+  //     if (this.bonuses[j].type === 1) {
+  //       // Reduce paddle bonus
+  //       this.reducePaddleLengthBonus(j);
+  //     } else if (this.bonuses[j].type === 2) {
+  //       // Increase paddle bonus
+  //       this.increasePaddleLengthBonus(j);
+  //     } else if (this.bonuses[j].type === 3) {
+  //       // Reduce ball speed bonus
+  //       this.reduceBallSpeedBonus(j);
+  //     } else {
+  //       // Increase ball speed bonus
+  //       this.increaseBallSpeedBonus(j);
+  //     }
+  //   }
+  // };
 
   reducePaddleLengthBonus = j => {
     this.color = "#c0392b";
@@ -443,11 +492,7 @@ class Game extends Component {
 
   newGame = () => {
     // Setup the elements again
-    this.setupGameElements();
-    // Reset the brickCount to start fresh in new game
-    this.setState({ brickCount: 0 });
-    // Clear the interval to start fresh in new game
-    clearInterval(this.interval);
+    this.continue();
   };
 
   destroyBrick = () => {
@@ -504,14 +549,17 @@ class Game extends Component {
   };
 
   render() {
-    return (
-      <Canvas
-        width={this.props.theme.game.width}
-        height={this.props.theme.game.height}
-        id="gameCanvas"
-        userId={this.props.userId}
-      />
-    );
+    if (!this.props.isResults) {
+      return (
+        <Canvas
+          width={this.props.theme.game.width}
+          height={this.props.theme.game.height}
+          id="gameCanvas"
+          userId={this.props.userId}
+        />
+      );
+    }
+    return null;
   }
 }
 
