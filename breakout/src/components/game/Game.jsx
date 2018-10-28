@@ -31,7 +31,8 @@ class Game extends Component {
     this.interval = null;
   }
   state = {
-    brickCount: 0
+    brickCount: 0,
+    losses: 0
   };
 
   componentDidMount() {
@@ -257,7 +258,7 @@ class Game extends Component {
   checkLost = (ball, height) => {
     if (ball.y > height) {
       this.gameOver = 1;
-      console.log("destroyed bricks: ", this.state.brickCount);
+      this.setState({ losses: this.state.losses + 1 });
       this.newGame();
     }
   };
@@ -445,7 +446,7 @@ class Game extends Component {
     // Setup the elements again
     this.setupGameElements();
     // Reset the brickCount to start fresh in new game
-    this.setState({ brickCount: 0 });
+    this.setState({ brickCount: 0, losses: 0 });
     // Clear the interval to start fresh in new game
     clearInterval(this.interval);
   };
