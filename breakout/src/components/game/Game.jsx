@@ -6,7 +6,7 @@ import Hammer from "hammerjs";
 import Canvas from "./Canvas.js";
 
 // Utils
-import { createBricks } from "../../utils/game.js";
+import { createBricks, ballColors } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
 // Interval to adapt is 15sec
@@ -29,6 +29,7 @@ class Game extends Component {
     this.keys = null;
     this.pressedKeys = null;
     this.interval = null;
+    this.ballColor = ballColors[0];
   }
   state = {
     brickCount: 0,
@@ -117,7 +118,7 @@ class Game extends Component {
       this.saveRound(this.state);
       this.setState({ brickCount: 0, losses: 0 });
       // stop adapting after 8 rounds
-      if (this.props.round === 8) {
+      if (this.props.round === 10) {
         this.props.goToResults();
         return;
       }
@@ -125,7 +126,20 @@ class Game extends Component {
     }
   };
 
-  changeBallColor = () => {};
+  changeBallColor = () => {
+    // Only change the ball color if the game is active
+    if (this.gameOver === 0) {
+      // Save results for the round
+      this.saveRound(this.state);
+      this.setState({ brickCount: 0, losses: 0 });
+      // stop adapting after 8 rounds
+      if (this.props.round === 10) {
+        this.props.goToResults();
+        return;
+      }
+      this.ballColor = ballColors[this.props.round - 1];
+    }
+  };
 
   saveRound = state => {
     const destroyedBricks = state.brickCount;
@@ -180,7 +194,7 @@ class Game extends Component {
     this.move();
 
     // Drawings
-    this.draw();
+    this.draw(this.ballColor);
 
     // Looping
     requestAnimationFrame(this.loop);
@@ -323,7 +337,7 @@ class Game extends Component {
     }
   };
 
-  draw = () => {
+  draw = ballColor => {
     // Game
     this.drawGame();
 
@@ -334,7 +348,7 @@ class Game extends Component {
     this.drawText();
 
     // Ball
-    this.drawBall();
+    this.drawBall(ballColor);
 
     // Bricks
     this.drawBricks();
@@ -408,10 +422,11 @@ class Game extends Component {
     }
   };
 
-  drawBall = () => {
+  drawBall = ballColor => {
     this.ctx.beginPath();
     this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
-    this.ctx.fillStyle = "rgb(0, 94, 255)";
+    this.ctx.fillStyle = ballColor;
+
     this.ctx.fill();
   };
 

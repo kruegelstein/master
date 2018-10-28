@@ -2,7 +2,8 @@
 import {
   SET_NEW_SPEED,
   SET_DIMENSION,
-  GO_TO_USER_ID_INPUT
+  GO_TO_USER_ID_INPUT,
+  SAVE_ROUND
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -16,7 +17,11 @@ export const adaptation = (state = initialState, action = {}) => {
     case SET_NEW_SPEED:
       return {
         ...state,
-        speed: state.speed + 1,
+        speed: state.speed + 1
+      };
+    case SAVE_ROUND:
+      return {
+        ...state,
         round: state.round + 1
       };
     case SET_DIMENSION:
