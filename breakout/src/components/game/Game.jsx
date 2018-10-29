@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import { withTheme } from "styled-components";
 import Hammer from "hammerjs";
+import Pressure from "pressure";
 
 // Components
 import Canvas from "./Canvas.js";
 
-// Sounds
-import beep from "../../sound/Beep.mov";
-
 // Utils
-import { createBricks, ballColors } from "../../utils/game.js";
+import { createBricks, ballColors, getTime } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
 // Interval to adapt is 15sec
 const ADAPTION_INTERVAL = 15000;
+
+let xCoordinates = [];
+let yCoordinates = [];
+let forces = [];
 
 class Game extends Component {
   constructor(props) {
@@ -32,15 +34,60 @@ class Game extends Component {
     this.pressedKeys = null;
     this.interval = null;
     this.ballColor = ballColors[0];
-    this.clicking = new Audio(beep);
   }
   state = {
     brickCount: 0,
-    losses: 0
+    losses: 0,
+    clicks: []
   };
 
   componentDidMount() {
     this.setup();
+    Pressure.set("#gameCanvas", {
+      start: event => {
+        const clickId = this.state.clicks.length;
+        const clickStart = Date.now();
+        let clickInfo;
+        if (event.touches.length === 1) {
+          const touch = event.touches[0];
+          xCoordinates.push(touch.clientX);
+          yCoordinates.push(touch.clientY);
+          clickInfo = {
+            id: clickId,
+            clickStart
+          };
+        }
+        const oldClicks = this.state.clicks;
+        const newClick = [clickInfo];
+        const clicks = oldClicks.concat(newClick);
+        this.setState({
+          clicks
+        });
+      },
+      change: (force, event) => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        if (event.touches.length === 1) {
+          const touch = event.touches[0];
+          xCoordinates.push(touch.clientX);
+          yCoordinates.push(touch.clientY);
+        }
+        forces.push(force);
+      },
+      end: () => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        const clickEnd = Date.now();
+        const clickStart = currentClick.clickStart;
+        const clickDuration = getTime(clickStart, clickEnd);
+        currentClick.clickEnd = clickEnd;
+        currentClick.duration = clickDuration;
+        currentClick.forces = forces;
+        currentClick.xCoordinates = xCoordinates;
+        currentClick.yCoordinates = yCoordinates;
+        xCoordinates = [];
+        xCoordinates = [];
+        forces = [];
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,8 +166,8 @@ class Game extends Component {
     if (this.gameOver === 0) {
       // Save results for the round
       this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0 });
-      // stop adapting after 8 rounds
+      this.setState({ brickCount: 0, losses: 0, clicks: [] });
+      // stop adapting after 10 rounds
       if (this.props.round === 10) {
         this.props.goToResults();
         return;
@@ -134,8 +181,8 @@ class Game extends Component {
     if (this.gameOver === 0) {
       // Save results for the round
       this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0 });
-      // stop adapting after 8 rounds
+      this.setState({ brickCount: 0, losses: 0, clicks: [] });
+      // stop adapting after 10 rounds
       if (this.props.round === 10) {
         this.props.goToResults();
         return;
@@ -147,9 +194,10 @@ class Game extends Component {
   saveRound = state => {
     const destroyedBricks = state.brickCount;
     const losses = state.losses;
+    const clicks = state.clicks;
     const round = this.props.round;
     const speed = this.props.speed;
-    this.props.onSaveRound(round, destroyedBricks, losses, speed);
+    this.props.onSaveRound(round, destroyedBricks, losses, clicks, speed);
   };
 
   setupGameElements = () => {
@@ -231,8 +279,6 @@ class Game extends Component {
   };
 
   adapt = () => {
-    // Play sound to rate app
-    this.clicking.play();
     switch (this.props.adaptationDimension) {
       case "Speed":
         this.increaseBallSpeed();

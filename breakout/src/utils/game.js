@@ -41,3 +41,7 @@ export const ballColors = [
   "rgb(204, 223, 255)",
   "rgb(230, 239, 255)"
 ];
+
+export const getTime = (start, end) => {
+  return (end - start) / 1000;
+};
