@@ -21,7 +21,8 @@ const initialState = {
   rollback: false,
   speed: 3000,
   opacity: 1,
-  points: 0
+  points: 0,
+  patternLength: 5
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -39,6 +40,12 @@ export const user = (state = initialState, action = {}) => {
         points: state.points + points
       };
     case NEXT_ROUND:
+      if (state.dimension === "Content") {
+        return {
+          ...state,
+          patternLength: state.patternLength + 1
+        };
+      }
       return {
         ...state,
         points: 0
@@ -46,6 +53,14 @@ export const user = (state = initialState, action = {}) => {
     case SET_DIMENSION:
       const dimension = action.payload.dimension;
       if (dimension !== "Speed") {
+        if (dimension === "Content") {
+          return {
+            ...state,
+            dimension,
+            speed: 1000,
+            patternLength: 0
+          };
+        }
         return {
           ...state,
           dimension,

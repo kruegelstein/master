@@ -8,13 +8,10 @@ import Button from "../../general/Button.js";
 // Utils
 import { createPattern } from "../../../utils/lightUp.js";
 
-// Constants
-import { PATTERN_SIZE } from "../../../constants/Pattern.js";
-
 class PreTraining extends Component {
   componentWillMount() {
     this.props.onWritePatternToState(
-      createPattern(PATTERN_SIZE, this.props.elements)
+      createPattern(this.props.patternLength, this.props.elements)
     );
   }
 

@@ -27,7 +27,8 @@ const mapStateToProps = state => ({
   speed: state.user.speed,
   opacity: state.user.opacity,
   dimension: state.user.dimension,
-  rollback: state.user.rollback
+  rollback: state.user.rollback,
+  patternLength: state.user.patternLength
 });
 
 const mapDispatchToProps = dispatch => ({
