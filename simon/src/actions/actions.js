@@ -19,7 +19,8 @@ import {
   STORE_IN_DB_SUCCESS,
   STORE_IN_DB_ERROR,
   GO_TO_USER_ID_INPUT,
-  SET_DIMENSION
+  SET_DIMENSION,
+  ADD_POINTS
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -61,6 +62,8 @@ export const setRollback = () => ({
   type: SET_ROLLBACK,
   payload: {}
 });
+
+export const addPoints = round => ({ type: ADD_POINTS, payload: { round } });
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 

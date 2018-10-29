@@ -7,7 +7,7 @@ import DashBoard from "./DashBoard.jsx";
 
 const mapStateToProps = state => ({
   dimension: state.user.dimension,
-  points: 0
+  points: state.user.points
 });
 
 export default connect(mapStateToProps, null)(DashBoard);
