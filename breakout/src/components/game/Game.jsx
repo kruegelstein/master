@@ -22,7 +22,6 @@ class Game extends Component {
     this.ball = null;
     this.paddle = null;
     this.bricks = null;
-    this.bonuses = null;
     this.ballOn = null;
     this.color = null;
     this.gameOver = null;
@@ -165,12 +164,12 @@ class Game extends Component {
       speed: 6
     };
     this.bricks = [];
-    this.bonuses = [];
     this.ballOn = false;
     this.bricks = createBricks();
   };
 
   continue = () => {
+    // New ball in the middle of the screen (paddle stays where it was)
     this.ball = {
       x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
       y: this.height / 2,
@@ -178,15 +177,8 @@ class Game extends Component {
       speedX: 0,
       speedY: this.props.speed
     };
-    this.paddle = {
-      w: 100,
-      h: 10,
-      x: this.width / 2 - 100 / 2, // 100 => paddle.w
-      y: this.height - 10,
-      speed: 6
-    };
-    this.bonuses = [];
-    this.ballOn = false;
+    // Spawn ball immediately after lost
+    this.ballOn = true;
   };
 
   loop = () => {
@@ -205,37 +197,12 @@ class Game extends Component {
   };
 
   move = () => {
-    // Bonus fall - not relevant for speed dimension
-    // this.bonusFall();
-
     // Paddle movement - only for keyboard inputs
     this.movePaddleWithKeys();
 
     // Ball movement
     this.moveBall();
   };
-
-  // bonusFall = () => {
-  //   for (let i = 0; i < this.bonuses.length; i++) {
-  //     this.bonuses[i].y += 4;
-  //     if (this.checkCollision(this.bonuses[i], this.paddle)) {
-  //       if (this.bonuses[i].type === 1) {
-  //         this.paddle.w -= 10;
-  //       } else if (this.bonuses[i].type === 2) {
-  //         this.paddle.w += 10;
-  //       } else if (this.bonuses[i].type === 3) {
-  //         this.ball.radius -= 1;
-  //       } else {
-  //         this.ball.radius += 1;
-  //       }
-  //       this.bonuses.splice(i, 1);
-  //       return;
-  //     }
-  //     if (this.bonuses[i].y > this.height) {
-  //       this.bonuses.splice(i, 1);
-  //     }
-  //   }
-  // };
 
   movePaddleWithKeys = () => {
     if (
@@ -352,9 +319,6 @@ class Game extends Component {
 
     // Bricks
     this.drawBricks();
-
-    // Bonuses
-    // this.drawBonuses();
   };
 
   drawGame = () => {
@@ -442,74 +406,6 @@ class Game extends Component {
     }
   };
 
-  // drawBonuses = () => {
-  //   for (var j = 0; j < this.bonuses.length; j++) {
-  //     if (this.bonuses[j].type === 1) {
-  //       // Reduce paddle bonus
-  //       this.reducePaddleLengthBonus(j);
-  //     } else if (this.bonuses[j].type === 2) {
-  //       // Increase paddle bonus
-  //       this.increasePaddleLengthBonus(j);
-  //     } else if (this.bonuses[j].type === 3) {
-  //       // Reduce ball speed bonus
-  //       this.reduceBallSpeedBonus(j);
-  //     } else {
-  //       // Increase ball speed bonus
-  //       this.increaseBallSpeedBonus(j);
-  //     }
-  //   }
-  // };
-
-  reducePaddleLengthBonus = j => {
-    this.color = "#c0392b";
-    this.ctx.fillStyle = this.color;
-    this.ctx.fillRect(
-      this.bonuses[j].x,
-      this.bonuses[j].y,
-      this.bonuses[j].w,
-      this.bonuses[j].h
-    );
-  };
-
-  increasePaddleLengthBonus = j => {
-    this.color = "#27ae60";
-    this.ctx.fillStyle = this.color;
-    this.ctx.fillRect(
-      this.bonuses[j].x - this.bonuses[j].w / 2,
-      this.bonuses[j].y,
-      this.bonuses[j].w * 2,
-      this.bonuses[j].h
-    );
-  };
-
-  reduceBallSpeedBonus = j => {
-    this.color = "#2980b9";
-    this.ctx.fillStyle = this.color;
-    this.ctx.beginPath();
-    this.ctx.arc(
-      this.bonuses[j].x,
-      this.bonuses[j].y,
-      this.ball.radius - 2,
-      0,
-      Math.PI * 2
-    );
-    this.ctx.fill();
-  };
-
-  increaseBallSpeedBonus = j => {
-    this.color = "#f1c40f";
-    this.ctx.fillStyle = this.color;
-    this.ctx.beginPath();
-    this.ctx.arc(
-      this.bonuses[j].x,
-      this.bonuses[j].y,
-      this.ball.radius + 2,
-      0,
-      Math.PI * 2
-    );
-    this.ctx.fill();
-  };
-
   newGame = () => {
     // Setup the elements again
     this.continue();
@@ -519,10 +415,6 @@ class Game extends Component {
     for (var i = 0; i < this.bricks.length; i++) {
       if (this.checkCollision(this.ball, this.bricks[i])) {
         this.ball.speedY = -this.ball.speedY;
-        // No bonuses in the speed dimension
-        if (this.props.adaptationDimension !== "speed") {
-          this.createBonus(this.bricks[i]);
-        }
         this.bricks.splice(i, 1);
         this.setState({ brickCount: this.state.brickCount + 1 });
       }
@@ -550,21 +442,6 @@ class Game extends Component {
       ) {
         return true;
       }
-    }
-  };
-
-  createBonus = brick => {
-    let chance = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-    if (chance === 1) {
-      let randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1),
-        bonus = {
-          x: brick.x + brick.w / 2 - 5,
-          y: brick.y,
-          w: 10,
-          h: 10,
-          type: randomNum
-        };
-      this.bonuses.push(bonus);
     }
   };
 
