@@ -3,6 +3,9 @@ import { withTheme } from "styled-components";
 import Hammer from "hammerjs";
 import Pressure from "pressure";
 
+// Sounds
+import beep from "../../sound/Beep.mp4";
+
 // Components
 import Canvas from "./Canvas.js";
 
@@ -43,51 +46,55 @@ class Game extends Component {
 
   componentDidMount() {
     this.setup();
-    Pressure.set("#gameCanvas", {
-      start: event => {
-        const clickId = this.state.clicks.length;
-        const clickStart = Date.now();
-        let clickInfo;
-        if (event.touches.length === 1) {
-          const touch = event.touches[0];
-          xCoordinates.push(touch.clientX);
-          yCoordinates.push(touch.clientY);
-          clickInfo = {
-            id: clickId,
-            clickStart
-          };
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (iOS) {
+      Pressure.set("#gameCanvas", {
+        start: event => {
+          const clickId = this.state.clicks.length;
+          const clickStart = Date.now();
+          let clickInfo;
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinates.push(touch.clientX);
+            yCoordinates.push(touch.clientY);
+            clickInfo = {
+              id: clickId,
+              clickStart
+            };
+          }
+          const oldClicks = this.state.clicks;
+          const newClick = [clickInfo];
+          const clicks = oldClicks.concat(newClick);
+          this.setState({
+            clicks
+          });
+        },
+        change: (force, event) => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinates.push(touch.clientX);
+            yCoordinates.push(touch.clientY);
+          }
+          forces.push(force);
+        },
+        end: () => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          const clickEnd = Date.now();
+          const clickStart = currentClick.clickStart;
+          const clickDuration = getTime(clickStart, clickEnd);
+          currentClick.clickEnd = clickEnd;
+          currentClick.duration = clickDuration;
+          currentClick.forces = forces;
+          currentClick.xCoordinates = xCoordinates;
+          currentClick.yCoordinates = yCoordinates;
+          xCoordinates = [];
+          xCoordinates = [];
+          forces = [];
         }
-        const oldClicks = this.state.clicks;
-        const newClick = [clickInfo];
-        const clicks = oldClicks.concat(newClick);
-        this.setState({
-          clicks
-        });
-      },
-      change: (force, event) => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        if (event.touches.length === 1) {
-          const touch = event.touches[0];
-          xCoordinates.push(touch.clientX);
-          yCoordinates.push(touch.clientY);
-        }
-        forces.push(force);
-      },
-      end: () => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        const clickEnd = Date.now();
-        const clickStart = currentClick.clickStart;
-        const clickDuration = getTime(clickStart, clickEnd);
-        currentClick.clickEnd = clickEnd;
-        currentClick.duration = clickDuration;
-        currentClick.forces = forces;
-        currentClick.xCoordinates = xCoordinates;
-        currentClick.yCoordinates = yCoordinates;
-        xCoordinates = [];
-        xCoordinates = [];
-        forces = [];
-      }
-    });
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -142,6 +149,7 @@ class Game extends Component {
       this.ballOn = true;
       this.gameOver = 0;
       setInterval(this.adapt, ADAPTION_INTERVAL);
+      this.play();
     });
 
     mc.on("panleft", event => {
@@ -279,6 +287,7 @@ class Game extends Component {
   };
 
   adapt = () => {
+    this.play();
     switch (this.props.adaptationDimension) {
       case "Speed":
         this.increaseBallSpeed();
@@ -497,15 +506,23 @@ class Game extends Component {
     }
   };
 
+  play = () => {
+    const video = document.getElementById("video");
+    video.play();
+  };
+
   render() {
     if (!this.props.isResults) {
       return (
-        <Canvas
-          width={this.props.theme.game.width}
-          height={this.props.theme.game.height}
-          id="gameCanvas"
-          userId={this.props.userId}
-        />
+        <div style={{ height: "100%", width: "100%" }}>
+          <Canvas
+            width={this.props.theme.game.width}
+            height={this.props.theme.game.height}
+            id="gameCanvas"
+            userId={this.props.userId}
+          />
+          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
+        </div>
       );
     }
     return null;
