@@ -239,7 +239,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
@@ -275,7 +285,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
@@ -311,7 +331,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
