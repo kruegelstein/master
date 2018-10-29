@@ -5,6 +5,9 @@ import Hammer from "hammerjs";
 // Components
 import Canvas from "./Canvas.js";
 
+// Sounds
+import beep from "../../sound/Beep.mov";
+
 // Utils
 import { createBricks, ballColors } from "../../utils/game.js";
 
@@ -29,6 +32,7 @@ class Game extends Component {
     this.pressedKeys = null;
     this.interval = null;
     this.ballColor = ballColors[0];
+    this.clicking = new Audio(beep);
   }
   state = {
     brickCount: 0,
@@ -227,6 +231,8 @@ class Game extends Component {
   };
 
   adapt = () => {
+    // Play sound to rate app
+    this.clicking.play();
     switch (this.props.adaptationDimension) {
       case "Speed":
         this.increaseBallSpeed();
