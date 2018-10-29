@@ -27,10 +27,11 @@ export const saveRound = (
   round,
   destroyedBricks,
   losses,
+  clicks,
   dimensionProperty
 ) => ({
   type: SAVE_ROUND,
-  payload: { round, destroyedBricks, losses, dimensionProperty }
+  payload: { round, destroyedBricks, losses, clicks, dimensionProperty }
 });
 
 export const goToResults = () => ({ type: GO_TO_RESULTS, payload: {} });

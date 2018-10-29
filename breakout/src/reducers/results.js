@@ -23,7 +23,8 @@ export const results = (state = initialState, action = {}) => {
         [action.payload.round]: {
           results: {
             destroyedBricks: action.payload.destroyedBricks,
-            losses: action.payload.losses
+            losses: action.payload.losses,
+            clicks: action.payload.clicks
           },
           [state.dimension]: dimensionProperty
         }
