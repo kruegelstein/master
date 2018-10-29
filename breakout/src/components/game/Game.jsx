@@ -169,6 +169,7 @@ class Game extends Component {
   };
 
   continue = () => {
+    // New ball in the middle of the screen (paddle stays where it was)
     this.ball = {
       x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
       y: this.height / 2,
@@ -176,13 +177,7 @@ class Game extends Component {
       speedX: 0,
       speedY: this.props.speed
     };
-    this.paddle = {
-      w: 100,
-      h: 10,
-      x: this.width / 2 - 100 / 2, // 100 => paddle.w
-      y: this.height - 10,
-      speed: 6
-    };
+    // Spawn ball immediately after lost
     this.ballOn = true;
   };
 
