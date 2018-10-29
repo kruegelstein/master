@@ -30,7 +30,7 @@ class UserInputStage extends Component {
       round: this.props.round,
       startTime: null,
       endTime: null,
-      patternSize: this.props.currentRound.patternSize,
+      patternSize: this.props.patternLength,
       pattern: this.props.currentRound.pattern,
       selectedElements: [],
       clicks: []
@@ -104,6 +104,12 @@ class UserInputStage extends Component {
       case "Object clarity":
         dimensionProperty = this.props.opacity;
         break;
+      case "Content":
+        dimensionProperty = this.props.patternLength;
+        break;
+      case "Incentives":
+        dimensionProperty = this.props.round * 5;
+        break;
       default:
         null;
     }
@@ -138,6 +144,11 @@ class UserInputStage extends Component {
     // Decide whether we go to the next round or show results based on score
     // Good answer performance from round 3 (this is more or less a test) and round 2 is the first reference
     if (this.props.round >= 3) {
+      // For Content dimension go to nextRound after round 3
+      if (this.props.round === 3 && this.props.dimension === "Content") {
+        this.nextRound();
+        return;
+      }
       // Good last results 4 or 5 correct answers and also 4 or 5 coorect this round
       if (
         lastResults.correct >= 4 &&
@@ -201,7 +212,7 @@ class UserInputStage extends Component {
       }
     );
     // At this point check if the round is over
-    if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
+    if (this.state.selectedElements.length === this.props.patternLength - 1) {
       this.setState({
         endTime: Date.now()
       });

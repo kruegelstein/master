@@ -12,7 +12,8 @@ import {
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  elements: state.environment.elements
+  elements: state.environment.elements,
+  patternLength: state.user.patternLength
 });
 
 const mapDispatchToProps = dispatch => ({
