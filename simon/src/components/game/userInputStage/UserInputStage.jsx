@@ -7,7 +7,9 @@ import TableComp from "../../table/Table.js";
 import TableBodyComp from "../../table/TableBody.js";
 import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
+import DashBoard from "../dashBoard/DashBoardContainer.js";
 
+// Sounds
 import click from "../../../sound/click.mov";
 
 // Helper
@@ -205,6 +207,7 @@ class UserInputStage extends Component {
         // onMouseUp={event => this.registerClickEnd(event)}
         // onClick={event => this.registerClickStart(event)}
       >
+        <DashBoard />
         <TableComp>
           <TableBodyComp>
             <TrComp>
