@@ -24,6 +24,47 @@ import {
 import { PATTERN_SIZE } from "../../../constants/Pattern.js";
 
 class UserInputStage extends Component {
+  componentDidMount() {
+    Pressure.set("#element", {
+      start: event => {
+        const clickId = this.state.clicks.length;
+        const clickStart = Date.now();
+        let clickInfo;
+        let xCoordinate;
+        let yCoordinate;
+        if (event.touches.length === 1) {
+          const touch = event.touches[0];
+          xCoordinate = touch.clientX;
+          yCoordinate = touch.clientY;
+          clickInfo = {
+            id: clickId,
+            x: xCoordinate,
+            y: yCoordinate,
+            clickStart
+          };
+        }
+        const oldClicks = this.state.clicks;
+        const newClick = [clickInfo];
+        const clicks = oldClicks.concat(newClick);
+        this.setState({
+          clicks
+        });
+      },
+      change: (force, event) => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        currentClick.force = force;
+      },
+      end: () => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        const clickEnd = Date.now();
+        const clickStart = currentClick.clickStart;
+        const clickDuration = getTime(clickStart, clickEnd);
+        currentClick.clickEnd = clickEnd;
+        currentClick.duration = clickDuration;
+      }
+    });
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,44 +81,6 @@ class UserInputStage extends Component {
 
   componentWillMount() {
     this.setState({ startTime: Date.now() });
-  }
-
-  registerClickStart(event) {
-    // TODO: Check if that works
-    const clickId = this.state.clicks.length;
-    const clickStart = Date.now();
-    let clickInfo;
-    let xCoordinate;
-    let yCoordinate;
-    let force;
-    if (event.touches.length === 1) {
-      const touch = event.touches[0];
-      xCoordinate = touch.clientX;
-      yCoordinate = touch.clientY;
-      force = touch.force;
-      clickInfo = {
-        id: clickId,
-        x: xCoordinate,
-        y: yCoordinate,
-        clickStart,
-        force
-      };
-    }
-    const oldClicks = this.state.clicks;
-    const newClick = [clickInfo];
-    const clicks = oldClicks.concat(newClick);
-    this.setState({
-      clicks
-    });
-  }
-
-  registerClickEnd(event) {
-    const currentClick = this.state.clicks[this.state.clicks.length - 1];
-    const clickEnd = Date.now();
-    const clickStart = currentClick.clickStart;
-    const clickDuration = getTime(clickStart, clickEnd);
-    currentClick.clickEnd = clickEnd;
-    currentClick.duration = clickDuration;
   }
 
   nextRound(rollback) {
@@ -225,14 +228,7 @@ class UserInputStage extends Component {
 
   render() {
     return (
-      <TrainingStageComp
-        id="userInput"
-        onTouchStart={event => this.registerClickStart(event)}
-        onTouchEnd={event => this.registerClickEnd(event)}
-        // onMouseDown={() => this.registerClickStart()}
-        // onMouseUp={event => this.registerClickEnd(event)}
-        // onClick={event => this.registerClickStart(event)}
-      >
+      <TrainingStageComp id="element">
         <DashBoard />
         <TableComp>
           <TableBodyComp>
