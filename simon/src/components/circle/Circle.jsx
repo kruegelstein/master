@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CircleComp from "./Circle.js";
+import Incentive from "./Incentive.js";
 
 class Circle extends Component {
   render() {
@@ -10,7 +11,11 @@ class Circle extends Component {
         size={this.props.size}
         color={this.props.color}
         margin={this.props.margin}
-      />
+      >
+        {this.props.correct ? (
+          <Incentive>+ {this.props.round * 5}</Incentive>
+        ) : null}
+      </CircleComp>
     );
   }
 }

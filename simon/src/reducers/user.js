@@ -7,7 +7,9 @@ import {
   SET_NEW_OPACITY,
   SET_ROLLBACK,
   GO_TO_USER_ID_INPUT,
-  SET_DIMENSION
+  SET_DIMENSION,
+  ADD_POINTS,
+  NEXT_ROUND
 } from "../constants/ActionTypes.js";
 
 // Helper
@@ -18,7 +20,8 @@ const initialState = {
   dimension: "",
   rollback: false,
   speed: 3000,
-  opacity: 1
+  opacity: 1,
+  points: 0
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -28,9 +31,21 @@ export const user = (state = initialState, action = {}) => {
         ...state,
         id: action.payload.id
       };
+    case ADD_POINTS:
+      const round = action.payload.round;
+      const points = round * 5;
+      return {
+        ...state,
+        points: state.points + points
+      };
+    case NEXT_ROUND:
+      return {
+        ...state,
+        points: 0
+      };
     case SET_DIMENSION:
       const dimension = action.payload.dimension;
-      if (dimension === "Object clarity") {
+      if (dimension !== "Speed") {
         return {
           ...state,
           dimension,

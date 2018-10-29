@@ -12,7 +12,8 @@ import {
   writeToResults,
   setNewSpeed,
   setNewOpacity,
-  setRollback
+  setRollback,
+  addPoints
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -47,6 +48,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onSetNewOpacity: (currentOpacity, rollback) => {
     dispatch(setNewOpacity(currentOpacity, rollback));
+  },
+  addPoints: round => {
+    dispatch(addPoints(round));
   }
 });
 

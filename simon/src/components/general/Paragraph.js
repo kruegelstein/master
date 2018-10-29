@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 const paragraph = styled.span`
-  display: block;
+  display: ${props => (props.inline ? "inline-block" : "block")};
   font-size: 18px;
   color: black;
   margin: 0 1rem 1rem 0.5rem;

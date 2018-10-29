@@ -7,7 +7,9 @@ import TableComp from "../../table/Table.js";
 import TableBodyComp from "../../table/TableBody.js";
 import TrComp from "../../table/Tr.js";
 import TdComp from "../../table/Td.js";
+import DashBoard from "../dashBoard/DashBoardContainer.js";
 
+// Sounds
 import click from "../../../sound/click.mov";
 
 // Helper
@@ -180,9 +182,24 @@ class UserInputStage extends Component {
     const oldElements = this.state.selectedElements;
     const newElement = [key];
     const selectedElements = oldElements.concat(newElement);
-    this.setState({
-      selectedElements
-    });
+    this.setState(
+      {
+        selectedElements
+      },
+      () => {
+        // In the incentives dimension we want to add points for correct answers
+        if (this.props.dimension === "Incentives") {
+          // Add points if the correct element was selected
+          if (
+            this.state.selectedElements[
+              this.state.selectedElements.length - 1
+            ] === this.state.pattern[this.state.selectedElements.length - 1]
+          ) {
+            this.props.addPoints(this.props.round);
+          }
+        }
+      }
+    );
     // At this point check if the round is over
     if (this.state.selectedElements.length === PATTERN_SIZE - 1) {
       this.setState({
@@ -205,6 +222,7 @@ class UserInputStage extends Component {
         // onMouseUp={event => this.registerClickEnd(event)}
         // onClick={event => this.registerClickStart(event)}
       >
+        <DashBoard />
         <TableComp>
           <TableBodyComp>
             <TrComp>
@@ -221,7 +239,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
@@ -257,7 +285,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
@@ -293,7 +331,17 @@ class UserInputStage extends Component {
                     props: {
                       ...element.props,
                       active: true,
-                      opacity: this.props.opacity
+                      opacity: this.props.opacity,
+                      correct:
+                        this.props.dimension === "Incentives"
+                          ? this.state.selectedElements[
+                              this.state.selectedElements.length - 1
+                            ] ===
+                            this.state.pattern[
+                              this.state.selectedElements.length - 1
+                            ]
+                          : false,
+                      round: this.props.round
                     }
                   };
                 } else {
