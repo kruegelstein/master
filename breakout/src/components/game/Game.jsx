@@ -13,7 +13,13 @@ import beep from "../../sound/Beep.mp4";
 import Canvas from "./Canvas.js";
 
 // Utils
-import { createBricks, ballColors, getTime } from "../../utils/game.js";
+import {
+  createBricks,
+  ballColors,
+  getTime,
+  getAdaptationScore,
+  checkCollision
+} from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
 // Interval to adapt is 15sec
@@ -42,6 +48,7 @@ class Game extends Component {
     this.ballColor = ballColors[0];
     this.incentives = 5;
     this.ballCount = 1;
+    this.rollback = false;
   }
   state = {
     brickCount: 0,
@@ -154,7 +161,7 @@ class Game extends Component {
       // Start game on tap
       this.ballOn = true;
       this.gameOver = 0;
-      setInterval(this.adapt, ADAPTION_INTERVAL);
+      this.interval = setInterval(this.triggerAdaptation, ADAPTION_INTERVAL);
       this.play();
     });
 
@@ -175,64 +182,67 @@ class Game extends Component {
     requestAnimationFrame(this.loop);
   }
 
-  increaseBallSpeed = () => {
-    // Only increase the ball speed if the game is active
-    if (this.gameOver === 0) {
-      // Save results for the round
-      this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0, clicks: [] });
-      // stop adapting after 10 rounds
-      if (this.props.round === 10) {
-        this.props.goToResults();
-        return;
-      }
-      this.props.onSetNewSpeed();
+  saveResults = state => {
+    this.saveRound(this.state);
+    this.setState({
+      brickCount: 0,
+      losses: 0,
+      clicks: []
+    });
+  };
+
+  checkResults = (state, round) => {
+    // stop adapting after 10 rounds
+    if (round === 10) {
+      this.props.goToResults();
+      return;
     }
   };
 
-  changeBallColor = () => {
-    // Only change the ball color if the game is active
-    if (this.gameOver === 0) {
-      // Save results for the round
-      this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0, clicks: [] });
-      // stop adapting after 10 rounds
-      if (this.props.round === 10) {
-        this.props.goToResults();
-        return;
-      }
-      this.ballColor = ballColors[this.props.round - 1];
+  adapt = () => {
+    switch (this.props.adaptationDimension) {
+      case "Speed":
+        this.props.onSetNewSpeed();
+        break;
+      case "Object clarity":
+        this.ballColor = ballColors[this.props.round - 1];
+        break;
+      case "Incentives":
+        this.incentives = this.incentives + 5;
+        break;
+      case "Content":
+        this.ballCount = this.ballCount + 1;
+        this.createNewBall();
+        break;
+      default:
+        null;
     }
   };
 
-  increaseIncentives = () => {
-    // Only change the ball color if the game is active
+  triggerAdaptation = () => {
+    this.play();
+    // Only adapt if the game is active
     if (this.gameOver === 0) {
+      // Calculate score
+      const score = getAdaptationScore(
+        this.state.brickCount,
+        this.state.losses
+      );
       // Save results for the round
-      this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0, clicks: [] });
-      // stop adapting after 10 rounds
-      if (this.props.round === 10) {
+      this.saveResults(this.state);
+      // Stop adapting after 10 rounds
+      if (this.props.round === 10 || this.rollback) {
         this.props.goToResults();
+        clearInterval(this.interval);
         return;
       }
-      this.incentives = this.incentives + 5;
-    }
-  };
-
-  addBall = () => {
-    // Only change the ball color if the game is active
-    if (this.gameOver === 0) {
-      // Save results for the round
-      this.saveRound(this.state);
-      this.setState({ brickCount: 0, losses: 0, clicks: [] });
-      // stop adapting after 10 rounds
-      if (this.props.round === 10) {
-        this.props.goToResults();
-        return;
+      if (score > 0) {
+        // Positive score --> adapt
+        this.adapt();
+      } else {
+        // Negative score --> Set rollback flag
+        this.rollback = true;
       }
-      this.ballCount = this.ballCount + 1;
-      this.createNewBall();
     }
   };
 
@@ -251,8 +261,30 @@ class Game extends Component {
     const losses = state.losses;
     const clicks = state.clicks;
     const round = this.props.round;
-    const speed = this.props.speed;
-    this.props.onSaveRound(round, destroyedBricks, losses, clicks, speed);
+    let dimensionProperty;
+    switch (this.props.adaptationDimension) {
+      case "Speed":
+        dimensionProperty = this.props.speed;
+        break;
+      case "Object clarity":
+        dimensionProperty = this.ballColor;
+        break;
+      case "Incentives":
+        dimensionProperty = this.incentives;
+        break;
+      case "Content":
+        dimensionProperty = this.ballCount;
+        break;
+      default:
+        null;
+    }
+    this.props.onSaveRound(
+      round,
+      destroyedBricks,
+      losses,
+      clicks,
+      dimensionProperty
+    );
   };
 
   setupGameElements = () => {
@@ -292,10 +324,8 @@ class Game extends Component {
   loop = () => {
     // Movements
     this.move();
-
     // Drawings
     this.draw(this.ballColor);
-
     // Looping
     requestAnimationFrame(this.loop);
   };
@@ -307,7 +337,6 @@ class Game extends Component {
   move = () => {
     // Paddle movement - only for keyboard inputs
     this.movePaddleWithKeys();
-
     // Ball movement
     this.moveBall();
   };
@@ -330,27 +359,7 @@ class Game extends Component {
     if (this.keys.isPressed(32) && this.ballOn === false) {
       this.ballOn = true;
       this.gameOver = 0;
-      this.interval = setInterval(this.adapt, ADAPTION_INTERVAL);
-    }
-  };
-
-  adapt = () => {
-    this.play();
-    switch (this.props.adaptationDimension) {
-      case "Speed":
-        this.increaseBallSpeed();
-        break;
-      case "Object clarity":
-        this.changeBallColor();
-        break;
-      case "Incentives":
-        this.increaseIncentives();
-        break;
-      case "Content":
-        this.addBall();
-        break;
-      default:
-        null;
+      this.interval = setInterval(this.triggerAdaptation, ADAPTION_INTERVAL);
     }
   };
 
@@ -359,22 +368,16 @@ class Game extends Component {
       if (this.ballOn === true) {
         this.balls[i].x += this.balls[i].speedX;
         this.balls[i].y += this.balls[i].speedY;
-
         // Check if ball hit the ceiling
         this.checkCeilingHit(this.balls[i]);
-
         // Check if ball hit the paddle and consider angle
         this.checkPaddleHit(this.balls[i]);
-
         // Check if ball hit the wall - left and right
         this.checkWallHit(this.balls[i]);
-
         // Check for lost
         this.checkLost(this.balls[i], this.height);
-
         // Destroy brick
         this.destroyBrick(this.balls[i]);
-
         // Check for win
         this.checkWin(this.bricks);
       }
@@ -401,7 +404,9 @@ class Game extends Component {
     ) {
       ball.speedY = -ball.speedY;
       const angle = ball.x - (this.paddle.x + this.paddle.w / 2);
-      ball.speedX = angle * 0.15;
+      console.log("BALLSPEEDX BEFORE: ", ball.speedX);
+      ball.speedX = angle * 0.05;
+      console.log("BALLSPEEDX AFTER: ", ball.speedX);
     }
   };
 
@@ -415,7 +420,8 @@ class Game extends Component {
 
   checkWin = bricks => {
     if (bricks.length < 1) {
-      this.gameOver = 2;
+      // Generate new bricks and go on
+      this.bricks = createBricks();
       this.continue();
     }
   };
@@ -423,16 +429,12 @@ class Game extends Component {
   draw = ballColor => {
     // Game
     this.drawGame();
-
     // Paddle
     this.drawPaddle();
-
     // Text
-    this.drawText();
-
+    this.drawStartText();
     // Ball
     this.drawBall(ballColor);
-
     // Bricks
     this.drawBricks();
   };
@@ -454,51 +456,20 @@ class Game extends Component {
   };
 
   drawStartText = () => {
-    this.ctx.font = "18px Roboto Mono";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText(
-      "Tab the screen to start a new game.",
-      this.width / 2,
-      this.height / 2 - 20
-    );
-    this.ctx.font = "12px Roboto Mono";
-    this.ctx.fillText(
-      "Move the paddle by sliding your finger over the screen.",
-      this.width / 2,
-      this.height / 2 + 20
-    );
-  };
-
-  drawLostText = () => {
-    this.ctx.font = "20px Roboto Mono";
-    this.ctx.fillText(
-      "YOU LOST! Keep trying!",
-      this.width / 2,
-      this.height / 2 - 50
-    );
-  };
-
-  drawWinText = () => {
-    this.ctx.font = "20px Roboto Mono";
-    this.ctx.fillText(
-      "Congratulations! YOU WON!",
-      this.width / 2,
-      this.height / 2 - 50
-    );
-  };
-
-  drawText = () => {
     if (this.ballOn === false) {
-      // Start
-      this.drawStartText();
-
-      if (this.gameOver === 1) {
-        // Lost
-        this.drawLostText();
-      } else if (this.gameOver === 2) {
-        // Win
-        this.drawWinText();
-      }
+      this.ctx.font = "18px Roboto Mono";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText(
+        "Tab the screen to start a new game.",
+        this.width / 2,
+        this.height / 2 - 20
+      );
+      this.ctx.font = "12px Roboto Mono";
+      this.ctx.fillText(
+        "Move the paddle by sliding your finger over the screen.",
+        this.width / 2,
+        this.height / 2 + 20
+      );
     }
   };
 
@@ -534,7 +505,7 @@ class Game extends Component {
   destroyBrick = () => {
     for (var i = 0; i < this.bricks.length; i++) {
       for (let j = 0; j < this.ballCount; j++) {
-        if (this.checkCollision(this.balls[j], this.bricks[i])) {
+        if (checkCollision(this.balls[j], this.bricks[i])) {
           this.balls[j].speedY = -this.balls[j].speedY;
           this.bricks.splice(i, 1);
           this.setState({ brickCount: this.state.brickCount + 1 });
@@ -554,18 +525,6 @@ class Game extends Component {
           }
         }
       }
-    }
-  };
-
-  checkCollision = (obj1, obj2) => {
-    if (!obj1 || !obj2) return;
-    if (
-      obj1.y + obj1.radius >= obj2.y - BALL_OFFSET &&
-      obj1.y - obj1.radius <= obj2.y + obj2.h + BALL_OFFSET &&
-      obj1.x - obj1.radius >= obj2.x - BALL_OFFSET &&
-      obj1.x + obj1.radius <= obj2.x + obj2.w + BALL_OFFSET
-    ) {
-      return true;
     }
   };
 

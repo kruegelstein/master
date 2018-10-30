@@ -1,6 +1,8 @@
 // Constants
 import { theme } from "../constants/Theme.js";
 
+const BALL_OFFSET = 8;
+
 export const createBricks = () => {
   const bricks = [];
   let brickX = 2;
@@ -44,4 +46,20 @@ export const ballColors = [
 
 export const getTime = (start, end) => {
   return (end - start) / 1000;
+};
+
+export const getAdaptationScore = (destroyedBricks, losses) => {
+  return (destroyedBricks - losses) * 10;
+};
+
+export const checkCollision = (obj1, obj2) => {
+  if (!obj1 || !obj2) return;
+  if (
+    obj1.y + obj1.radius >= obj2.y - BALL_OFFSET &&
+    obj1.y - obj1.radius <= obj2.y + obj2.h + BALL_OFFSET &&
+    obj1.x - obj1.radius >= obj2.x - BALL_OFFSET &&
+    obj1.x + obj1.radius <= obj2.x + obj2.w + BALL_OFFSET
+  ) {
+    return true;
+  }
 };
