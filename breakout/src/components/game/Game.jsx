@@ -404,7 +404,9 @@ class Game extends Component {
     ) {
       ball.speedY = -ball.speedY;
       const angle = ball.x - (this.paddle.x + this.paddle.w / 2);
-      ball.speedX = angle * 0.15;
+      console.log("BALLSPEEDX BEFORE: ", ball.speedX);
+      ball.speedX = angle * 0.05;
+      console.log("BALLSPEEDX AFTER: ", ball.speedX);
     }
   };
 
