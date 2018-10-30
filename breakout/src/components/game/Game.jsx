@@ -565,7 +565,6 @@ class Game extends Component {
       obj1.x - obj1.radius >= obj2.x - BALL_OFFSET &&
       obj1.x + obj1.radius <= obj2.x + obj2.w + BALL_OFFSET
     ) {
-      console.log("xxxxxx");
       return true;
     }
   };
