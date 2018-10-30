@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Pressure from "pressure";
 
 import { theme } from "../../constants/Theme.js";
 
@@ -10,6 +11,9 @@ import InlineBlockContainer from "../general/InlineBlockContainer.js";
 
 // Sounds
 import beep from "../../sounds/Beep.mov";
+
+// Helper
+import { getTime } from "../../utils/helper.js";
 
 // Interval to adapt is 15sec
 const ADAPTION_INTERVAL = 15000;
@@ -24,8 +28,50 @@ class Game extends Component {
   state = {
     gameStarted: false,
     activeRows: [],
-    rows: [0, 1, 2, 3, 4, 5]
+    rows: [0, 1, 2, 3, 4, 5],
+    clicks: []
   };
+
+  componentDidMount() {
+    Pressure.set("#element", {
+      start: event => {
+        const clickId = this.state.clicks.length;
+        const clickStart = Date.now();
+        let clickInfo;
+        let xCoordinate;
+        let yCoordinate;
+        if (event.touches.length === 1) {
+          const touch = event.touches[0];
+          xCoordinate = touch.clientX;
+          yCoordinate = touch.clientY;
+          clickInfo = {
+            id: clickId,
+            x: xCoordinate,
+            y: yCoordinate,
+            clickStart
+          };
+        }
+        const oldClicks = this.state.clicks;
+        const newClick = [clickInfo];
+        const clicks = oldClicks.concat(newClick);
+        this.setState({
+          clicks
+        });
+      },
+      change: (force, event) => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        currentClick.force = force;
+      },
+      end: () => {
+        const currentClick = this.state.clicks[this.state.clicks.length - 1];
+        const clickEnd = Date.now();
+        const clickStart = currentClick.clickStart;
+        const clickDuration = getTime(clickStart, clickEnd);
+        currentClick.clickEnd = clickEnd;
+        currentClick.duration = clickDuration;
+      }
+    });
+  }
 
   changeElements = () => {
     const activeRows = [Math.floor(Math.random() * 7)];
@@ -96,7 +142,7 @@ class Game extends Component {
   };
   render() {
     return (
-      <InlineBlockContainer>
+      <InlineBlockContainer id="element">
         {this.state.rows.map(row => {
           if (this.state.activeRows.indexOf(row) !== -1) {
             return <Row key={row}>{this.createRandomElement()}</Row>;
