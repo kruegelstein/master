@@ -19,8 +19,12 @@ const Button = styled.a`
   pointer-events: auto;
   pointer-events: initial;
   display: inline-block;
+  text-align: center;
   box-shadow: ${props =>
     `${props.theme.shadows.singleButton} ${props.theme.darkShadowColor}`};
+  ${props => (props.middle ? "position: absolute" : "")};
+  ${props => (props.middle ? "top: 50%" : "")};
+  ${props => (props.middle ? "left: 50%" : "")};
 `;
 
 export default Button;
