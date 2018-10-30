@@ -30,35 +30,20 @@ class Game extends Component {
 
   performAction(icon) {
     switch (icon) {
-      case "skull":
-        this.props.onLoseLive();
-        break;
-      case "dynamite":
-        this.props.onLoseLive();
-        break;
-      case "bomb":
-        this.props.onLoseLive();
-        break;
-      case "biohazard":
-        this.props.onLoseLive();
-        break;
-      case "heart":
-        this.props.onGainLive();
-        break;
       case "tennis":
-        this.props.onAddPoint();
+        console.log("CLICKED");
         break;
       case "basketball":
-        this.props.onAddPoint();
+        console.log("CLICKED");
         break;
       case "volleyball":
-        this.props.onAddPoint();
+        console.log("CLICKED");
         break;
       case "soccer":
-        this.props.onAddPoint();
+        console.log("CLICKED");
         break;
       case "football":
-        this.props.onAddPoint();
+        console.log("CLICKED");
         break;
       default:
         return;
@@ -82,10 +67,10 @@ class Game extends Component {
   render() {
     return (
       <InlineBlockContainer>
-        {this.state.rows.map(r => {
-          if (this.state.activeRows.indexOf(r) !== -1) {
-            return <Row key={r}>{this.createRandomElement()}</Row>;
-          } else return <Row key={r} />;
+        {this.state.rows.map(row => {
+          if (this.state.activeRows.indexOf(row) !== -1) {
+            return <Row key={row}>{this.createRandomElement()}</Row>;
+          } else return <Row key={row} />;
         })}
       </InlineBlockContainer>
     );
