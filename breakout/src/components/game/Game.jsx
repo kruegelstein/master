@@ -3,6 +3,9 @@ import { withTheme } from "styled-components";
 import Hammer from "hammerjs";
 import Pressure from "pressure";
 
+import Incentive from "./Incentive.js";
+import DashBoard from "../dashBoard/DashBoard.jsx";
+
 // Sounds
 import beep from "../../sound/Beep.mp4";
 
@@ -37,11 +40,14 @@ class Game extends Component {
     this.pressedKeys = null;
     this.interval = null;
     this.ballColor = ballColors[0];
+    this.incentives = 5;
   }
   state = {
     brickCount: 0,
     losses: 0,
-    clicks: []
+    clicks: [],
+    points: 0,
+    isIncentiveActive: false
   };
 
   componentDidMount() {
@@ -198,6 +204,21 @@ class Game extends Component {
     }
   };
 
+  increaseIncentives = () => {
+    // Only change the ball color if the game is active
+    if (this.gameOver === 0) {
+      // Save results for the round
+      this.saveRound(this.state);
+      this.setState({ brickCount: 0, losses: 0, clicks: [] });
+      // stop adapting after 10 rounds
+      if (this.props.round === 10) {
+        this.props.goToResults();
+        return;
+      }
+      this.incentives = this.incentives + 5;
+    }
+  };
+
   saveRound = state => {
     const destroyedBricks = state.brickCount;
     const losses = state.losses;
@@ -293,6 +314,9 @@ class Game extends Component {
         break;
       case "Object clarity":
         this.changeBallColor();
+        break;
+      case "Incentives":
+        this.increaseIncentives();
         break;
       default:
         null;
@@ -477,6 +501,20 @@ class Game extends Component {
         this.ball.speedY = -this.ball.speedY;
         this.bricks.splice(i, 1);
         this.setState({ brickCount: this.state.brickCount + 1 });
+        if (this.props.adaptationDimension === "Incentives") {
+          // Add points and trigger incentive
+          this.setState(
+            {
+              points: this.state.points + this.incentives,
+              isIncentiveActive: true
+            },
+            () => {
+              setTimeout(() => {
+                this.setState({ isIncentiveActive: false });
+              }, 1000);
+            }
+          );
+        }
       }
     }
   };
@@ -520,6 +558,13 @@ class Game extends Component {
             id="gameCanvas"
             userId={this.props.userId}
           />
+          <DashBoard
+            dimension={this.props.adaptationDimension}
+            points={this.state.points}
+          />
+          <Incentive active={this.state.isIncentiveActive}>
+            + {this.incentives}
+          </Incentive>
           <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </div>
       );
