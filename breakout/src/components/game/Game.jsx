@@ -4,6 +4,7 @@ import Hammer from "hammerjs";
 import Pressure from "pressure";
 
 import Incentive from "./Incentive.js";
+import DashBoard from "../dashBoard/DashBoard.jsx";
 
 // Sounds
 import beep from "../../sound/Beep.mp4";
@@ -556,6 +557,10 @@ class Game extends Component {
             height={this.props.theme.game.height}
             id="gameCanvas"
             userId={this.props.userId}
+          />
+          <DashBoard
+            dimension={this.props.adaptationDimension}
+            points={this.state.points}
           />
           <Incentive active={this.state.isIncentiveActive}>
             + {this.incentives}
