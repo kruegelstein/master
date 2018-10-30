@@ -20,8 +20,10 @@ const mapDispatchToProps = dispatch => ({
   onSetNewSpeed: () => {
     dispatch(setNewSpeed());
   },
-  onSaveRound: (round, destroyedBricks, losses, clicks, speed) => {
-    dispatch(saveRound(round, destroyedBricks, losses, clicks, speed));
+  onSaveRound: (round, destroyedBricks, losses, clicks, dimensionProperty) => {
+    dispatch(
+      saveRound(round, destroyedBricks, losses, clicks, dimensionProperty)
+    );
   },
   goToResults: () => {
     dispatch(goToResults());
