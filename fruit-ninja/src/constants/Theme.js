@@ -1,18 +1,11 @@
 // @flow
 
 // Images
-import Skull from "../assets/Skull.svg";
-import Dynamite from "../assets/Dynamite.svg";
-import Bomb from "../assets/Bomb.svg";
-import Biohazard from "../assets/Biohazard.svg";
-
 import Tennis from "../assets/Tennis.svg";
 import Soccer from "../assets/Soccer.svg";
 import Football from "../assets/Football.svg";
 import Basketball from "../assets/Basketball.svg";
 import Volleyball from "../assets/Volleyball.svg";
-
-import Heart from "../assets/Heart.svg";
 
 export const theme = {
   baseColors: {
@@ -42,15 +35,10 @@ export const theme = {
     singleButton: "0px 2px 6px"
   },
   images: {
-    skull: Skull,
-    dynamite: Dynamite,
-    bomb: Bomb,
-    biohazard: Biohazard,
     tennis: Tennis,
     soccer: Soccer,
     football: Football,
     basketball: Basketball,
-    volleyball: Volleyball,
-    heart: Heart
+    volleyball: Volleyball
   }
 };

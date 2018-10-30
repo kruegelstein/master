@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import UserIdInputComp from "./UserIdInput.js";
 import Input from "../general/Input.js";
 import Title from "../general/Title.js";
-import Paragraph from "../general/Paragraph.js";
+import Paragraph from "./Paragraph.js";
 import BlockContainer from "../general/BlockContainer.js";
 import Button from "../general/Button.js";
 import Dimension from "./Dimension.js";

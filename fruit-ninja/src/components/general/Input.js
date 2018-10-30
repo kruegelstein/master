@@ -5,7 +5,7 @@ import styled from "styled-components";
 const input = styled.input`
   display: block;
   border-radius: 5px;
-  border: 1px solid #fff
+  border: 1px solid black;
   margin: auto;
   height: 2rem;
   font-size: 18px;
@@ -13,12 +13,11 @@ const input = styled.input`
 
   ::placeholder {
     color: black;
-    padding-left: .1rem;
+    padding-left: 0.1rem;
   }
 
   :focus {
     outline: none;
-    border: 2px solid #91a291;
   }
 `;
 
