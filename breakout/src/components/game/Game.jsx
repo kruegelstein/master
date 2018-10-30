@@ -71,7 +71,6 @@ class Game extends Component {
           });
         },
         change: (force, event) => {
-          const currentClick = this.state.clicks[this.state.clicks.length - 1];
           if (event.touches.length === 1) {
             const touch = event.touches[0];
             xCoordinates.push(touch.clientX);
