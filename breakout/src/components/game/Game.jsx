@@ -182,7 +182,7 @@ class Game extends Component {
     requestAnimationFrame(this.loop);
   }
 
-  saveResults = state => {
+  saveResults = () => {
     this.saveRound(this.state);
     this.setState({
       brickCount: 0,
@@ -229,7 +229,7 @@ class Game extends Component {
         this.state.losses
       );
       // Save results for the round
-      this.saveResults(this.state);
+      this.saveResults();
       // Stop adapting after 10 rounds
       if (this.props.round === 10 || this.rollback) {
         this.props.goToResults();

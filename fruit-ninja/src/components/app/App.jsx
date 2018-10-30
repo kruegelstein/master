@@ -4,7 +4,8 @@ import { ThemeProvider } from "styled-components";
 
 // Components
 import UserIdInput from "../userIdInput/UserIdInputContainer.js";
-import GameArea from "../game/gameArea/GameAreaContainer.js";
+import Results from "../results/ResultsContainer.js";
+import Game from "../game/GameContainer.js";
 
 // Styled components
 import AppComp from "./App.js";
@@ -15,7 +16,8 @@ class App extends Component {
       <ThemeProvider theme={this.props.theme}>
         <AppComp>
           <UserIdInput />
-          <GameArea />
+          <Game />
+          <Results />
         </AppComp>
       </ThemeProvider>
     );

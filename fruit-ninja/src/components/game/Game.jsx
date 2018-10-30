@@ -4,6 +4,7 @@ import Pressure from "pressure";
 import { theme } from "../../constants/Theme.js";
 
 // Styled componets
+import GameComp from "./Game.js";
 import Element from "./Element.js";
 import Row from "../general/Row.js";
 import Button from "../general/Button.js";
@@ -33,44 +34,48 @@ class Game extends Component {
   };
 
   componentDidMount() {
-    Pressure.set("#element", {
-      start: event => {
-        const clickId = this.state.clicks.length;
-        const clickStart = Date.now();
-        let clickInfo;
-        let xCoordinate;
-        let yCoordinate;
-        if (event.touches.length === 1) {
-          const touch = event.touches[0];
-          xCoordinate = touch.clientX;
-          yCoordinate = touch.clientY;
-          clickInfo = {
-            id: clickId,
-            x: xCoordinate,
-            y: yCoordinate,
-            clickStart
-          };
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (iOS) {
+      Pressure.set("#element", {
+        start: event => {
+          const clickId = this.state.clicks.length;
+          const clickStart = Date.now();
+          let clickInfo;
+          let xCoordinate;
+          let yCoordinate;
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinate = touch.clientX;
+            yCoordinate = touch.clientY;
+            clickInfo = {
+              id: clickId,
+              x: xCoordinate,
+              y: yCoordinate,
+              clickStart
+            };
+          }
+          const oldClicks = this.state.clicks;
+          const newClick = [clickInfo];
+          const clicks = oldClicks.concat(newClick);
+          this.setState({
+            clicks
+          });
+        },
+        change: (force, event) => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          currentClick.force = force;
+        },
+        end: () => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          const clickEnd = Date.now();
+          const clickStart = currentClick.clickStart;
+          const clickDuration = getTime(clickStart, clickEnd);
+          currentClick.clickEnd = clickEnd;
+          currentClick.duration = clickDuration;
         }
-        const oldClicks = this.state.clicks;
-        const newClick = [clickInfo];
-        const clicks = oldClicks.concat(newClick);
-        this.setState({
-          clicks
-        });
-      },
-      change: (force, event) => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        currentClick.force = force;
-      },
-      end: () => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        const clickEnd = Date.now();
-        const clickStart = currentClick.clickStart;
-        const clickDuration = getTime(clickStart, clickEnd);
-        currentClick.clickEnd = clickEnd;
-        currentClick.duration = clickDuration;
-      }
-    });
+      });
+    }
   }
 
   changeElements = () => {
@@ -84,7 +89,7 @@ class Game extends Component {
     this.play();
     this.setState({ gameStarted: true });
     this.elementInterval = setInterval(this.changeElements, ELEMENTS_INTERVAL);
-    this.adaptionInterval = setInterval(
+    this.adaptationInterval = setInterval(
       this.triggerAdaptation,
       ADAPTION_INTERVAL
     );
@@ -92,11 +97,50 @@ class Game extends Component {
 
   componentWillUnmount() {
     clearInterval(this.elementInterval);
-    clearInterval(this.adaptionInterval);
+    clearInterval(this.adaptationInterval);
   }
 
   triggerAdaptation = () => {
     this.play();
+    // Save results for the round
+    this.saveResults();
+    // Stop adapting after 10 rounds
+    if (this.props.round === 2 || this.rollback) {
+      this.props.goToResults();
+      clearInterval(this.elementInterval);
+      clearInterval(this.adaptationInterval);
+      return;
+    }
+  };
+
+  saveResults = () => {
+    this.saveRound(this.state);
+    this.setState({
+      clicks: []
+    });
+  };
+
+  saveRound = state => {
+    const clicks = state.clicks;
+    const round = this.props.round;
+    let dimensionProperty;
+    switch (this.props.dimension) {
+      case "Speed":
+        dimensionProperty = "mops";
+        break;
+      case "Object clarity":
+        dimensionProperty = "mops";
+        break;
+      case "Incentives":
+        dimensionProperty = "mops";
+        break;
+      case "Content":
+        dimensionProperty = "mops";
+        break;
+      default:
+        null;
+    }
+    this.props.onSaveRound(round, clicks, dimensionProperty);
   };
 
   play = () => {
@@ -141,21 +185,24 @@ class Game extends Component {
     );
   };
   render() {
-    return (
-      <InlineBlockContainer id="element">
-        {this.state.rows.map(row => {
-          if (this.state.activeRows.indexOf(row) !== -1) {
-            return <Row key={row}>{this.createRandomElement()}</Row>;
-          } else return <Row key={row} />;
-        })}
-        {!this.state.gameStarted ? (
-          <Button middle onClick={() => this.start()}>
-            Start!
-          </Button>
-        ) : null}
-        <video id="video" src={beep} style={{ height: 0, width: 0 }} />
-      </InlineBlockContainer>
-    );
+    if (!this.props.isResults) {
+      return (
+        <GameComp id="element" userId={this.props.userId}>
+          {this.state.rows.map(row => {
+            if (this.state.activeRows.indexOf(row) !== -1) {
+              return <Row key={row}>{this.createRandomElement()}</Row>;
+            } else return <Row key={row} />;
+          })}
+          {!this.state.gameStarted ? (
+            <Button middle onClick={() => this.start()}>
+              Start!
+            </Button>
+          ) : null}
+          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
+        </GameComp>
+      );
+    }
+    return null;
   }
 }
 

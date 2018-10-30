@@ -1,27 +1,33 @@
-// @flow
+// Constants
 import {
-  SET_DIMENSION,
   SAVE_ROUND,
+  SET_DIMENSION,
   GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
 const initialState = {
-  dimension: "",
-  round: 1
+  dimension: ""
 };
 
-export const adaptation = (state = initialState, action = {}) => {
+export const results = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_DIMENSION:
       return {
         ...state,
         dimension: action.payload.dimension
       };
-    case SAVE_ROUND:
+    case SAVE_ROUND: {
+      const dimensionProperty = action.payload.dimensionProperty;
       return {
         ...state,
-        round: state.round + 1
+        [action.payload.round]: {
+          results: {
+            clicks: action.payload.clicks
+          },
+          [state.dimension]: dimensionProperty
+        }
       };
+    }
     case GO_TO_USER_ID_INPUT:
       return { initialState };
     default:
@@ -29,4 +35,4 @@ export const adaptation = (state = initialState, action = {}) => {
   }
 };
 
-export default adaptation;
+export default results;
