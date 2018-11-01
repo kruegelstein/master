@@ -25,44 +25,48 @@ import { PATTERN_SIZE } from "../../../constants/Pattern.js";
 
 class UserInputStage extends Component {
   componentDidMount() {
-    Pressure.set("#element", {
-      start: event => {
-        const clickId = this.state.clicks.length;
-        const clickStart = Date.now();
-        let clickInfo;
-        let xCoordinate;
-        let yCoordinate;
-        if (event.touches.length === 1) {
-          const touch = event.touches[0];
-          xCoordinate = touch.clientX;
-          yCoordinate = touch.clientY;
-          clickInfo = {
-            id: clickId,
-            x: xCoordinate,
-            y: yCoordinate,
-            clickStart
-          };
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (iOS) {
+      Pressure.set("#element", {
+        start: event => {
+          const clickId = this.state.clicks.length;
+          const clickStart = Date.now();
+          let clickInfo;
+          let xCoordinate;
+          let yCoordinate;
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinate = touch.clientX;
+            yCoordinate = touch.clientY;
+            clickInfo = {
+              id: clickId,
+              x: xCoordinate,
+              y: yCoordinate,
+              clickStart
+            };
+          }
+          const oldClicks = this.state.clicks;
+          const newClick = [clickInfo];
+          const clicks = oldClicks.concat(newClick);
+          this.setState({
+            clicks
+          });
+        },
+        change: (force, event) => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          currentClick.force = force;
+        },
+        end: () => {
+          const currentClick = this.state.clicks[this.state.clicks.length - 1];
+          const clickEnd = Date.now();
+          const clickStart = currentClick.clickStart;
+          const clickDuration = getTime(clickStart, clickEnd);
+          currentClick.clickEnd = clickEnd;
+          currentClick.duration = clickDuration;
         }
-        const oldClicks = this.state.clicks;
-        const newClick = [clickInfo];
-        const clicks = oldClicks.concat(newClick);
-        this.setState({
-          clicks
-        });
-      },
-      change: (force, event) => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        currentClick.force = force;
-      },
-      end: () => {
-        const currentClick = this.state.clicks[this.state.clicks.length - 1];
-        const clickEnd = Date.now();
-        const clickStart = currentClick.clickStart;
-        const clickDuration = getTime(clickStart, clickEnd);
-        currentClick.clickEnd = clickEnd;
-        currentClick.duration = clickDuration;
-      }
-    });
+      });
+    }
   }
 
   constructor(props) {
@@ -152,7 +156,7 @@ class UserInputStage extends Component {
         this.nextRound();
         return;
       }
-      // Good last results 4 or 5 correct answers and also 4 or 5 coorect this round
+      // Good last results 4 or 5 correct answers and also 4 or 5 correct answers this round
       if (
         lastResults.correct >= 4 &&
         (answerScore === 0 || answerScore === -1)

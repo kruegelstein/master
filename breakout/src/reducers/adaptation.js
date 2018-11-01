@@ -9,7 +9,7 @@ import {
 const initialState = {
   dimension: "",
   round: 1,
-  speed: 3
+  speed: null
 };
 
 export const adaptation = (state = initialState, action = {}) => {
@@ -25,9 +25,11 @@ export const adaptation = (state = initialState, action = {}) => {
         round: state.round + 1
       };
     case SET_DIMENSION:
+      const speed = state.dimension === "Speed" ? 3 : 6;
       return {
         ...state,
-        dimension: action.payload.dimension
+        dimension: action.payload.dimension,
+        speed
       };
     case GO_TO_USER_ID_INPUT:
       return { initialState };

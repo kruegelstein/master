@@ -22,8 +22,8 @@ import {
 } from "../../utils/game.js";
 
 const BALL_OFFSET = 8;
-// Interval to adapt is 15sec
-const ADAPTION_INTERVAL = 15000;
+// Interval to adapt is 10sec
+const ADAPTION_INTERVAL = 10000;
 
 let xCoordinates = [];
 let yCoordinates = [];
@@ -404,9 +404,7 @@ class Game extends Component {
     ) {
       ball.speedY = -ball.speedY;
       const angle = ball.x - (this.paddle.x + this.paddle.w / 2);
-      console.log("BALLSPEEDX BEFORE: ", ball.speedX);
-      ball.speedX = angle * 0.05;
-      console.log("BALLSPEEDX AFTER: ", ball.speedX);
+      ball.speedX = angle * 0.1;
     }
   };
 
