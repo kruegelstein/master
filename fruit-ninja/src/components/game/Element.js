@@ -12,7 +12,8 @@ const element = styled.div`
   height: 5rem;
   background: url(${(props: PropsType) => props.icon}) no-repeat center center;
   background-size: 5rem 5rem;
-  animation: ${down} 4s linear infinite;
+  animation: ${down} 3s linear;
+  display: ${props => (props.visible ? "block" : "none")};
 `;
 
 export default element;

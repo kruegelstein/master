@@ -17,8 +17,8 @@ import beep from "../../sounds/Beep.mov";
 import { getTime } from "../../utils/helper.js";
 
 // Interval to adapt is 15sec
-const ADAPTION_INTERVAL = 15000;
-const ELEMENTS_INTERVAL = 4000;
+const ADAPTION_INTERVAL = 10000;
+const ELEMENTS_INTERVAL = 3000;
 
 class Game extends Component {
   constructor(props) {
@@ -28,8 +28,10 @@ class Game extends Component {
   }
   state = {
     gameStarted: false,
+    numberOfActivesRows: 1,
+    elements: [],
     activeRows: [],
-    rows: [0, 1, 2, 3, 4, 5],
+    rows: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     clicks: []
   };
 
@@ -79,10 +81,11 @@ class Game extends Component {
   }
 
   changeElements = () => {
-    const activeRows = [Math.floor(Math.random() * 7)];
-    this.setState(prevState => ({
-      activeRows: activeRows
-    }));
+    const activeRows = [Math.floor(Math.random() * 12)];
+    this.setState({
+      activeRows: activeRows,
+      elements: this.state.elements.concat([this.createRandomElement()])
+    });
   };
 
   start = () => {
@@ -105,7 +108,7 @@ class Game extends Component {
     // Save results for the round
     this.saveResults();
     // Stop adapting after 10 rounds
-    if (this.props.round === 2 || this.rollback) {
+    if (this.props.round === 10 || this.rollback) {
       this.props.goToResults();
       clearInterval(this.elementInterval);
       clearInterval(this.adaptationInterval);
@@ -148,39 +151,22 @@ class Game extends Component {
     video.play();
   };
 
-  performAction = icon => {
-    switch (icon) {
-      case "tennis":
-        console.log("CLICKED");
-        break;
-      case "basketball":
-        console.log("CLICKED");
-        break;
-      case "volleyball":
-        console.log("CLICKED");
-        break;
-      case "soccer":
-        console.log("CLICKED");
-        break;
-      case "football":
-        console.log("CLICKED");
-        break;
-      default:
-        return;
-    }
+  performAction = () => {
+    this.setState({ elements: [] });
   };
 
   createRandomElement = () => {
     const icons = theme.images;
     const array = Object.keys(icons);
-    const icon = array[Math.floor(Math.random() * 10)];
+    const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
+    const id = Math.floor(Math.random() * 1000);
     return (
       <Element
-        id={icon}
+        id={id}
         icon={iconValue}
-        visible={this.state.clicked}
-        onClick={() => this.performAction(icon)}
+        onClick={() => this.performAction()}
+        visible={true}
       />
     );
   };
@@ -188,9 +174,13 @@ class Game extends Component {
     if (!this.props.isResults) {
       return (
         <GameComp id="element" userId={this.props.userId}>
-          {this.state.rows.map(row => {
+          {this.state.rows.map((row, key) => {
             if (this.state.activeRows.indexOf(row) !== -1) {
-              return <Row key={row}>{this.createRandomElement()}</Row>;
+              return (
+                <Row key={key}>
+                  {this.state.elements !== [] ? this.state.elements[0] : null}
+                </Row>
+              );
             } else return <Row key={row} />;
           })}
           {!this.state.gameStarted ? (

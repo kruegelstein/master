@@ -7,7 +7,9 @@
     "pressure": "^2.1.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-redux": "^5.1.0",
     "react-scripts": "1.1.4",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "styled-components": "^3.2.6"
   },
