@@ -8,22 +8,19 @@ import Button from "../general/Button.js";
 
 class Results extends Component {
   render() {
-    if (this.props.isResults) {
-      return (
-        <ResultsComp>
-          <Title>Thank you for participating!</Title>
-          <Paragraph>Your results will be saved</Paragraph>
-          <Button
-            onClick={() =>
-              this.props.sendResultsToDb(this.props.results, this.props.userId)
-            }
-          >
-            Submit
-          </Button>
-        </ResultsComp>
-      );
-    }
-    return null;
+    return (
+      <ResultsComp>
+        <Title>Thank you for participating!</Title>
+        <Paragraph>Your results will be saved</Paragraph>
+        <Button
+          onClick={() =>
+            this.props.sendResultsToDb(this.props.results, this.props.userId)
+          }
+        >
+          Submit
+        </Button>
+      </ResultsComp>
+    );
   }
 }
 

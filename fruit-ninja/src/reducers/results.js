@@ -29,7 +29,7 @@ export const results = (state = initialState, action = {}) => {
       };
     }
     case GO_TO_USER_ID_INPUT:
-      return { initialState };
+      return initialState;
     default:
       return { ...state };
   }

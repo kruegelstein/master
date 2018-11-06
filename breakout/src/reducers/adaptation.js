@@ -32,7 +32,7 @@ export const adaptation = (state = initialState, action = {}) => {
         speed
       };
     case GO_TO_USER_ID_INPUT:
-      return { initialState };
+      return initialState;
     default:
       return { ...state };
   }

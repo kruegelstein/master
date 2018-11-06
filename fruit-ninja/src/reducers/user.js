@@ -15,7 +15,7 @@ export const user = (state = initialState, action = {}) => {
         id: action.payload.id
       };
     case GO_TO_USER_ID_INPUT:
-      return { initialState };
+      return initialState;
     default:
       return { ...state };
   }

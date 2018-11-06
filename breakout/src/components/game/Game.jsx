@@ -46,7 +46,7 @@ class Game extends Component {
     this.pressedKeys = null;
     this.interval = null;
     this.ballColor = ballColors[0];
-    this.incentives = 5;
+    this.incentives = 10;
     this.ballCount = 1;
     this.rollback = false;
   }
@@ -57,6 +57,11 @@ class Game extends Component {
     points: 0,
     isIncentiveActive: false
   };
+
+  componentWillUnmount() {
+    console.log("####");
+    clearInterval(this.interval);
+  }
 
   componentDidMount() {
     this.setup();
@@ -208,7 +213,7 @@ class Game extends Component {
         this.ballColor = ballColors[this.props.round - 1];
         break;
       case "Incentives":
-        this.incentives = this.incentives + 5;
+        this.incentives = this.incentives + 10;
         break;
       case "Content":
         this.ballCount = this.ballCount + 1;
@@ -528,31 +533,30 @@ class Game extends Component {
 
   play = () => {
     const video = document.getElementById("video");
-    video.play();
+    setTimeout(() => {
+      video.play();
+    }, 15);
   };
 
   render() {
-    if (!this.props.isResults) {
-      return (
-        <div style={{ height: "100%", width: "100%" }}>
-          <Canvas
-            width={this.props.theme.game.width}
-            height={this.props.theme.game.height}
-            id="gameCanvas"
-            userId={this.props.userId}
-          />
-          <DashBoard
-            dimension={this.props.adaptationDimension}
-            points={this.state.points}
-          />
-          <Incentive active={this.state.isIncentiveActive}>
-            + {this.incentives}
-          </Incentive>
-          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div style={{ height: "100%", width: "100%" }}>
+        <Canvas
+          width={this.props.theme.game.width}
+          height={this.props.theme.game.height}
+          id="gameCanvas"
+          userId={this.props.userId}
+        />
+        <DashBoard
+          dimension={this.props.adaptationDimension}
+          points={this.state.points}
+        />
+        <Incentive active={this.state.isIncentiveActive}>
+          + {this.incentives}
+        </Incentive>
+        <video id="video" src={beep} style={{ height: 0, width: 0 }} />
+      </div>
+    );
   }
 }
 

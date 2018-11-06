@@ -15,9 +15,9 @@ class App extends Component {
     return (
       <ThemeProvider theme={this.props.theme}>
         <AppComp>
-          <UserIdInput />
-          <Game />
-          <Results />
+          {!this.props.userId ? <UserIdInput /> : null}
+          {!this.props.isResults && this.props.userId ? <Game /> : null}
+          {this.props.isResults ? <Results /> : null}
         </AppComp>
       </ThemeProvider>
     );

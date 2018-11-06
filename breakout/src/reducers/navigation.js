@@ -16,7 +16,7 @@ export const navigation = (state = initialState, action = {}) => {
         results: true
       };
     case GO_TO_USER_ID_INPUT:
-      return { initialState };
+      return initialState;
     default:
       return { ...state };
   }

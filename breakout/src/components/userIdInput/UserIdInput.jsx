@@ -37,36 +37,34 @@ class UserIdInput extends Component {
   }
 
   render() {
-    if (!this.props.userId) {
-      return (
-        <UserIdInputComp>
-          <Title>Breakout</Title>
-          <BlockContainer>
-            <Paragraph>Please enter a user id:</Paragraph>
-            <Input
-              onChange={this.onTextinputChange}
-              value={this.state.inputValue}
-              placeholder="Enter ID"
-              autoFocus
-            />
-          </BlockContainer>
-          <BlockContainer margin="4rem 0 0 0">
-            {ADAPTATION_DIMENSIONS.map((dimension, index) => (
-              <Dimension
-                key={index}
-                selected={this.state.selectedDimension === dimension}
-                onClick={() => this.selectDimension(dimension)}
-              >
-                {dimension}
-              </Dimension>
-            ))}
-          </BlockContainer>
-          <BlockContainer margin="4rem 0 0 0">
-            <Button onClick={() => this.onSubmit()}>Start!</Button>
-          </BlockContainer>
-        </UserIdInputComp>
-      );
-    } else return null;
+    return (
+      <UserIdInputComp>
+        <Title>Breakout</Title>
+        <BlockContainer>
+          <Paragraph>Please enter a user id:</Paragraph>
+          <Input
+            onChange={this.onTextinputChange}
+            value={this.state.inputValue}
+            placeholder="Enter ID"
+            autoFocus
+          />
+        </BlockContainer>
+        <BlockContainer margin="4rem 0 0 0">
+          {ADAPTATION_DIMENSIONS.map((dimension, index) => (
+            <Dimension
+              key={index}
+              selected={this.state.selectedDimension === dimension}
+              onClick={() => this.selectDimension(dimension)}
+            >
+              {dimension}
+            </Dimension>
+          ))}
+        </BlockContainer>
+        <BlockContainer margin="4rem 0 0 0">
+          <Button onClick={() => this.onSubmit()}>Start!</Button>
+        </BlockContainer>
+      </UserIdInputComp>
+    );
   }
 }
 
