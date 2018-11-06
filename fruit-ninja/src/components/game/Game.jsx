@@ -9,12 +9,19 @@ import Element from "./Element.js";
 import Row from "../general/Row.js";
 import Button from "../general/Button.js";
 import InlineBlockContainer from "../general/InlineBlockContainer.js";
+import Incentive from "./Incentive.js";
+import DashBoard from "../dashBoard/DashBoard.jsx";
 
 // Sounds
 import beep from "../../sounds/Beep.mov";
 
 // Helper
-import { getTime, getOpacity, getAdaptationScore } from "../../utils/helper.js";
+import {
+  getTime,
+  getOpacity,
+  getAdaptationScore,
+  getIncentives
+} from "../../utils/helper.js";
 
 // Interval to adapt is 10sec
 const ADAPTION_INTERVAL = 10000;
@@ -27,6 +34,7 @@ class Game extends Component {
     this.adaptationInterval = null;
     this.hits = 0;
     this.misses = 0;
+    this.incentives = 10;
   }
   state = {
     gameStarted: false,
@@ -34,7 +42,9 @@ class Game extends Component {
     elements: [],
     activeRows: [],
     rows: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    clicks: []
+    clicks: [],
+    isIncentiveActive: false,
+    points: 0
   };
 
   componentDidMount() {
@@ -151,7 +161,13 @@ class Game extends Component {
 
   next(rollback) {
     if (rollback) {
+      if (this.props.dimension === "Incentives") {
+        this.incentives = this.incentives - 5;
+      }
       this.props.onSetRollback();
+    }
+    if (this.props.dimension === "Incentives") {
+      this.incentives = this.incentives + 10;
     }
     this.props.onNextRound();
   }
@@ -180,7 +196,7 @@ class Game extends Component {
         dimensionProperty = getOpacity(round, rollback);
         break;
       case "Incentives":
-        dimensionProperty = "mops";
+        dimensionProperty = this.incentives;
         break;
       case "Content":
         dimensionProperty = "mops";
@@ -199,6 +215,20 @@ class Game extends Component {
   performAction = () => {
     this.hits = this.hits + 1;
     this.setState({ elements: [] });
+    if (this.props.dimension === "Incentives") {
+      // Add points and trigger incentive
+      this.setState(
+        {
+          points: this.state.points + this.incentives,
+          isIncentiveActive: true
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ isIncentiveActive: false });
+          }, 1000);
+        }
+      );
+    }
   };
 
   createRandomElement = (round, dimension, rollback) => {
@@ -237,6 +267,15 @@ class Game extends Component {
               Start!
             </Button>
           ) : null}
+          {this.state.gameStarted ? (
+            <DashBoard
+              dimension={this.props.dimension}
+              points={this.state.points}
+            />
+          ) : null}
+          <Incentive active={this.state.isIncentiveActive}>
+            + {this.incentives}
+          </Incentive>
           <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </GameComp>
       );
