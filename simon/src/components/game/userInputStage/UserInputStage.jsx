@@ -142,7 +142,8 @@ class UserInputStage extends Component {
       return;
     }
     // If the rollback is set the user got his second chance already and we show results results after the round
-    if (this.props.rollback) {
+    // Or if the user played 10 rounds already
+    if (this.props.rollback || this.props.round === 10) {
       this.props.onShowResults();
       return;
     }
