@@ -17,8 +17,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSetNewSpeed: () => {
-    dispatch(setNewSpeed());
+  onSetNewSpeed: rollback => {
+    dispatch(setNewSpeed(rollback));
   },
   onSaveRound: (round, destroyedBricks, losses, clicks, dimensionProperty) => {
     dispatch(
@@ -30,4 +30,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Game);

@@ -15,6 +15,12 @@ const initialState = {
 export const adaptation = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_NEW_SPEED:
+      if (action.payload.rollback) {
+        return {
+          ...state,
+          speed: state.speed - 0.5
+        };
+      }
       return {
         ...state,
         speed: state.speed + 1

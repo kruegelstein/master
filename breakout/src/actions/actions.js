@@ -16,7 +16,10 @@ import { firebaseApp } from "../firebase.js";
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 
-export const setNewSpeed = () => ({ type: SET_NEW_SPEED, payload: {} });
+export const setNewSpeed = rollback => ({
+  type: SET_NEW_SPEED,
+  payload: { rollback }
+});
 
 export const selectDimension = dimension => ({
   type: SET_DIMENSION,
