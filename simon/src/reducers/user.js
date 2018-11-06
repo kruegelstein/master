@@ -34,7 +34,7 @@ export const user = (state = initialState, action = {}) => {
       };
     case ADD_POINTS:
       const round = action.payload.round;
-      const points = round * 5;
+      const points = round * 10;
       return {
         ...state,
         points: state.points + points
