@@ -14,7 +14,8 @@ import {
   setNewOpacity,
   setRollback,
   addPoints,
-  setNewPoints
+  setNewPoints,
+  setNewPatternLength
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -55,6 +56,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onSetNewPoints: (currentPoints, rollback) => {
     dispatch(setNewPoints(currentPoints, rollback));
+  },
+  onSetNewPatternLength: (currentPatternLength, rollback) => {
+    dispatch(setNewPatternLength(currentPatternLength, rollback));
   },
   addPoints: round => {
     dispatch(addPoints(round));

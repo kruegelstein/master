@@ -63,3 +63,11 @@ export const getNewPoints = (currentPoints, rollback) => {
     return currentPoints - linearStepSize / 2;
   }
 };
+
+export const getNewPatternLength = (currentPatternLength, rollback) => {
+  if (!rollback) {
+    return currentPatternLength + 1;
+  } else {
+    return currentPatternLength - 1;
+  }
+};

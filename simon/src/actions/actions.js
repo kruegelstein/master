@@ -21,7 +21,8 @@ import {
   GO_TO_USER_ID_INPUT,
   SET_DIMENSION,
   ADD_POINTS,
-  SET_NEW_POINTS
+  SET_NEW_POINTS,
+  SET_NEW_PATTERNLENGTH
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -57,6 +58,11 @@ export const setNewSpeed = (currentSpeed, rollback) => ({
 export const setNewPoints = (currentPoints, rollback) => ({
   type: SET_NEW_POINTS,
   payload: { currentPoints, rollback }
+});
+
+export const setNewPatternLength = (currentPatternLength, rollback) => ({
+  type: SET_NEW_PATTERNLENGTH,
+  payload: { currentPatternLength, rollback }
 });
 
 export const setNewOpacity = (currentOpacity, rollback) => ({

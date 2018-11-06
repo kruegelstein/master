@@ -10,11 +10,17 @@ import {
   SET_DIMENSION,
   ADD_POINTS,
   NEXT_ROUND,
-  SET_NEW_POINTS
+  SET_NEW_POINTS,
+  SET_NEW_PATTERNLENGTH
 } from "../constants/ActionTypes.js";
 
 // Helper
-import { getNewSpeed, getNewOpacity, getNewPoints } from "../utils/lightUp";
+import {
+  getNewSpeed,
+  getNewOpacity,
+  getNewPoints,
+  getNewPatternLength
+} from "../utils/lightUp";
 
 const initialState = {
   id: null,
@@ -48,12 +54,6 @@ export const user = (state = initialState, action = {}) => {
         pointsValue: newPointsValue
       };
     case NEXT_ROUND:
-      if (state.dimension === "Content") {
-        return {
-          ...state,
-          patternLength: state.patternLength + 1
-        };
-      }
       return {
         ...state,
         points: 0
@@ -66,7 +66,7 @@ export const user = (state = initialState, action = {}) => {
             ...state,
             dimension,
             speed: 1000,
-            patternLength: 0
+            patternLength: 1
           };
         }
         return {
@@ -93,6 +93,17 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         speed: newSpeed
+      };
+    case SET_NEW_PATTERNLENGTH:
+      const currentPatternLength = action.payload.currentPatternLength;
+      const patternLengthRollback = action.payload.rollback;
+      const newPatternLength = getNewPatternLength(
+        currentPatternLength,
+        patternLengthRollback
+      );
+      return {
+        ...state,
+        patternLength: newPatternLength
       };
     case SET_NEW_OPACITY:
       const currentOpacity = action.payload.currentOpacity;

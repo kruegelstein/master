@@ -88,19 +88,21 @@ class UserInputStage extends Component {
   }
 
   nextRound(rollback) {
-    console.log("Rollback: ", rollback);
     switch (this.props.dimension) {
       case "Speed":
-        console.log("Speed: ", this.props.speed);
         this.props.onSetNewSpeed(this.props.speed, rollback || false);
         break;
       case "Object clarity":
-        console.log("Opacity: ", this.props.opacity);
         this.props.onSetNewOpacity(this.props.opacity, rollback || false);
         break;
       case "Incentives":
-        console.log("Points: ", this.props.pointsValue);
         this.props.onSetNewPoints(this.props.pointsValue, rollback || false);
+        break;
+      case "Content":
+        this.props.onSetNewPatternLength(
+          this.props.patternLength,
+          rollback || false
+        );
         break;
       default:
         null;
