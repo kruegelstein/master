@@ -46,7 +46,7 @@ class Game extends Component {
     this.pressedKeys = null;
     this.interval = null;
     this.ballColor = ballColors[0];
-    this.incentives = 5;
+    this.incentives = 10;
     this.ballCount = 1;
     this.rollback = false;
   }
@@ -213,7 +213,7 @@ class Game extends Component {
         this.ballColor = ballColors[this.props.round - 1];
         break;
       case "Incentives":
-        this.incentives = this.incentives + 5;
+        this.incentives = this.incentives + 10;
         break;
       case "Content":
         this.ballCount = this.ballCount + 1;
