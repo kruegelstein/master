@@ -59,7 +59,6 @@ class Game extends Component {
   };
 
   componentWillUnmount() {
-    console.log("####");
     clearInterval(this.interval);
   }
 
@@ -204,18 +203,36 @@ class Game extends Component {
     }
   };
 
-  adapt = () => {
+  adapt = rollback => {
     switch (this.props.adaptationDimension) {
       case "Speed":
+        if (rollback) {
+          // Go back half a speed step
+          this.props.onSetNewSpeed(rollback);
+          return;
+        }
         this.props.onSetNewSpeed();
         break;
       case "Object clarity":
+        if (rollback) {
+          // Go back to the previous color
+          this.ballColor = ballColors[this.props.round - 3];
+          return;
+        }
         this.ballColor = ballColors[this.props.round - 1];
         break;
       case "Incentives":
+        if (rollback) {
+          this.incentives = this.incentives - 5;
+          return;
+        }
         this.incentives = this.incentives + 10;
         break;
       case "Content":
+        if (rollback) {
+          this.ballCount = this.ballCount - 1;
+          return;
+        }
         this.ballCount = this.ballCount + 1;
         this.createNewBall();
         break;
@@ -241,12 +258,17 @@ class Game extends Component {
         clearInterval(this.interval);
         return;
       }
+      if (this.props.round < 2) {
+        // first two rounds adapt for learning
+        this.adapt();
+      }
       if (score > 0) {
         // Positive score --> adapt
         this.adapt();
       } else {
         // Negative score --> Set rollback flag
         this.rollback = true;
+        this.adapt(true);
       }
     }
   };
