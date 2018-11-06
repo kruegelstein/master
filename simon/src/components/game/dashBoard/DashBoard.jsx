@@ -9,8 +9,12 @@ class DashBoard extends Component {
     if (this.props.dimension === "Incentives") {
       return (
         <DashBoardComp>
-          <Paragraph inline>Points: </Paragraph>
-          <Paragraph inline>{this.props.points}</Paragraph>
+          <Paragraph inline fontSize="30px">
+            Points:{" "}
+          </Paragraph>
+          <Paragraph inline fontSize="30px">
+            {this.props.points}
+          </Paragraph>
         </DashBoardComp>
       );
     }
