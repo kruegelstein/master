@@ -57,3 +57,11 @@ export const getOpacity = (round, rollback) => {
 export const getAdaptationScore = (hits, misses) => {
   return hits - misses;
 };
+
+export const getIncentives = (round, rollback) => {
+  if (!rollback) {
+    return (round + 1) * 10;
+  } else {
+    return (round + 1) * 10 - 15;
+  }
+};
