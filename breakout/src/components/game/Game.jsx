@@ -258,7 +258,7 @@ class Game extends Component {
         clearInterval(this.interval);
         return;
       }
-      if (this.props.round < 2) {
+      if (this.props.round < 3) {
         // first two rounds adapt for learning
         this.adapt();
       }

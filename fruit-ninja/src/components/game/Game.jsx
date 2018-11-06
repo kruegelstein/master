@@ -14,9 +14,9 @@ import InlineBlockContainer from "../general/InlineBlockContainer.js";
 import beep from "../../sounds/Beep.mov";
 
 // Helper
-import { getTime } from "../../utils/helper.js";
+import { getTime, getOpacity, getAdaptationScore } from "../../utils/helper.js";
 
-// Interval to adapt is 15sec
+// Interval to adapt is 10sec
 const ADAPTION_INTERVAL = 10000;
 const ELEMENTS_INTERVAL = 3000;
 
@@ -25,6 +25,8 @@ class Game extends Component {
     super(props);
     this.elementInterval = null;
     this.adaptationInterval = null;
+    this.hits = 0;
+    this.misses = 0;
   }
   state = {
     gameStarted: false,
@@ -82,10 +84,28 @@ class Game extends Component {
 
   changeElements = () => {
     const activeRows = [Math.floor(Math.random() * 12)];
+
+    const newElements = [
+      this.createRandomElement(
+        this.props.round,
+        this.props.dimension,
+        this.props.rollback
+      )
+    ];
+    // Push the new element to the state
     this.setState({
       activeRows: activeRows,
-      elements: this.state.elements.concat([this.createRandomElement()])
+      elements: this.state.elements.concat(newElements)
     });
+    // Delete the element after animation if it was not deleted by the user
+    setTimeout(() => {
+      if (this.state.elements.length > 0) {
+        this.setState({
+          elements: []
+        });
+        this.misses = this.misses + 1;
+      }
+    }, 2500);
   };
 
   start = () => {
@@ -105,34 +125,59 @@ class Game extends Component {
 
   triggerAdaptation = () => {
     this.play();
+    const score = getAdaptationScore(this.hits, this.misses);
     // Save results for the round
     this.saveResults();
     // Stop adapting after 10 rounds
-    if (this.props.round === 10 || this.rollback) {
+    if (this.props.round === 10 || this.props.rollback) {
       this.props.goToResults();
       clearInterval(this.elementInterval);
       clearInterval(this.adaptationInterval);
       return;
     }
+    if (this.props.round < 3) {
+      // first two rounds adapt for learning
+      this.next(false);
+      return;
+    }
+    if (score > 0) {
+      // Positive score --> adapt
+      this.next(false);
+    } else {
+      // Negative score --> Set rollback flag
+      this.next(true);
+    }
   };
+
+  next(rollback) {
+    if (rollback) {
+      this.props.onSetRollback();
+    }
+    this.props.onNextRound();
+  }
 
   saveResults = () => {
     this.saveRound(this.state);
     this.setState({
       clicks: []
     });
+    this.hits = 0;
+    this.misses = 0;
   };
 
   saveRound = state => {
+    const hits = this.hits;
+    const misses = this.misses;
     const clicks = state.clicks;
     const round = this.props.round;
+    const rollback = this.props.rollback;
     let dimensionProperty;
     switch (this.props.dimension) {
       case "Speed":
         dimensionProperty = "mops";
         break;
       case "Object clarity":
-        dimensionProperty = "mops";
+        dimensionProperty = getOpacity(round, rollback);
         break;
       case "Incentives":
         dimensionProperty = "mops";
@@ -143,7 +188,7 @@ class Game extends Component {
       default:
         null;
     }
-    this.props.onSaveRound(round, clicks, dimensionProperty);
+    this.props.onSaveRound(round, hits, misses, clicks, dimensionProperty);
   };
 
   play = () => {
@@ -152,21 +197,25 @@ class Game extends Component {
   };
 
   performAction = () => {
+    this.hits = this.hits + 1;
     this.setState({ elements: [] });
   };
 
-  createRandomElement = () => {
+  createRandomElement = (round, dimension, rollback) => {
     const icons = theme.images;
     const array = Object.keys(icons);
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
     const id = Math.floor(Math.random() * 1000);
+    const opacity =
+      dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     return (
       <Element
         id={id}
-        icon={iconValue}
+        src={iconValue}
         onClick={() => this.performAction()}
         visible={true}
+        opacity={opacity}
       />
     );
   };

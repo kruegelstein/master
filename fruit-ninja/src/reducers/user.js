@@ -1,10 +1,15 @@
 // @flow
 
 // Constants
-import { SET_USER_ID, GO_TO_USER_ID_INPUT } from "../constants/ActionTypes.js";
+import {
+  SET_USER_ID,
+  GO_TO_USER_ID_INPUT,
+  SET_ROLLBACK
+} from "../constants/ActionTypes.js";
 
 const initialState = {
-  id: null
+  id: null,
+  rollback: false
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -13,6 +18,11 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         id: action.payload.id
+      };
+    case SET_ROLLBACK:
+      return {
+        ...state,
+        rollback: true
       };
     case GO_TO_USER_ID_INPUT:
       return initialState;
