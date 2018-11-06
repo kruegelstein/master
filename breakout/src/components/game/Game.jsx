@@ -58,6 +58,11 @@ class Game extends Component {
     isIncentiveActive: false
   };
 
+  componentWillUnmount() {
+    console.log("####");
+    clearInterval(this.interval);
+  }
+
   componentDidMount() {
     this.setup();
     const iOS =
@@ -528,31 +533,30 @@ class Game extends Component {
 
   play = () => {
     const video = document.getElementById("video");
-    video.play();
+    setTimeout(() => {
+      video.play();
+    }, 15);
   };
 
   render() {
-    if (!this.props.isResults) {
-      return (
-        <div style={{ height: "100%", width: "100%" }}>
-          <Canvas
-            width={this.props.theme.game.width}
-            height={this.props.theme.game.height}
-            id="gameCanvas"
-            userId={this.props.userId}
-          />
-          <DashBoard
-            dimension={this.props.adaptationDimension}
-            points={this.state.points}
-          />
-          <Incentive active={this.state.isIncentiveActive}>
-            + {this.incentives}
-          </Incentive>
-          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div style={{ height: "100%", width: "100%" }}>
+        <Canvas
+          width={this.props.theme.game.width}
+          height={this.props.theme.game.height}
+          id="gameCanvas"
+          userId={this.props.userId}
+        />
+        <DashBoard
+          dimension={this.props.adaptationDimension}
+          points={this.state.points}
+        />
+        <Incentive active={this.state.isIncentiveActive}>
+          + {this.incentives}
+        </Incentive>
+        <video id="video" src={beep} style={{ height: 0, width: 0 }} />
+      </div>
+    );
   }
 }
 
