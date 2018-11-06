@@ -229,6 +229,10 @@ class Game extends Component {
         this.incentives = this.incentives + 10;
         break;
       case "Content":
+        if (rollback) {
+          this.ballCount = this.ballCount - 1;
+          return;
+        }
         this.ballCount = this.ballCount + 1;
         this.createNewBall();
         break;
