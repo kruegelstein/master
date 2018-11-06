@@ -178,12 +178,14 @@ class UserInputStage extends Component {
       if (lastResults.correct >= 4 && answerScore > 0) {
         // Bad results
         // Check the time when the user got 3 correct answers
-        if (enrichedResults.correct === 3 && timeScore > 1.5) {
+        if (
+          (enrichedResults.correct === 3 && timeScore > 1.5) ||
+          enrichedResults.correct === 4
+        ) {
           // Just ok since the time of input improved significant
           this.nextRound();
           return;
         } else {
-          console.log("Setting rollback1");
           this.props.onSetRollback();
           this.nextRound(true);
           return;
@@ -195,7 +197,6 @@ class UserInputStage extends Component {
         this.nextRound();
         return;
       }
-      console.log("Setting rollback2");
       this.props.onSetRollback();
       this.nextRound(true);
     }
