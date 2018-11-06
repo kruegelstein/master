@@ -13,7 +13,8 @@ import {
   setNewSpeed,
   setNewOpacity,
   setRollback,
-  addPoints
+  addPoints,
+  setNewPoints
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -28,7 +29,9 @@ const mapStateToProps = state => ({
   opacity: state.user.opacity,
   dimension: state.user.dimension,
   rollback: state.user.rollback,
-  patternLength: state.user.patternLength
+  patternLength: state.user.patternLength,
+  points: state.user.points,
+  pointsValue: state.user.pointsValue
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -50,9 +53,15 @@ const mapDispatchToProps = dispatch => ({
   onSetNewOpacity: (currentOpacity, rollback) => {
     dispatch(setNewOpacity(currentOpacity, rollback));
   },
+  onSetNewPoints: (currentPoints, rollback) => {
+    dispatch(setNewPoints(currentPoints, rollback));
+  },
   addPoints: round => {
     dispatch(addPoints(round));
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInputStage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserInputStage);

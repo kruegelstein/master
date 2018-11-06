@@ -9,11 +9,12 @@ import {
   GO_TO_USER_ID_INPUT,
   SET_DIMENSION,
   ADD_POINTS,
-  NEXT_ROUND
+  NEXT_ROUND,
+  SET_NEW_POINTS
 } from "../constants/ActionTypes.js";
 
 // Helper
-import { getNewSpeed, getNewOpacity } from "../utils/lightUp";
+import { getNewSpeed, getNewOpacity, getNewPoints } from "../utils/lightUp";
 
 const initialState = {
   id: null,
@@ -22,6 +23,7 @@ const initialState = {
   speed: 3000,
   opacity: 1,
   points: 0,
+  pointsValue: 10,
   patternLength: 5
 };
 
@@ -33,11 +35,17 @@ export const user = (state = initialState, action = {}) => {
         id: action.payload.id
       };
     case ADD_POINTS:
-      const round = action.payload.round;
-      const points = round * 10;
       return {
         ...state,
-        points: state.points + points
+        points: state.points + action.payload.pointsValue
+      };
+    case SET_NEW_POINTS:
+      const currentPoints = action.payload.currentPoints;
+      const pointsRollback = action.payload.rollback;
+      const newPointsValue = getNewPoints(currentPoints, pointsRollback);
+      return {
+        ...state,
+        pointsValue: newPointsValue
       };
     case NEXT_ROUND:
       if (state.dimension === "Content") {

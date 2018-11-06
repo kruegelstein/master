@@ -20,7 +20,8 @@ import {
   STORE_IN_DB_ERROR,
   GO_TO_USER_ID_INPUT,
   SET_DIMENSION,
-  ADD_POINTS
+  ADD_POINTS,
+  SET_NEW_POINTS
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -53,6 +54,11 @@ export const setNewSpeed = (currentSpeed, rollback) => ({
   payload: { currentSpeed, rollback }
 });
 
+export const setNewPoints = (currentPoints, rollback) => ({
+  type: SET_NEW_POINTS,
+  payload: { currentPoints, rollback }
+});
+
 export const setNewOpacity = (currentOpacity, rollback) => ({
   type: SET_NEW_OPACITY,
   payload: { currentOpacity, rollback }
@@ -63,7 +69,10 @@ export const setRollback = () => ({
   payload: {}
 });
 
-export const addPoints = round => ({ type: ADD_POINTS, payload: { round } });
+export const addPoints = pointsValue => ({
+  type: ADD_POINTS,
+  payload: { pointsValue }
+});
 
 export const submitUserId = id => ({ type: SET_USER_ID, payload: { id } });
 

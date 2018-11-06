@@ -88,12 +88,19 @@ class UserInputStage extends Component {
   }
 
   nextRound(rollback) {
+    console.log("Rollback: ", rollback);
     switch (this.props.dimension) {
       case "Speed":
+        console.log("Speed: ", this.props.speed);
         this.props.onSetNewSpeed(this.props.speed, rollback || false);
         break;
       case "Object clarity":
+        console.log("Opacity: ", this.props.opacity);
         this.props.onSetNewOpacity(this.props.opacity, rollback || false);
+        break;
+      case "Incentives":
+        console.log("Points: ", this.props.pointsValue);
+        this.props.onSetNewPoints(this.props.pointsValue, rollback || false);
         break;
       default:
         null;
@@ -115,7 +122,7 @@ class UserInputStage extends Component {
         dimensionProperty = this.props.patternLength;
         break;
       case "Incentives":
-        dimensionProperty = this.props.round * 5;
+        dimensionProperty = this.props.pointsValue;
         break;
       default:
         null;
@@ -173,6 +180,7 @@ class UserInputStage extends Component {
           this.nextRound();
           return;
         } else {
+          console.log("Setting rollback1");
           this.props.onSetRollback();
           this.nextRound(true);
           return;
@@ -184,6 +192,7 @@ class UserInputStage extends Component {
         this.nextRound();
         return;
       }
+      console.log("Setting rollback2");
       this.props.onSetRollback();
       this.nextRound(true);
     }
@@ -213,7 +222,7 @@ class UserInputStage extends Component {
               this.state.selectedElements.length - 1
             ] === this.state.pattern[this.state.selectedElements.length - 1]
           ) {
-            this.props.addPoints(this.props.round);
+            this.props.addPoints(this.props.pointsValue);
           }
         }
       }
@@ -260,7 +269,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
@@ -306,7 +315,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
@@ -352,7 +361,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
