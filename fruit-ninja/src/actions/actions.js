@@ -8,7 +8,9 @@ import {
   STORE_IN_DB,
   STORE_IN_DB_SUCCESS,
   STORE_IN_DB_ERROR,
-  GO_TO_USER_ID_INPUT
+  GO_TO_USER_ID_INPUT,
+  NEXT_ROUND,
+  SET_ROLLBACK
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -25,9 +27,17 @@ export const goToUserIdInput = () => ({
   payload: {}
 });
 
-export const saveRound = (round, clicks, dimensionProperty) => ({
+export const saveRound = (round, hits, misses, clicks, dimensionProperty) => ({
   type: SAVE_ROUND,
-  payload: { round, clicks, dimensionProperty }
+  payload: { round, hits, misses, clicks, dimensionProperty }
+});
+export const nextRound = () => ({
+  type: NEXT_ROUND,
+  payload: {}
+});
+export const setRollback = () => ({
+  type: SET_ROLLBACK,
+  payload: {}
 });
 
 // Actions to backend (firebase)

@@ -2,7 +2,8 @@
 import {
   SET_DIMENSION,
   SAVE_ROUND,
-  GO_TO_USER_ID_INPUT
+  GO_TO_USER_ID_INPUT,
+  NEXT_ROUND
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -17,7 +18,7 @@ export const adaptation = (state = initialState, action = {}) => {
         ...state,
         dimension: action.payload.dimension
       };
-    case SAVE_ROUND:
+    case NEXT_ROUND:
       return {
         ...state,
         round: state.round + 1

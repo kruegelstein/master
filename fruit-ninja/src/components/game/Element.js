@@ -7,13 +7,12 @@ const down = keyframes`
   100% {transform: translateY(+1000%);}
 `;
 
-const element = styled.div`
+const element = styled.img`
   width: 5rem;
   height: 5rem;
-  background: url(${(props: PropsType) => props.icon}) no-repeat center center;
-  background-size: 5rem 5rem;
-  animation: ${down} 3s linear;
+  animation: ${down} 2.5s linear;
   display: ${props => (props.visible ? "block" : "none")};
+  opacity: ${props => props.opacity};
 `;
 
 export default element;
