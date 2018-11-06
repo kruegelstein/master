@@ -65,3 +65,54 @@ export const getIncentives = (round, rollback) => {
     return (round + 1) * 10 - 15;
   }
 };
+
+export const getSpeed = (round, rollback) => {
+  switch (round) {
+    case 1:
+      return 3;
+    case 2:
+      return 2.7;
+    case 3:
+      if (rollback) {
+        return 3;
+      }
+      return 2.4;
+    case 4:
+      if (rollback) {
+        return 2.7;
+      }
+      return 2.1;
+    case 5:
+      if (rollback) {
+        return 2.4;
+      }
+      return 1.8;
+    case 6:
+      if (rollback) {
+        return 2.1;
+      }
+      return 1.5;
+    case 7:
+      if (rollback) {
+        return 1.8;
+      }
+      return 1.2;
+    case 8:
+      if (rollback) {
+        return 1.5;
+      }
+      return 0.9;
+    case 9:
+      if (rollback) {
+        return 1.2;
+      }
+      return 0.6;
+    case 10:
+      if (rollback) {
+        return 0.9;
+      }
+      return 0.3;
+    default:
+      return 2.5;
+  }
+};

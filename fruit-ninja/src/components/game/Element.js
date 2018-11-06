@@ -10,7 +10,7 @@ const down = keyframes`
 const element = styled.img`
   width: 5rem;
   height: 5rem;
-  animation: ${down} 2.5s linear;
+  animation: ${props => `${down} ${props.speed}s linear`};
   display: ${props => (props.visible ? "block" : "none")};
   opacity: ${props => props.opacity};
 `;

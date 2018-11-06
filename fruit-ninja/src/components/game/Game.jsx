@@ -20,7 +20,8 @@ import {
   getTime,
   getOpacity,
   getAdaptationScore,
-  getIncentives
+  getIncentives,
+  getSpeed
 } from "../../utils/helper.js";
 
 // Interval to adapt is 10sec
@@ -115,7 +116,7 @@ class Game extends Component {
         });
         this.misses = this.misses + 1;
       }
-    }, 2500);
+    }, this.props.dimension === "Speed" ? getSpeed(this.props.round, this.props.rollback) * 1000 : 2500);
   };
 
   start = () => {
@@ -190,7 +191,7 @@ class Game extends Component {
     let dimensionProperty;
     switch (this.props.dimension) {
       case "Speed":
-        dimensionProperty = "mops";
+        dimensionProperty = getSpeed(round, rollback);
         break;
       case "Object clarity":
         dimensionProperty = getOpacity(round, rollback);
@@ -239,6 +240,7 @@ class Game extends Component {
     const id = Math.floor(Math.random() * 1000);
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
+    const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
     return (
       <Element
         id={id}
@@ -246,6 +248,7 @@ class Game extends Component {
         onClick={() => this.performAction()}
         visible={true}
         opacity={opacity}
+        speed={speed}
       />
     );
   };
