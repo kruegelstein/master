@@ -207,6 +207,7 @@ class Game extends Component {
     switch (this.props.adaptationDimension) {
       case "Speed":
         if (rollback) {
+          // Go back half a speed step
           this.props.onSetNewSpeed(rollback);
           return;
         }
@@ -214,12 +215,17 @@ class Game extends Component {
         break;
       case "Object clarity":
         if (rollback) {
+          // Go back to the previous color
           this.ballColor = ballColors[this.props.round - 3];
           return;
         }
         this.ballColor = ballColors[this.props.round - 1];
         break;
       case "Incentives":
+        if (rollback) {
+          this.incentives = this.incentives - 5;
+          return;
+        }
         this.incentives = this.incentives + 10;
         break;
       case "Content":
