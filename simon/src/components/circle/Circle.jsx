@@ -13,7 +13,7 @@ class Circle extends Component {
         margin={this.props.margin}
       >
         {this.props.correct ? (
-          <Incentive>+ {this.props.round * 10}</Incentive>
+          <Incentive>+ {this.props.pointsValue}</Incentive>
         ) : null}
       </CircleComp>
     );

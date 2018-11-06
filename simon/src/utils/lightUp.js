@@ -54,3 +54,20 @@ export const getNewOpacity = (currentOpacity, rollback) => {
     return currentOpacity + linearStepSize / 2;
   }
 };
+
+export const getNewPoints = (currentPoints, rollback) => {
+  const linearStepSize = 10;
+  if (!rollback) {
+    return currentPoints + linearStepSize;
+  } else {
+    return currentPoints - linearStepSize / 2;
+  }
+};
+
+export const getNewPatternLength = (currentPatternLength, rollback) => {
+  if (!rollback) {
+    return currentPatternLength + 1;
+  } else {
+    return currentPatternLength - 1;
+  }
+};

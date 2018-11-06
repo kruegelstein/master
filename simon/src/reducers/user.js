@@ -9,11 +9,18 @@ import {
   GO_TO_USER_ID_INPUT,
   SET_DIMENSION,
   ADD_POINTS,
-  NEXT_ROUND
+  NEXT_ROUND,
+  SET_NEW_POINTS,
+  SET_NEW_PATTERNLENGTH
 } from "../constants/ActionTypes.js";
 
 // Helper
-import { getNewSpeed, getNewOpacity } from "../utils/lightUp";
+import {
+  getNewSpeed,
+  getNewOpacity,
+  getNewPoints,
+  getNewPatternLength
+} from "../utils/lightUp";
 
 const initialState = {
   id: null,
@@ -22,6 +29,7 @@ const initialState = {
   speed: 3000,
   opacity: 1,
   points: 0,
+  pointsValue: 10,
   patternLength: 5
 };
 
@@ -33,19 +41,19 @@ export const user = (state = initialState, action = {}) => {
         id: action.payload.id
       };
     case ADD_POINTS:
-      const round = action.payload.round;
-      const points = round * 10;
       return {
         ...state,
-        points: state.points + points
+        points: state.points + action.payload.pointsValue
+      };
+    case SET_NEW_POINTS:
+      const currentPoints = action.payload.currentPoints;
+      const pointsRollback = action.payload.rollback;
+      const newPointsValue = getNewPoints(currentPoints, pointsRollback);
+      return {
+        ...state,
+        pointsValue: newPointsValue
       };
     case NEXT_ROUND:
-      if (state.dimension === "Content") {
-        return {
-          ...state,
-          patternLength: state.patternLength + 1
-        };
-      }
       return {
         ...state,
         points: 0
@@ -58,7 +66,7 @@ export const user = (state = initialState, action = {}) => {
             ...state,
             dimension,
             speed: 1000,
-            patternLength: 0
+            patternLength: 1
           };
         }
         return {
@@ -85,6 +93,17 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         speed: newSpeed
+      };
+    case SET_NEW_PATTERNLENGTH:
+      const currentPatternLength = action.payload.currentPatternLength;
+      const patternLengthRollback = action.payload.rollback;
+      const newPatternLength = getNewPatternLength(
+        currentPatternLength,
+        patternLengthRollback
+      );
+      return {
+        ...state,
+        patternLength: newPatternLength
       };
     case SET_NEW_OPACITY:
       const currentOpacity = action.payload.currentOpacity;

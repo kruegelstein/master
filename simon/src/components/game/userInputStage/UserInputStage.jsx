@@ -95,6 +95,15 @@ class UserInputStage extends Component {
       case "Object clarity":
         this.props.onSetNewOpacity(this.props.opacity, rollback || false);
         break;
+      case "Incentives":
+        this.props.onSetNewPoints(this.props.pointsValue, rollback || false);
+        break;
+      case "Content":
+        this.props.onSetNewPatternLength(
+          this.props.patternLength,
+          rollback || false
+        );
+        break;
       default:
         null;
     }
@@ -115,7 +124,7 @@ class UserInputStage extends Component {
         dimensionProperty = this.props.patternLength;
         break;
       case "Incentives":
-        dimensionProperty = this.props.round * 5;
+        dimensionProperty = this.props.pointsValue;
         break;
       default:
         null;
@@ -135,7 +144,8 @@ class UserInputStage extends Component {
       return;
     }
     // If the rollback is set the user got his second chance already and we show results results after the round
-    if (this.props.rollback) {
+    // Or if the user played 10 rounds already
+    if (this.props.rollback || this.props.round === 10) {
       this.props.onShowResults();
       return;
     }
@@ -168,7 +178,10 @@ class UserInputStage extends Component {
       if (lastResults.correct >= 4 && answerScore > 0) {
         // Bad results
         // Check the time when the user got 3 correct answers
-        if (enrichedResults.correct === 3 && timeScore > 1.5) {
+        if (
+          (enrichedResults.correct === 3 && timeScore > 1.5) ||
+          enrichedResults.correct === 4
+        ) {
           // Just ok since the time of input improved significant
           this.nextRound();
           return;
@@ -213,7 +226,7 @@ class UserInputStage extends Component {
               this.state.selectedElements.length - 1
             ] === this.state.pattern[this.state.selectedElements.length - 1]
           ) {
-            this.props.addPoints(this.props.round);
+            this.props.addPoints(this.props.pointsValue);
           }
         }
       }
@@ -260,7 +273,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
@@ -306,7 +319,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
@@ -352,7 +365,7 @@ class UserInputStage extends Component {
                               this.state.selectedElements.length - 1
                             ]
                           : false,
-                      round: this.props.round
+                      pointsValue: this.props.pointsValue
                     }
                   };
                 } else {
