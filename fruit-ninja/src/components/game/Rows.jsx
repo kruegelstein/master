@@ -4,7 +4,7 @@ import { theme } from "../../constants/Theme.js";
 
 // Styled componets
 import Element from "./Element.js";
-import Row from "../general/Row.js";
+import Row from "./RowContainer.js";
 import Incentive from "./Incentive.js";
 import DashBoard from "../dashBoard/DashBoard.jsx";
 
@@ -19,7 +19,7 @@ import {
 const ADAPTION_INTERVAL = 10000;
 const ELEMENTS_INTERVAL = 2500;
 
-class Game extends Component {
+class Rows extends Component {
   constructor(props) {
     super(props);
     this.elementInterval = null;
@@ -139,83 +139,10 @@ class Game extends Component {
     this.props.onSaveRound(round, hits, misses, clicks, dimensionProperty);
   };
 
-  newActiveRow = id => {
-    const newRows = this.props.activeRows.filter(
-      row => !(row === parseInt(id))
-    );
-    this.props.changeActiveRows(newRows);
-  };
-
-  checkHit(id) {
-    return this.state.clickedElement === id;
-  }
-
-  addToElementsList(id) {
-    this.elements.push(id);
-  }
-
-  performAction = id => {
-    this.hits = this.hits + 1;
-    this.setState({
-      clickedElements: id
-    });
-    const rowId = document.getElementById(id).parentElement.id;
-    this.newActiveRow(rowId);
-    if (this.props.dimension === "Incentives") {
-      // Add points and trigger incentive
-      this.setState(
-        {
-          points: this.state.points + this.incentives,
-          isIncentiveActive: true
-        },
-        () => {
-          setTimeout(() => {
-            this.setState({ isIncentiveActive: false });
-          }, 1000);
-        }
-      );
-    }
-  };
-
-  createRandomElement = (round, dimension, rollback) => {
-    const icons = theme.images;
-    const array = Object.keys(icons);
-    const icon = array[Math.floor(Math.random() * 4)];
-    const iconValue = icons[icon];
-    const id = Math.floor(Math.random() * 1000);
-    const opacity =
-      dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
-    const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
-    this.addToElementsList(id);
-    return (
-      <Element
-        key={id}
-        id={id}
-        src={iconValue}
-        onClick={() => this.performAction(id)}
-        opacity={opacity}
-        speed={speed}
-        clicked={this.checkHit(id)}
-      />
-    );
-  };
-
   render() {
     return (
       <div>
-        {this.props.rows.map(row => {
-          if (this.props.activeRows.indexOf(row) !== -1) {
-            return (
-              <Row key={row} id={row}>
-                {this.createRandomElement(
-                  this.props.round,
-                  this.props.dimension,
-                  this.props.rollback
-                )}
-              </Row>
-            );
-          } else return <Row key={row} />;
-        })}
+        {this.props.rows.map((row, index) => <Row key={index} id={row} />)}
         {this.props.gameStarted ? (
           <DashBoard
             dimension={this.props.dimension}
@@ -230,4 +157,4 @@ class Game extends Component {
   }
 }
 
-export default Game;
+export default Rows;

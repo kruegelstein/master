@@ -20,7 +20,6 @@ const mapStateToProps = state => ({
   rollback: state.user.rollback,
   dimension: state.adaptation.dimension,
   numberOfActivesRows: state.rows.numberOfActivesRows,
-  activeRows: state.rows.activeRows,
   rows: state.rows.rows
 });
 
