@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
-import { theme } from "../../constants/Theme.js";
-
 // Styled componets
-import Element from "./Element.js";
 import Row from "./RowContainer.js";
 import Incentive from "./Incentive.js";
 import DashBoard from "../dashBoard/DashBoard.jsx";
