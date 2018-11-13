@@ -5,7 +5,7 @@ import Pressure from "pressure";
 import GameComp from "./Game.js";
 import Button from "../general/Button.js";
 
-import Rows from "./RowsContainer.js";
+import Rows from "./Rows/RowsContainer.js";
 
 // Sounds
 import beep from "../../sounds/Beep.mov";

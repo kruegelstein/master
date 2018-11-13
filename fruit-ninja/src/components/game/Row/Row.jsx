@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 // Styled componets
-import Element from "./ElementContainer.js";
-import RowComp from "../general/Row.js";
+import Element from "../Element/ElementContainer.js";
+import RowComp from "../../general/Row.js";
 
 class Row extends Component {
   render() {

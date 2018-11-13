@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Row from "./Row.jsx";
 
 // Actions
-import { changeActiveRows } from "../../actions/actions.js";
+import { changeActiveRows } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   round: state.adaptation.round,

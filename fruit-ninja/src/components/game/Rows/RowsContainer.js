@@ -13,7 +13,7 @@ import {
   setRollback,
   changeActiveRows,
   changeNumberOfActiveRows
-} from "../../actions/actions.js";
+} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   round: state.adaptation.round,

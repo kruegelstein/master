@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
-import { theme } from "../../constants/Theme.js";
+import { theme } from "../../../constants/Theme.js";
 
 // Styled componets
 import ElementComp from "./Element.js";
 
 // Helper
-import { getOpacity, getSpeed } from "../../utils/helper.js";
+import { getOpacity, getSpeed } from "../../../utils/helper.js";
 
 class Element extends Component {
   state = {

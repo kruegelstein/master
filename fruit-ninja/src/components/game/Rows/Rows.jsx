@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 
 // Styled componets
-import Row from "./RowContainer.js";
-import Incentive from "./Incentive.js";
-import DashBoard from "../dashBoard/DashBoard.jsx";
+import Row from "../Row/RowContainer.js";
+import Incentive from "../Incentive.js";
+import DashBoard from "../../dashBoard/DashBoard.jsx";
 
 // Helper
 import {
   getOpacity,
   getAdaptationScore,
   getSpeed
-} from "../../utils/helper.js";
+} from "../../../utils/helper.js";
 
 // Interval to adapt is 10sec
 const ADAPTION_INTERVAL = 10000;

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Element from "./Element.jsx";
 
 // Actions
-import {} from "../../actions/actions.js";
+import {} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   round: state.adaptation.round,
