@@ -10,7 +10,9 @@ import {
   STORE_IN_DB_ERROR,
   GO_TO_USER_ID_INPUT,
   NEXT_ROUND,
-  SET_ROLLBACK
+  SET_ROLLBACK,
+  CHANGE_ACTIVE_ROWS,
+  CHANGE_NUMBER_OF_ACTIVE_ROWS
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -25,6 +27,16 @@ export const goToResults = () => ({ type: GO_TO_RESULTS, payload: {} });
 export const goToUserIdInput = () => ({
   type: GO_TO_USER_ID_INPUT,
   payload: {}
+});
+
+export const changeActiveRows = activeRows => ({
+  type: CHANGE_ACTIVE_ROWS,
+  payload: { activeRows }
+});
+
+export const changeNumberOfActiveRows = rollback => ({
+  type: CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  payload: { rollback }
 });
 
 export const saveRound = (round, hits, misses, clicks, dimensionProperty) => ({

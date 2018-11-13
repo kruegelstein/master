@@ -10,10 +10,8 @@ import DashBoard from "../dashBoard/DashBoard.jsx";
 
 // Helper
 import {
-  getTime,
   getOpacity,
   getAdaptationScore,
-  getIncentives,
   getSpeed
 } from "../../utils/helper.js";
 
@@ -29,12 +27,9 @@ class Game extends Component {
     this.hits = 0;
     this.misses = 0;
     this.incentives = 10;
-    this.numberOfActivesRows = 1;
     this.elements = [];
   }
   state = {
-    rows: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    activeRows: [],
     isIncentiveActive: false,
     points: 0
   };
@@ -59,17 +54,15 @@ class Game extends Component {
 
   changeActiveRows = () => {
     let activeRows = [];
-    for (let i = 0; i < this.numberOfActivesRows; i++) {
+    for (let i = 0; i < this.props.numberOfActivesRows; i++) {
       activeRows = activeRows.concat([Math.floor(Math.random() * 12)]);
     }
     // Push the active rows to the state
-    this.setState({
-      activeRows: activeRows
-    });
+    this.props.changeActiveRows(activeRows);
   };
 
   triggerAdaptation = () => {
-    this.play();
+    this.props.play();
     const score = getAdaptationScore(this.hits, this.misses);
     // Save results for the round
     this.saveResults();
@@ -97,7 +90,7 @@ class Game extends Component {
   next(rollback) {
     if (rollback) {
       if (this.props.dimension === "Content") {
-        this.numberOfActivesRows = this.numberOfActivesRows - 1;
+        this.props.changeNumberOfActiveRows(rollback);
       }
       if (this.props.dimension === "Incentives") {
         this.incentives = this.incentives - 5;
@@ -105,7 +98,7 @@ class Game extends Component {
       this.props.onSetRollback();
     }
     if (this.props.dimension === "Content") {
-      this.numberOfActivesRows = this.numberOfActivesRows + 1;
+      this.props.changeNumberOfActiveRows(false);
     }
     if (this.props.dimension === "Incentives") {
       this.incentives = this.incentives + 10;
@@ -114,13 +107,13 @@ class Game extends Component {
   }
 
   saveResults = () => {
-    this.saveRound(this.state);
+    this.saveRound();
     this.props.resetClicks();
     this.hits = 0;
     this.misses = 0;
   };
 
-  saveRound = state => {
+  saveRound = () => {
     const hits = this.hits;
     const misses = this.misses;
     const clicks = this.props.clicks;
@@ -138,7 +131,7 @@ class Game extends Component {
         dimensionProperty = this.incentives;
         break;
       case "Content":
-        dimensionProperty = this.numberOfActivesRows;
+        dimensionProperty = this.props.numberOfActivesRows;
         break;
       default:
         null;
@@ -147,16 +140,14 @@ class Game extends Component {
   };
 
   newActiveRow = id => {
-    const newRows = this.state.activeRows.filter(
+    const newRows = this.props.activeRows.filter(
       row => !(row === parseInt(id))
     );
-    this.setState({
-      activeRows: newRows
-    });
+    this.props.changeActiveRows(newRows);
   };
 
   checkHit(id) {
-    this.state.clickedElement === id ? true : false;
+    return this.state.clickedElement === id;
   }
 
   addToElementsList(id) {
@@ -212,8 +203,8 @@ class Game extends Component {
   render() {
     return (
       <div>
-        {this.state.rows.map(row => {
-          if (this.state.activeRows.indexOf(row) !== -1) {
+        {this.props.rows.map(row => {
+          if (this.props.activeRows.indexOf(row) !== -1) {
             return (
               <Row key={row} id={row}>
                 {this.createRandomElement(

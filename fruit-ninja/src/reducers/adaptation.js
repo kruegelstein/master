@@ -1,7 +1,6 @@
 // @flow
 import {
   SET_DIMENSION,
-  SAVE_ROUND,
   GO_TO_USER_ID_INPUT,
   NEXT_ROUND
 } from "../constants/ActionTypes.js";

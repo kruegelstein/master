@@ -88,6 +88,7 @@ class Game extends Component {
             gameStarted={this.state.gameStarted}
             resetClicks={() => this.resetClicks()}
             clicks={this.state.clicks}
+            play={() => this.play()}
           />
           {!this.state.gameStarted ? (
             <Button middle onClick={() => this.start()}>

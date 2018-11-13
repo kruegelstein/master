@@ -10,13 +10,18 @@ import {
   saveRound,
   goToResults,
   nextRound,
-  setRollback
+  setRollback,
+  changeActiveRows,
+  changeNumberOfActiveRows
 } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   round: state.adaptation.round,
   rollback: state.user.rollback,
-  dimension: state.adaptation.dimension
+  dimension: state.adaptation.dimension,
+  numberOfActivesRows: state.rows.numberOfActivesRows,
+  activeRows: state.rows.activeRows,
+  rows: state.rows.rows
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,6 +36,12 @@ const mapDispatchToProps = dispatch => ({
   },
   goToResults: () => {
     dispatch(goToResults());
+  },
+  changeActiveRows: activeRows => {
+    dispatch(changeActiveRows(activeRows));
+  },
+  changeNumberOfActiveRows: rollback => {
+    dispatch(changeNumberOfActiveRows(rollback));
   }
 });
 
