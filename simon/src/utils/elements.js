@@ -1,4 +1,4 @@
-// @flow
+//  
 import React from "react";
 
 import Circle from "../components/circle/Circle.jsx";

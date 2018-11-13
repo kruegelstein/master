@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import {
   SET_USER_ID,
@@ -19,7 +19,8 @@ import {
   RESET_CLICKS,
   RESET_HITS_AND_MISSES,
   HIT_ELEMENT,
-  MISS_ELEMENT
+  MISS_ELEMENT,
+  TOGGLE_INCENTIVES
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -54,6 +55,11 @@ export const missElement = () => ({
 export const resetHitsAndMisses = () => ({
   type: RESET_HITS_AND_MISSES,
   payload: {}
+});
+
+export const toggleIncentives = currentState => ({
+  type: TOGGLE_INCENTIVES,
+  payload: { currentState }
 });
 
 export const saveClick = click => ({ type: SAVE_CLICK, payload: { click } });

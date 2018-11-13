@@ -1,16 +1,18 @@
-// @flow
 import {
   SET_DIMENSION,
   GO_TO_USER_ID_INPUT,
   NEXT_ROUND,
-  CHANGE_INCENTIVES
+  CHANGE_INCENTIVES,
+  HIT_ELEMENT,
+  TOGGLE_INCENTIVES
 } from "../constants/ActionTypes.js";
 
 const initialState = {
   dimension: "",
   round: 1,
   incentives: 10,
-  points: 0
+  points: 0,
+  isIncentiveActive: false
 };
 
 export const adaptation = (state = initialState, action = {}) => {
@@ -24,6 +26,16 @@ export const adaptation = (state = initialState, action = {}) => {
       return {
         ...state,
         round: state.round + 1
+      };
+    case HIT_ELEMENT:
+      return {
+        ...state,
+        points: state.points + state.incentives
+      };
+    case TOGGLE_INCENTIVES:
+      return {
+        ...state,
+        isIncentiveActive: !action.payload.currentState
       };
     case CHANGE_INCENTIVES:
       if (action.payload.rollback) {

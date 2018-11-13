@@ -22,9 +22,6 @@ class Rows extends Component {
     this.elementInterval = null;
     this.adaptationInterval = null;
   }
-  state = {
-    isIncentiveActive: false
-  };
 
   componentWillUnmount() {
     clearInterval(this.elementInterval);
@@ -145,7 +142,7 @@ class Rows extends Component {
             points={this.props.points}
           />
         ) : null}
-        <Incentive active={this.state.isIncentiveActive}>
+        <Incentive active={this.props.isIncentiveActive}>
           + {this.props.incentives}
         </Incentive>
       </div>

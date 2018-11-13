@@ -16,6 +16,12 @@ class Element extends Component {
   clickElement() {
     this.setState({ clicked: true });
     this.props.hitElement();
+    if (this.props.dimension === "Incentives") {
+      this.props.toggleIncentives(this.props.isIncentiveActive);
+      setTimeout(() => {
+        this.props.toggleIncentives(this.props.isIncentiveActive);
+      }, 500);
+    }
   }
 
   checkMissed() {

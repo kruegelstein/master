@@ -1,4 +1,4 @@
-// @flow
+//  
 import {
   CHANGE_NUMBER_OF_ACTIVE_ROWS,
   CHANGE_ACTIVE_ROWS,

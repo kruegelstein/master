@@ -1,4 +1,4 @@
-// @flow
+//  
 
 // Constants
 import { SET_USER_ID, GO_TO_USER_ID_INPUT } from "../constants/ActionTypes.js";

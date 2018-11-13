@@ -1,4 +1,4 @@
-// @flow
+//  
 
 export const createPattern = (patternSize, elements) => {
   let availiableElements = elements;

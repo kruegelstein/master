@@ -1,4 +1,4 @@
-// @flow
+//  
 import {
   SET_NEW_SPEED,
   SET_DIMENSION,

@@ -1,5 +1,3 @@
-// @flow
-
 import { connect } from "react-redux";
 
 // Wrapped component
@@ -28,7 +26,9 @@ const mapStateToProps = state => ({
   hits: state.game.hits,
   misses: state.game.misses,
   incentives: state.adaptation.incentives,
-  points: state.adaptation.points
+  points: state.adaptation.points,
+  isIncentiveActive: state.adaptation.isIncentiveActive,
+  clicks: state.user.clicks
 });
 
 const mapDispatchToProps = dispatch => ({

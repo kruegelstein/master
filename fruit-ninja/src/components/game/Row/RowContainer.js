@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import { connect } from "react-redux";
 
@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Row from "./Row.jsx";
 
 // Actions
-import { changeActiveRows } from "../../../actions/actions.js";
+import {} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   activeRows: state.rows.activeRows

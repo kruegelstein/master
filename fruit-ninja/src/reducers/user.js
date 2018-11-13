@@ -1,5 +1,3 @@
-// @flow
-
 // Constants
 import {
   SET_USER_ID,

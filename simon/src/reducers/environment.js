@@ -1,4 +1,4 @@
-// @flow
+//  
 
 // Constants
 import { WRITE_ELEMENTS_TO_STATE } from "../constants/ActionTypes.js";

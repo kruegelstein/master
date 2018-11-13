@@ -1,5 +1,3 @@
-// @flow
-
 import {
   SET_USER_ID,
   SET_NEW_SPEED,
