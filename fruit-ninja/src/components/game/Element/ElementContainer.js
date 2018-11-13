@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Element from "./Element.jsx";
 
 // Actions
-import {} from "../../../actions/actions.js";
+import { hitElement, missElement } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
   round: state.adaptation.round,
@@ -14,7 +14,14 @@ const mapStateToProps = state => ({
   dimension: state.adaptation.dimension
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  hitElement: () => {
+    dispatch(hitElement());
+  },
+  missElement: () => {
+    dispatch(missElement());
+  }
+});
 
 export default connect(
   mapStateToProps,

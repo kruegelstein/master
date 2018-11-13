@@ -15,6 +15,13 @@ class Element extends Component {
 
   clickElement() {
     this.setState({ clicked: true });
+    this.props.hitElement();
+  }
+
+  checkMissed() {
+    if (!this.state.clicked) {
+      this.props.missElement();
+    }
   }
 
   render() {
@@ -27,6 +34,9 @@ class Element extends Component {
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
+    setTimeout(() => {
+      this.checkMissed();
+    }, 2500);
     return (
       <ElementComp
         key={id}

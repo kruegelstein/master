@@ -9,17 +9,10 @@ import Row from "./Row.jsx";
 import { changeActiveRows } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  round: state.adaptation.round,
-  rollback: state.user.rollback,
-  dimension: state.adaptation.dimension,
   activeRows: state.rows.activeRows
 });
 
-const mapDispatchToProps = dispatch => ({
-  changeActiveRows: activeRows => {
-    dispatch(changeActiveRows(activeRows));
-  }
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,

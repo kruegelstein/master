@@ -5,7 +5,8 @@ import {
   SET_USER_ID,
   GO_TO_USER_ID_INPUT,
   SET_ROLLBACK,
-  SAVE_CLICK
+  SAVE_CLICK,
+  RESET_CLICKS
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -30,6 +31,11 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         clicks: state.clicks.concat(action.paylod.click)
+      };
+    case RESET_CLICKS:
+      return {
+        ...state,
+        clicks: []
       };
     case GO_TO_USER_ID_INPUT:
       return initialState;

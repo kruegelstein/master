@@ -12,7 +12,10 @@ import {
   nextRound,
   setRollback,
   changeActiveRows,
-  changeNumberOfActiveRows
+  changeNumberOfActiveRows,
+  changeIncentives,
+  resetClicks,
+  resetHitsAndMisses
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -21,7 +24,11 @@ const mapStateToProps = state => ({
   dimension: state.adaptation.dimension,
   numberOfActivesRows: state.rows.numberOfActivesRows,
   rows: state.rows.rows,
-  gameStarted: state.game.started
+  gameStarted: state.game.started,
+  hits: state.game.hits,
+  misses: state.game.misses,
+  incentives: state.adaptation.incentives,
+  points: state.adaptation.points
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,6 +49,15 @@ const mapDispatchToProps = dispatch => ({
   },
   changeNumberOfActiveRows: rollback => {
     dispatch(changeNumberOfActiveRows(rollback));
+  },
+  changeIncentives: rollback => {
+    dispatch(changeIncentives(rollback));
+  },
+  resetClicks: () => {
+    dispatch(resetClicks());
+  },
+  resetHitsAndMisses: () => {
+    dispatch(resetHitsAndMisses());
   }
 });
 

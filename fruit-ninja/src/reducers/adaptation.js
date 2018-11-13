@@ -2,12 +2,15 @@
 import {
   SET_DIMENSION,
   GO_TO_USER_ID_INPUT,
-  NEXT_ROUND
+  NEXT_ROUND,
+  CHANGE_INCENTIVES
 } from "../constants/ActionTypes.js";
 
 const initialState = {
   dimension: "",
-  round: 1
+  round: 1,
+  incentives: 10,
+  points: 0
 };
 
 export const adaptation = (state = initialState, action = {}) => {
@@ -21,6 +24,17 @@ export const adaptation = (state = initialState, action = {}) => {
       return {
         ...state,
         round: state.round + 1
+      };
+    case CHANGE_INCENTIVES:
+      if (action.payload.rollback) {
+        return {
+          ...state,
+          incentives: state.incentives - 5
+        };
+      }
+      return {
+        ...state,
+        incentives: state.incentives + 10
       };
     case GO_TO_USER_ID_INPUT:
       return initialState;

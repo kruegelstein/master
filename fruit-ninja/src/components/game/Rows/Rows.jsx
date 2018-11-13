@@ -21,14 +21,9 @@ class Rows extends Component {
     super(props);
     this.elementInterval = null;
     this.adaptationInterval = null;
-    this.hits = 0;
-    this.misses = 0;
-    this.incentives = 10;
-    this.elements = [];
   }
   state = {
-    isIncentiveActive: false,
-    points: 0
+    isIncentiveActive: false
   };
 
   componentWillUnmount() {
@@ -60,7 +55,7 @@ class Rows extends Component {
 
   triggerAdaptation = () => {
     this.props.play();
-    const score = getAdaptationScore(this.hits, this.misses);
+    const score = getAdaptationScore(this.props.hits, this.props.misses);
     // Save results for the round
     this.saveResults();
     // Stop adapting after 10 rounds
@@ -90,7 +85,7 @@ class Rows extends Component {
         this.props.changeNumberOfActiveRows(rollback);
       }
       if (this.props.dimension === "Incentives") {
-        this.incentives = this.incentives - 5;
+        this.props.changeIncentives(rollback);
       }
       this.props.onSetRollback();
     }
@@ -98,7 +93,7 @@ class Rows extends Component {
       this.props.changeNumberOfActiveRows(false);
     }
     if (this.props.dimension === "Incentives") {
-      this.incentives = this.incentives + 10;
+      this.props.changeIncentives(false);
     }
     this.props.onNextRound();
   }
@@ -106,18 +101,22 @@ class Rows extends Component {
   saveResults = () => {
     this.saveRound();
     this.props.resetClicks();
-    this.hits = 0;
-    this.misses = 0;
+    this.props.resetHitsAndMisses();
   };
 
   saveRound = () => {
-    const hits = this.hits;
-    const misses = this.misses;
-    const clicks = this.props.clicks;
-    const round = this.props.round;
-    const rollback = this.props.rollback;
+    const {
+      hits,
+      misses,
+      clicks,
+      round,
+      rollback,
+      dimension,
+      incentives,
+      numberOfActivesRows
+    } = this.props;
     let dimensionProperty;
-    switch (this.props.dimension) {
+    switch (dimension) {
       case "Speed":
         dimensionProperty = getSpeed(round, rollback);
         break;
@@ -125,10 +124,10 @@ class Rows extends Component {
         dimensionProperty = getOpacity(round, rollback);
         break;
       case "Incentives":
-        dimensionProperty = this.incentives;
+        dimensionProperty = incentives;
         break;
       case "Content":
-        dimensionProperty = this.props.numberOfActivesRows;
+        dimensionProperty = numberOfActivesRows;
         break;
       default:
         null;
@@ -143,11 +142,11 @@ class Rows extends Component {
         {this.props.gameStarted ? (
           <DashBoard
             dimension={this.props.dimension}
-            points={this.state.points}
+            points={this.props.points}
           />
         ) : null}
         <Incentive active={this.state.isIncentiveActive}>
-          + {this.incentives}
+          + {this.props.incentives}
         </Incentive>
       </div>
     );

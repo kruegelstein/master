@@ -14,7 +14,12 @@ import {
   CHANGE_ACTIVE_ROWS,
   CHANGE_NUMBER_OF_ACTIVE_ROWS,
   START_GAME,
-  SAVE_CLICK
+  SAVE_CLICK,
+  CHANGE_INCENTIVES,
+  RESET_CLICKS,
+  RESET_HITS_AND_MISSES,
+  HIT_ELEMENT,
+  MISS_ELEMENT
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -31,6 +36,26 @@ export const goToUserIdInput = () => ({
   payload: {}
 });
 
+export const resetClicks = () => ({
+  type: RESET_CLICKS,
+  payload: {}
+});
+
+export const hitElement = () => ({
+  type: HIT_ELEMENT,
+  payload: {}
+});
+
+export const missElement = () => ({
+  type: MISS_ELEMENT,
+  payload: {}
+});
+
+export const resetHitsAndMisses = () => ({
+  type: RESET_HITS_AND_MISSES,
+  payload: {}
+});
+
 export const saveClick = click => ({ type: SAVE_CLICK, payload: { click } });
 
 export const startGame = () => ({ type: START_GAME, payload: {} });
@@ -42,6 +67,11 @@ export const changeActiveRows = activeRows => ({
 
 export const changeNumberOfActiveRows = rollback => ({
   type: CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  payload: { rollback }
+});
+
+export const changeIncentives = rollback => ({
+  type: CHANGE_INCENTIVES,
   payload: { rollback }
 });
 
