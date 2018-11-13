@@ -20,7 +20,8 @@ const mapStateToProps = state => ({
   rollback: state.user.rollback,
   dimension: state.adaptation.dimension,
   numberOfActivesRows: state.rows.numberOfActivesRows,
-  rows: state.rows.rows
+  rows: state.rows.rows,
+  gameStarted: state.game.started
 });
 
 const mapDispatchToProps = dispatch => ({

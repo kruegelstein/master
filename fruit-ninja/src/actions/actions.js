@@ -12,7 +12,8 @@ import {
   NEXT_ROUND,
   SET_ROLLBACK,
   CHANGE_ACTIVE_ROWS,
-  CHANGE_NUMBER_OF_ACTIVE_ROWS
+  CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  START_GAME
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -28,6 +29,8 @@ export const goToUserIdInput = () => ({
   type: GO_TO_USER_ID_INPUT,
   payload: {}
 });
+
+export const startGame = () => ({ type: START_GAME, payload: {} });
 
 export const changeActiveRows = activeRows => ({
   type: CHANGE_ACTIVE_ROWS,

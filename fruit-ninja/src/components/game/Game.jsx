@@ -15,7 +15,6 @@ import { getTime } from "../../utils/helper.js";
 
 class Game extends Component {
   state = {
-    gameStarted: false,
     clicks: []
   };
 
@@ -66,7 +65,7 @@ class Game extends Component {
 
   start = () => {
     this.play();
-    this.setState({ gameStarted: true });
+    this.props.startGame();
   };
 
   play = () => {
@@ -85,12 +84,11 @@ class Game extends Component {
       return (
         <GameComp id="element" userId={this.props.userId}>
           <Rows
-            gameStarted={this.state.gameStarted}
             resetClicks={() => this.resetClicks()}
             clicks={this.state.clicks}
             play={() => this.play()}
           />
-          {!this.state.gameStarted ? (
+          {!this.props.gameStarted ? (
             <Button middle onClick={() => this.start()}>
               Start!
             </Button>

@@ -1,12 +1,19 @@
 // @flow
 
 // Constants
-import {} from "../constants/ActionTypes.js";
+import { START_GAME } from "../constants/ActionTypes.js";
 
-const initialState = {};
+const initialState = {
+  started: false
+};
 
 export const game = (state = initialState, action = {}) => {
   switch (action.type) {
+    case START_GAME:
+      return {
+        ...state,
+        started: true
+      };
     default:
       return { ...state };
   }
