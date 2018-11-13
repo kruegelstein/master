@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import {
   GO_TO_INTRO,

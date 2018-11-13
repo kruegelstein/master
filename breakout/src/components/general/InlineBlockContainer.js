@@ -1,5 +1,3 @@
-// @flow
-
 import styled from "styled-components";
 
 const inlineBlockContainer = styled.div`

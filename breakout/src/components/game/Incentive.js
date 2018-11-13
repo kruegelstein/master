@@ -1,5 +1,3 @@
-// @flow
-
 import styled, { keyframes } from "styled-components";
 
 const show = keyframes`

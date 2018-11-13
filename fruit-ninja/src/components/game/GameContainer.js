@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import { connect } from "react-redux";
 
@@ -6,33 +6,20 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 // Actions
-import {
-  saveRound,
-  goToResults,
-  nextRound,
-  setRollback
-} from "../../actions/actions.js";
+import { startGame, saveClick } from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id,
-  dimension: state.adaptation.dimension,
-  round: state.adaptation.round,
   isResults: state.navigation.results,
-  rollback: state.user.rollback
+  gameStarted: state.game.started
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSaveRound: (round, hits, misses, clicks, dimensionProperty) => {
-    dispatch(saveRound(round, hits, misses, clicks, dimensionProperty));
+  startGame: () => {
+    dispatch(startGame());
   },
-  goToResults: () => {
-    dispatch(goToResults());
-  },
-  onNextRound: () => {
-    dispatch(nextRound());
-  },
-  onSetRollback: () => {
-    dispatch(setRollback());
+  saveClick: click => {
+    dispatch(saveClick(click));
   }
 });
 

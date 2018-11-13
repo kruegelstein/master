@@ -1,4 +1,4 @@
-// @flow
+//  
 
 export const GO_TO_INTRO: "GO_TO_INTRO" = "GO_TO_INTRO";
 export const SET_USER_ID: "SET_USER_ID" = "SET_USER_ID";

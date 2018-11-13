@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import styled, { keyframes } from "styled-components";
 
@@ -11,7 +11,7 @@ const element = styled.img`
   width: 5rem;
   height: 5rem;
   animation: ${props => `${down} ${props.speed}s linear`};
-  display: ${props => (props.visible ? "block" : "none")};
+  display: ${props => (props.clicked ? "none" : "block")};
   opacity: ${props => props.opacity};
 `;
 

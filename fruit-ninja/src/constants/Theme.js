@@ -1,4 +1,4 @@
-// @flow
+//  
 
 // Images
 import Tennis from "../assets/Tennis.svg";

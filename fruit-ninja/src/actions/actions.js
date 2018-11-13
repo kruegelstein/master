@@ -1,4 +1,4 @@
-// @flow
+//  
 
 import {
   SET_USER_ID,
@@ -10,7 +10,17 @@ import {
   STORE_IN_DB_ERROR,
   GO_TO_USER_ID_INPUT,
   NEXT_ROUND,
-  SET_ROLLBACK
+  SET_ROLLBACK,
+  CHANGE_ACTIVE_ROWS,
+  CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  START_GAME,
+  SAVE_CLICK,
+  CHANGE_INCENTIVES,
+  RESET_CLICKS,
+  RESET_HITS_AND_MISSES,
+  HIT_ELEMENT,
+  MISS_ELEMENT,
+  TOGGLE_INCENTIVES
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -25,6 +35,50 @@ export const goToResults = () => ({ type: GO_TO_RESULTS, payload: {} });
 export const goToUserIdInput = () => ({
   type: GO_TO_USER_ID_INPUT,
   payload: {}
+});
+
+export const resetClicks = () => ({
+  type: RESET_CLICKS,
+  payload: {}
+});
+
+export const hitElement = () => ({
+  type: HIT_ELEMENT,
+  payload: {}
+});
+
+export const missElement = () => ({
+  type: MISS_ELEMENT,
+  payload: {}
+});
+
+export const resetHitsAndMisses = () => ({
+  type: RESET_HITS_AND_MISSES,
+  payload: {}
+});
+
+export const toggleIncentives = currentState => ({
+  type: TOGGLE_INCENTIVES,
+  payload: { currentState }
+});
+
+export const saveClick = click => ({ type: SAVE_CLICK, payload: { click } });
+
+export const startGame = () => ({ type: START_GAME, payload: {} });
+
+export const changeActiveRows = activeRows => ({
+  type: CHANGE_ACTIVE_ROWS,
+  payload: { activeRows }
+});
+
+export const changeNumberOfActiveRows = rollback => ({
+  type: CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  payload: { rollback }
+});
+
+export const changeIncentives = rollback => ({
+  type: CHANGE_INCENTIVES,
+  payload: { rollback }
 });
 
 export const saveRound = (round, hits, misses, clicks, dimensionProperty) => ({

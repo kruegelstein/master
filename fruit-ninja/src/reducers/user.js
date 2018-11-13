@@ -1,15 +1,16 @@
-// @flow
-
 // Constants
 import {
   SET_USER_ID,
   GO_TO_USER_ID_INPUT,
-  SET_ROLLBACK
+  SET_ROLLBACK,
+  SAVE_CLICK,
+  RESET_CLICKS
 } from "../constants/ActionTypes.js";
 
 const initialState = {
   id: null,
-  rollback: false
+  rollback: false,
+  clicks: []
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -23,6 +24,16 @@ export const user = (state = initialState, action = {}) => {
       return {
         ...state,
         rollback: true
+      };
+    case SAVE_CLICK:
+      return {
+        ...state,
+        clicks: state.clicks.concat(action.paylod.click)
+      };
+    case RESET_CLICKS:
+      return {
+        ...state,
+        clicks: []
       };
     case GO_TO_USER_ID_INPUT:
       return initialState;

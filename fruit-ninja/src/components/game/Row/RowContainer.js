@@ -1,11 +1,15 @@
+//  
+
 import { connect } from "react-redux";
 
-// Components
-import App from "./App.jsx";
+// Wrapped component
+import Row from "./Row.jsx";
+
+// Actions
+import {} from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
-  userId: state.user.id,
-  isResults: state.navigation.results
+  activeRows: state.rows.activeRows
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -13,4 +17,4 @@ const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(Row);
