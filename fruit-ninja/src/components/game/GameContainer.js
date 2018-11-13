@@ -6,35 +6,14 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 // Actions
-import {
-  saveRound,
-  goToResults,
-  nextRound,
-  setRollback
-} from "../../actions/actions.js";
+import {} from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id,
-  dimension: state.adaptation.dimension,
-  round: state.adaptation.round,
-  isResults: state.navigation.results,
-  rollback: state.user.rollback
+  isResults: state.navigation.results
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSaveRound: (round, hits, misses, clicks, dimensionProperty) => {
-    dispatch(saveRound(round, hits, misses, clicks, dimensionProperty));
-  },
-  goToResults: () => {
-    dispatch(goToResults());
-  },
-  onNextRound: () => {
-    dispatch(nextRound());
-  },
-  onSetRollback: () => {
-    dispatch(setRollback());
-  }
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,
