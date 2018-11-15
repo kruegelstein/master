@@ -38,10 +38,13 @@ class Element extends Component {
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
     const id = Math.floor(Math.random() * 1000);
-    const xCoordinate = Math.floor(Math.random() * 800);
+    const yCoordinate =
+      dimension === "Content" ? Math.floor(Math.random() * 200) : 0;
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
+    const delay = Math.floor(Math.random() * 250);
+
     return (
       <ElementComp
         key={id}
@@ -50,7 +53,8 @@ class Element extends Component {
         onClick={() => this.clickElement(this.props.key)}
         opacity={opacity}
         speed={speed}
-        xCoordinate={xCoordinate}
+        yCoordinate={yCoordinate}
+        xCoordinate={this.props.xCoordinate}
         clicked={this.state.clicked}
       />
     );

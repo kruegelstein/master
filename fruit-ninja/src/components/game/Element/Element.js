@@ -3,13 +3,14 @@
 import styled, { keyframes } from "styled-components";
 
 const down = keyframes`
-  0% {top: 0}
+  0% {top: ${props => `${props.yCoordinate}px`}}
   100% {top: 55rem}
 `;
 
 const element = styled.img`
-  width: 5rem;
-  height: 5rem;
+  width: 90px;
+  height: 90px;
+  top: ${props => `${props.yCoordinate}px`}
   right: ${props => `${props.xCoordinate}px`};
   position: absolute;
   animation: ${props => `${down} ${props.speed}s linear`};

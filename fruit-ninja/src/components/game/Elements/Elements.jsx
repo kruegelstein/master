@@ -5,12 +5,16 @@ import { theme } from "../../../constants/Theme.js";
 // Styled componets
 import Element from "../Element/ElementContainer.js";
 
+// Sounds
+import beep from "../../../sounds/Beep.mov";
+
 // Helper
 import {
   getOpacity,
   getAdaptationScore,
   getSpeed,
-  getTime
+  getTime,
+  getCoordinates
 } from "../../../utils/helper.js";
 
 // Interval to adapt is 12sec
@@ -27,6 +31,7 @@ class Elements extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.gameStarted && nextProps.gameStarted) {
       this.createElements();
+
       this.adaptationInterval = setInterval(
         this.triggerAdaptation,
         ADAPTION_INTERVAL
@@ -50,7 +55,7 @@ class Elements extends Component {
   };
 
   triggerAdaptation = () => {
-    this.props.play();
+    this.play();
     const score = getAdaptationScore(this.props.hits, this.props.misses);
     // Save results for the round
     this.saveResults();
@@ -130,12 +135,30 @@ class Elements extends Component {
     }
     this.props.onSaveRound(round, hits, misses, clicks, dimensionProperty);
   };
+
+  play = () => {
+    const video = document.getElementById("video");
+    video.play();
+  };
+
   render() {
-    console.log("RENDERED");
+    const coordinates = getCoordinates(this.props.elements);
     if (this.props.gameStarted) {
-      return this.props.elements.map(element => (
-        <Element key={element} elementId={element} />
-      ));
+      return (
+        <div>
+          {this.props.elements.map((element, index) => {
+            const xCoordinate = coordinates[index];
+            return (
+              <Element
+                key={element}
+                elementId={element}
+                xCoordinate={xCoordinate}
+              />
+            );
+          })}
+          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
+        </div>
+      );
     }
     return null;
   }

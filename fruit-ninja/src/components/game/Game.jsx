@@ -10,9 +10,6 @@ import Elements from "./Elements/ElementsContainer.js";
 // Helper
 import { getTime } from "../../utils/helper.js";
 
-// Sounds
-import beep from "../../sounds/Beep.mov";
-
 class Game extends Component {
   state = {
     click: {
@@ -82,26 +79,19 @@ class Game extends Component {
   }
 
   start = () => {
-    this.play();
     this.props.startGame();
-  };
-
-  play = () => {
-    const video = document.getElementById("video");
-    video.play();
   };
 
   render() {
     if (!this.props.isResults) {
       return (
         <GameComp id="element" userId={this.props.userId}>
-          <Elements play={() => this.play()} />
+          <Elements />
           {!this.props.gameStarted ? (
             <Button middle onClick={() => this.start()}>
               Start!
             </Button>
           ) : null}
-          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </GameComp>
       );
     }

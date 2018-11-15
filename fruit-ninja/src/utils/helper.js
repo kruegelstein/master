@@ -116,3 +116,26 @@ export const getSpeed = (round, rollback) => {
       return 2.5;
   }
 };
+
+const createCoordinates = () => {
+  const step = 100;
+  let array = [];
+  for (let i = 0; i < 13; i++) {
+    array.push(i * step);
+  }
+  return array;
+};
+
+export const getCoordinates = elements => {
+  const possibleCoordinates = createCoordinates();
+  let coordinates = [];
+
+  for (let i = 0; i < elements.length; i++) {
+    let index = Math.floor(Math.random() * 13);
+    if (coordinates.indexOf(possibleCoordinates[index]) !== -1) {
+      index = Math.floor(Math.random() * 13);
+    }
+    coordinates.push(possibleCoordinates[index]);
+  }
+  return coordinates;
+};

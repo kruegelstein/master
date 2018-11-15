@@ -31,10 +31,6 @@ export const game = (state = initialState, action = {}) => {
       };
     case HIT_ELEMENT:
       const a = action.payload.key;
-      console.log("KEY: ", a);
-      const newElements = state.elements.filter(element => element !== a);
-      console.log("+++", state.elements);
-      console.log("####", newElements);
       return {
         ...state,
         hits: state.hits + 1,
