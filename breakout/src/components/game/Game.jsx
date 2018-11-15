@@ -99,8 +99,6 @@ class Game extends Component {
                 click: {
                   start: 0,
                   end: 0,
-                  xCoordinate: 0,
-                  yCoordinate: 0,
                   force: 0,
                   duration: 0
                 }
@@ -558,10 +556,15 @@ class Game extends Component {
     }, 15);
   };
 
+  showClick = event => {
+    console.log("event", event.clientX, event.clientY);
+  };
+
   render() {
     return (
       <div style={{ height: "100%", width: "100%" }}>
         <Canvas
+          onClick={event => this.showClick(event)}
           width={this.props.theme.game.width}
           height={this.props.theme.game.height}
           id="gameCanvas"

@@ -9,10 +9,17 @@ import ElementComp from "./Element.js";
 import { getOpacity, getSpeed } from "../../../utils/helper.js";
 
 class Element extends Component {
-  state = {
-    clicked: false
+  state = { clicked: false };
+  componentDidMount = () => {
+    this.checkForAnimationEnd();
   };
 
+  checkForAnimationEnd = () => {
+    const element = document.getElementById("animation");
+    element.addEventListener("animationend", () => {
+      this.props.missElement();
+    });
+  };
   clickElement() {
     this.setState({ clicked: true });
     this.props.hitElement();
@@ -21,12 +28,6 @@ class Element extends Component {
       setTimeout(() => {
         this.props.toggleIncentives(this.props.isIncentiveActive);
       }, 500);
-    }
-  }
-
-  checkMissed() {
-    if (!this.state.clicked) {
-      this.props.missElement();
     }
   }
 
@@ -40,13 +41,10 @@ class Element extends Component {
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
-    setTimeout(() => {
-      this.checkMissed();
-    }, 2500);
     return (
       <ElementComp
         key={id}
-        id={id}
+        id="animation"
         src={iconValue}
         onClick={() => this.clickElement()}
         opacity={opacity}

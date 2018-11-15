@@ -13,6 +13,7 @@ import {
   changeNumberOfActiveRows,
   changeIncentives,
   resetClicks,
+  saveClick,
   resetHitsAndMisses
 } from "../../../actions/actions.js";
 
@@ -52,6 +53,9 @@ const mapDispatchToProps = dispatch => ({
   },
   changeIncentives: rollback => {
     dispatch(changeIncentives(rollback));
+  },
+  saveClick: click => {
+    dispatch(saveClick(click));
   },
   resetClicks: () => {
     dispatch(resetClicks());

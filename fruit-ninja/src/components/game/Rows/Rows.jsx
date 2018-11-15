@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Pressure from "pressure";
 
 // Styled componets
 import Row from "../Row/RowContainer.js";
@@ -9,35 +10,104 @@ import DashBoard from "../../dashBoard/DashBoard.jsx";
 import {
   getOpacity,
   getAdaptationScore,
-  getSpeed
+  getSpeed,
+  getTime
 } from "../../../utils/helper.js";
 
-// Interval to adapt is 10sec
-const ADAPTION_INTERVAL = 10000;
-const ELEMENTS_INTERVAL = 2500;
+// Interval to adapt is 12sec
+const ADAPTION_INTERVAL = 12000;
 
 class Rows extends Component {
   constructor(props) {
     super(props);
-    this.elementInterval = null;
     this.adaptationInterval = null;
   }
 
+  state = {
+    click: {
+      start: 0,
+      end: 0,
+      xCoordinate: 0,
+      yCoordinate: 0,
+      force: 0,
+      duration: 0
+    }
+  };
+
+  componentDidMount() {
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (iOS) {
+      Pressure.set("#element", {
+        start: event => {
+          const clickStart = Date.now();
+          let xCoordinate;
+          let yCoordinate;
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinate = touch.clientX;
+            yCoordinate = touch.clientY;
+          }
+          this.setState({
+            click: {
+              ...this.state.click,
+              start: clickStart,
+              xCoordinate,
+              yCoordinate
+            }
+          });
+        },
+        change: (force, event) => {
+          this.setState({ click: { ...this.state.click, force } });
+        },
+        end: () => {
+          const clickEnd = Date.now();
+          const clickStart = this.state.click.start;
+          const clickDuration = getTime(clickStart, clickEnd);
+          this.setState(
+            {
+              click: {
+                ...this.state.click,
+                end: clickEnd,
+                duration: clickDuration
+              }
+            },
+            () => {
+              this.props.saveClick(this.state.click);
+              this.setState({
+                click: {
+                  start: 0,
+                  end: 0,
+                  xCoordinate: 0,
+                  yCoordinate: 0,
+                  force: 0,
+                  duration: 0
+                }
+              });
+            }
+          );
+        }
+      });
+    }
+  }
+
   componentWillUnmount() {
-    clearInterval(this.elementInterval);
     clearInterval(this.adaptationInterval);
   }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.gameStarted && nextProps.gameStarted) {
-      this.elementInterval = setInterval(
-        this.changeActiveRows,
-        ELEMENTS_INTERVAL
-      );
+      this.changeActiveRows();
       this.adaptationInterval = setInterval(
         this.triggerAdaptation,
         ADAPTION_INTERVAL
       );
+    }
+    if (
+      this.props.hits !== nextProps.hits ||
+      this.props.misses !== nextProps.misses
+    ) {
+      this.changeActiveRows();
     }
   }
 
@@ -134,7 +204,7 @@ class Rows extends Component {
 
   render() {
     return (
-      <div>
+      <div id="element">
         {this.props.rows.map((row, index) => <Row key={index} id={row} />)}
         {this.props.gameStarted ? (
           <DashBoard

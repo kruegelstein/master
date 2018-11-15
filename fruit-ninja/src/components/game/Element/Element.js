@@ -1,15 +1,16 @@
-//  
+//
 
 import styled, { keyframes } from "styled-components";
 
 const down = keyframes`
-  0% {transform: translateY(+0%);}
-  100% {transform: translateY(+1000%);}
+  0% {top: 0}
+  100% {top: 55rem}
 `;
 
 const element = styled.img`
   width: 5rem;
   height: 5rem;
+  position: absolute;
   animation: ${props => `${down} ${props.speed}s linear`};
   display: ${props => (props.clicked ? "none" : "block")};
   opacity: ${props => props.opacity};

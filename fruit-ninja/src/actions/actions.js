@@ -1,5 +1,3 @@
-//  
-
 import {
   SET_USER_ID,
   SET_DIMENSION,

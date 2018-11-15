@@ -1,5 +1,3 @@
-//  
-
 import styled from "styled-components";
 
 const game = styled.div`
@@ -7,6 +5,8 @@ const game = styled.div`
   height: 90%;
   background-color: white;
   display: ${props => (props.userId ? "initial" : "none")}
+  -webkit-touch-callout: initial !important;
+  -webkit-user-select: initial !important;
   margin: auto;
 `;
 
