@@ -49,7 +49,7 @@ export const getTime = (start, end) => {
 };
 
 export const getAdaptationScore = (destroyedBricks, losses) => {
-  return (destroyedBricks - losses) * 10;
+  return destroyedBricks - losses * 2;
 };
 
 export const checkCollision = (obj1, obj2) => {

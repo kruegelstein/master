@@ -257,6 +257,7 @@ class Game extends Component {
       if (this.props.round < 3) {
         // first two rounds adapt for learning
         this.adapt();
+        return;
       }
       if (score > 0) {
         // Positive score --> adapt
@@ -273,7 +274,7 @@ class Game extends Component {
     this.balls[this.ballCount - 1] = {
       x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
       y: this.height / 2,
-      radius: 6,
+      radius: 8,
       speedX: 0,
       speedY: this.props.speed
     };
@@ -315,17 +316,17 @@ class Game extends Component {
       this.balls[i] = {
         x: this.width / 2 - 1, // -1 => move the ball slightly to give him a starting direction
         y: this.height / 2,
-        radius: 6,
+        radius: 8,
         speedX: 0,
         speedY: this.props.speed
       };
     }
     this.paddle = {
-      w: 100,
-      h: 10,
+      w: 160,
+      h: 5,
       x: this.width / 2 - 100 / 2, // 100 => paddle.w
       y: this.height - 10,
-      speed: 11
+      speed: 18
     };
     this.bricks = [];
     this.ballOn = false;
@@ -336,7 +337,7 @@ class Game extends Component {
     this.balls[ballIndex] = {
       x: this.width / 2 - 1 + 5 * ballIndex, // -1 => move the ball slightly to give him a starting direction
       y: this.height / 2,
-      radius: 6,
+      radius: 8,
       speedX: 0,
       speedY: this.props.speed
     };
@@ -556,15 +557,10 @@ class Game extends Component {
     }, 15);
   };
 
-  showClick = event => {
-    console.log("event", event.clientX, event.clientY);
-  };
-
   render() {
     return (
       <div style={{ height: "100%", width: "100%" }}>
         <Canvas
-          onClick={event => this.showClick(event)}
           width={this.props.theme.game.width}
           height={this.props.theme.game.height}
           id="gameCanvas"
