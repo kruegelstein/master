@@ -1,21 +1,14 @@
-//
-
 import styled, { keyframes } from "styled-components";
 
-const down = keyframes`
-  0% {top: ${props => `${props.yCoordinate}px`}}
-  100% {top: 55rem}
-`;
-
 const element = styled.img`
-  width: 100px;
-  height: 100px;
-  top: ${props => `${props.yCoordinate}px`}
-  right: ${props => `${props.xCoordinate}px`};
+  width: 85px;
+  height: 85px;
+  margin: auto;
   position: absolute;
-  animation: ${props => `${down} ${props.speed}s linear`};
-  display: ${props => (props.clicked ? "none" : "block")};
-  opacity: ${props => props.opacity};
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 `;
 
 export default element;

@@ -4,6 +4,7 @@ import { theme } from "../../../constants/Theme.js";
 
 // Styled componets
 import ElementComp from "./Element.js";
+import ClickArea from "./ClickArea.js";
 import Incentive from "../Incentives/IncentiveContainer.js";
 
 // Helper
@@ -47,7 +48,6 @@ class Element extends Component {
     const array = Object.keys(icons);
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
-    const id = Math.floor(Math.random() * 1000);
     const yCoordinate =
       dimension === "Content" ? Math.floor(Math.random() * 200) : 0;
     const opacity =
@@ -56,17 +56,17 @@ class Element extends Component {
 
     return (
       <div>
-        <ElementComp
-          key={id}
-          id="animation"
-          src={iconValue}
+        <ClickArea
           onClick={() => this.clickElement(this.props.key)}
           opacity={opacity}
           speed={speed}
           yCoordinate={yCoordinate}
           xCoordinate={this.props.xCoordinate}
           clicked={this.state.clicked}
-        />
+          id="animation"
+        >
+          <ElementComp src={iconValue} />
+        </ClickArea>
         <Incentive />
       </div>
     );
