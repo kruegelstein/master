@@ -19,12 +19,12 @@ export const getEnrichedResults = results => {
   const selectedElements = results.selectedElements;
   const startTime = results.startTime;
   const endTime = results.endTime;
-  const clicks = results.clicks;
+  const clicks = results.clicks || [];
   // Calculate error, success, timeTaken
   const errors = getErrors(pattern, selectedElements);
-  const errorRate = errors / patternSize * 100;
+  const errorRate = (errors / patternSize) * 100;
   const correct = patternSize - errors;
-  const successRate = correct / patternSize * 100;
+  const successRate = (correct / patternSize) * 100;
   const timeTakenInSec = getTime(startTime, endTime);
 
   const enrichedResults = {

@@ -20,9 +20,6 @@ import {
   getTime
 } from "../../../utils/results.js";
 
-// Constants
-import { PATTERN_SIZE } from "../../../constants/Pattern.js";
-
 class UserInputStage extends Component {
   componentDidMount() {
     const iOS =
