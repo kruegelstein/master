@@ -28,7 +28,7 @@ export const user = (state = initialState, action = {}) => {
     case SAVE_CLICK:
       return {
         ...state,
-        clicks: state.clicks.concat(action.paylod.click)
+        clicks: state.clicks.concat(action.payload.click)
       };
     case RESET_CLICKS:
       return {

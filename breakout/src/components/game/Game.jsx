@@ -25,10 +25,6 @@ const BALL_OFFSET = 8;
 // Interval to adapt is 10sec
 const ADAPTION_INTERVAL = 10000;
 
-let xCoordinates = [];
-let yCoordinates = [];
-let forces = [];
-
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -53,9 +49,14 @@ class Game extends Component {
   state = {
     brickCount: 0,
     losses: 0,
-    clicks: [],
     points: 0,
-    isIncentiveActive: false
+    isIncentiveActive: false,
+    click: {
+      start: 0,
+      end: 0,
+      force: 0,
+      duration: 0
+    }
   };
 
   componentWillUnmount() {
@@ -69,46 +70,43 @@ class Game extends Component {
     if (iOS) {
       Pressure.set("#gameCanvas", {
         start: event => {
-          const clickId = this.state.clicks.length;
           const clickStart = Date.now();
-          let clickInfo;
-          if (event.touches.length === 1) {
-            const touch = event.touches[0];
-            xCoordinates.push(touch.clientX);
-            yCoordinates.push(touch.clientY);
-            clickInfo = {
-              id: clickId,
-              clickStart
-            };
-          }
-          const oldClicks = this.state.clicks;
-          const newClick = [clickInfo];
-          const clicks = oldClicks.concat(newClick);
           this.setState({
-            clicks
+            click: {
+              ...this.state.click,
+              start: clickStart
+            }
           });
         },
         change: (force, event) => {
-          if (event.touches.length === 1) {
-            const touch = event.touches[0];
-            xCoordinates.push(touch.clientX);
-            yCoordinates.push(touch.clientY);
-          }
-          forces.push(force);
+          this.setState({ click: { ...this.state.click, force } });
         },
         end: () => {
-          const currentClick = this.state.clicks[this.state.clicks.length - 1];
           const clickEnd = Date.now();
-          const clickStart = currentClick.clickStart;
+          const clickStart = this.state.click.start;
           const clickDuration = getTime(clickStart, clickEnd);
-          currentClick.clickEnd = clickEnd;
-          currentClick.duration = clickDuration;
-          currentClick.forces = forces;
-          currentClick.xCoordinates = xCoordinates;
-          currentClick.yCoordinates = yCoordinates;
-          xCoordinates = [];
-          xCoordinates = [];
-          forces = [];
+          this.setState(
+            {
+              click: {
+                ...this.state.click,
+                end: clickEnd,
+                duration: clickDuration
+              }
+            },
+            () => {
+              this.props.saveClick(this.state.click);
+              this.setState({
+                click: {
+                  start: 0,
+                  end: 0,
+                  xCoordinate: 0,
+                  yCoordinate: 0,
+                  force: 0,
+                  duration: 0
+                }
+              });
+            }
+          );
         }
       });
     }
@@ -188,10 +186,10 @@ class Game extends Component {
 
   saveResults = () => {
     this.saveRound(this.state);
+    this.props.resetClicks();
     this.setState({
       brickCount: 0,
-      losses: 0,
-      clicks: []
+      losses: 0
     });
   };
 
@@ -286,7 +284,7 @@ class Game extends Component {
   saveRound = state => {
     const destroyedBricks = state.brickCount;
     const losses = state.losses;
-    const clicks = state.clicks;
+    const clicks = this.props.clicks;
     const round = this.props.round;
     let dimensionProperty;
     switch (this.props.adaptationDimension) {
@@ -329,7 +327,7 @@ class Game extends Component {
       h: 10,
       x: this.width / 2 - 100 / 2, // 100 => paddle.w
       y: this.height - 10,
-      speed: 6
+      speed: 11
     };
     this.bricks = [];
     this.ballOn = false;
@@ -431,7 +429,7 @@ class Game extends Component {
     ) {
       ball.speedY = -ball.speedY;
       const angle = ball.x - (this.paddle.x + this.paddle.w / 2);
-      ball.speedX = angle * 0.1;
+      ball.speedX = angle * 0.13;
     }
   };
 

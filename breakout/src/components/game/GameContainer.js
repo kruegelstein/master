@@ -4,14 +4,21 @@ import { connect } from "react-redux";
 import Game from "./Game.jsx";
 
 // Actions
-import { setNewSpeed, saveRound, goToResults } from "../../actions/actions.js";
+import {
+  setNewSpeed,
+  saveRound,
+  goToResults,
+  saveClick,
+  resetClicks
+} from "../../actions/actions.js";
 
 const mapStateToProps = state => ({
   userId: state.user.id,
   adaptationDimension: state.adaptation.dimension,
   speed: state.adaptation.speed,
   round: state.adaptation.round,
-  isResults: state.navigation.results
+  isResults: state.navigation.results,
+  clicks: state.user.clicks
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -25,6 +32,12 @@ const mapDispatchToProps = dispatch => ({
   },
   goToResults: () => {
     dispatch(goToResults());
+  },
+  saveClick: click => {
+    dispatch(saveClick(click));
+  },
+  resetClicks: () => {
+    dispatch(resetClicks());
   }
 });
 

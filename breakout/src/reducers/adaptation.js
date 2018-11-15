@@ -1,4 +1,3 @@
-//  
 import {
   SET_NEW_SPEED,
   SET_DIMENSION,
@@ -31,7 +30,7 @@ export const adaptation = (state = initialState, action = {}) => {
         round: state.round + 1
       };
     case SET_DIMENSION:
-      const speed = state.dimension === "Speed" ? 3 : 6;
+      const speed = action.payload.dimension === "Speed" ? 3 : 6;
       return {
         ...state,
         dimension: action.payload.dimension,
