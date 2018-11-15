@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { theme } from "../../../constants/Theme.js";
-
 // Styled componets
 import Element from "../Element/ElementContainer.js";
 
@@ -13,7 +11,6 @@ import {
   getOpacity,
   getAdaptationScore,
   getSpeed,
-  getTime,
   getCoordinates
 } from "../../../utils/helper.js";
 

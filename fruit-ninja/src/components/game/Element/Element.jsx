@@ -43,7 +43,6 @@ class Element extends Component {
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
-    const delay = Math.floor(Math.random() * 250);
 
     return (
       <ElementComp
