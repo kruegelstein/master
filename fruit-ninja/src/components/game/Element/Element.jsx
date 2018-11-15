@@ -26,6 +26,7 @@ class Element extends Component {
   checkForAnimationEnd = () => {
     const element = document.getElementById("animation");
     element.addEventListener("animationend", () => {
+      this.setState({ clicked: true });
       this.props.missElement(this.props.elementId);
     });
   };

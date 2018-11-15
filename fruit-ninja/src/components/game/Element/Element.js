@@ -8,8 +8,8 @@ const down = keyframes`
 `;
 
 const element = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   top: ${props => `${props.yCoordinate}px`}
   right: ${props => `${props.xCoordinate}px`};
   position: absolute;
