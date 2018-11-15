@@ -19,12 +19,47 @@ class Game extends Component {
       yCoordinate: 0,
       force: 0,
       duration: 0
+    },
+    fallbackClick: {
+      start: 0,
+      xCoordinate: 0,
+      yCoordinate: 0
     }
   };
+
+  handleFallbackClickStart = event => {
+    const clickStart = Date.now();
+    const xCoordinate = event.touches[0].clientX;
+    const yCoordinate = event.touches[0].clientY;
+    this.setState(
+      {
+        ...this.state,
+        fallbackClick: { start: clickStart, xCoordinate, yCoordinate }
+      },
+      () => {
+        this.props.saveClick(this.state.fallbackClick);
+        this.setState({
+          ...this.state,
+          fallbackClick: {
+            start: 0,
+            xCoordinate: 0,
+            yCoordinate: 0
+          }
+        });
+      }
+    );
+  };
+
   componentDidMount() {
     const iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (iOS) {
+      const element = document.getElementById("element");
+      element.addEventListener(
+        "touchstart",
+        this.handleFallbackClickStart,
+        false
+      );
       Pressure.set("#element", {
         start: event => {
           const clickStart = Date.now();
@@ -36,6 +71,7 @@ class Game extends Component {
             yCoordinate = touch.clientY;
           }
           this.setState({
+            ...this.state,
             click: {
               ...this.state.click,
               start: clickStart,
@@ -45,7 +81,10 @@ class Game extends Component {
           });
         },
         change: (force, event) => {
-          this.setState({ click: { ...this.state.click, force } });
+          this.setState({
+            ...this.state,
+            click: { ...this.state.click, force }
+          });
         },
         end: () => {
           const clickEnd = Date.now();
@@ -53,6 +92,7 @@ class Game extends Component {
           const clickDuration = getTime(clickStart, clickEnd);
           this.setState(
             {
+              ...this.state,
               click: {
                 ...this.state.click,
                 end: clickEnd,
@@ -62,6 +102,7 @@ class Game extends Component {
             () => {
               this.props.saveClick(this.state.click);
               this.setState({
+                ...this.state,
                 click: {
                   start: 0,
                   end: 0,
@@ -85,14 +126,16 @@ class Game extends Component {
   render() {
     if (!this.props.isResults) {
       return (
-        <GameComp id="element" userId={this.props.userId}>
-          <Elements />
-          {!this.props.gameStarted ? (
-            <Button middle onClick={() => this.start()}>
-              Start!
-            </Button>
-          ) : null}
-        </GameComp>
+        <div id="element">
+          <GameComp userId={this.props.userId}>
+            <Elements />
+            {!this.props.gameStarted ? (
+              <Button middle onClick={() => this.start()}>
+                Start!
+              </Button>
+            ) : null}
+          </GameComp>
+        </div>
       );
     }
     return null;

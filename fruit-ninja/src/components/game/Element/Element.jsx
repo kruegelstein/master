@@ -57,7 +57,7 @@ class Element extends Component {
     return (
       <div>
         <ClickArea
-          onClick={() => this.clickElement(this.props.key)}
+          onClick={event => this.clickElement(this.props.key)}
           opacity={opacity}
           speed={speed}
           yCoordinate={yCoordinate}

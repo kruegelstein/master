@@ -73,8 +73,12 @@ class UserInputStage extends Component {
     const iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (iOS) {
-      var el = document.getElementById("element");
-      el.addEventListener("touchstart", this.handleFallbackClickStart, false);
+      const element = document.getElementById("element");
+      element.addEventListener(
+        "touchstart",
+        this.handleFallbackClickStart,
+        false
+      );
       Pressure.set("#element", {
         start: event => {
           const clickStart = Date.now();
