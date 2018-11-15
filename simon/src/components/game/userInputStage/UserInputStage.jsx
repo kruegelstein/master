@@ -37,15 +37,44 @@ class UserInputStage extends Component {
         yCoordinate: 0,
         force: 0,
         duration: 0
+      },
+      fallbackClick: {
+        start: 0,
+        xCoordinate: 0,
+        yCoordinate: 0
       }
     };
     this.clicking = new Audio(click);
   }
+  handleFallbackClickStart = event => {
+    const clickStart = Date.now();
+    const xCoordinate = event.touches[0].clientX;
+    const yCoordinate = event.touches[0].clientY;
+    this.setState(
+      {
+        ...this.state,
+        fallbackClick: { start: clickStart, xCoordinate, yCoordinate }
+      },
+      () => {
+        this.props.saveClick(this.state.fallbackClick);
+        this.setState({
+          ...this.state,
+          fallbackClick: {
+            start: 0,
+            xCoordinate: 0,
+            yCoordinate: 0
+          }
+        });
+      }
+    );
+  };
 
   componentDidMount() {
     const iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (iOS) {
+      var el = document.getElementById("element");
+      el.addEventListener("touchstart", this.handleFallbackClickStart, false);
       Pressure.set("#element", {
         start: event => {
           const clickStart = Date.now();
