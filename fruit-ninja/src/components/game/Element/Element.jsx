@@ -4,13 +4,22 @@ import { theme } from "../../../constants/Theme.js";
 
 // Styled componets
 import ElementComp from "./Element.js";
+import Incentive from "../Incentives/IncentiveContainer.js";
 
 // Helper
 import { getOpacity, getSpeed } from "../../../utils/helper.js";
 
 class Element extends Component {
+  constructor(props) {
+    super(props);
+    this.update = true;
+  }
+  shouldComponentUpdate() {
+    return this.update;
+  }
   state = { clicked: false };
   componentDidMount = () => {
+    this.update = !(this.props.dimension === "Incentives");
     this.checkForAnimationEnd();
   };
 
@@ -45,17 +54,20 @@ class Element extends Component {
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
 
     return (
-      <ElementComp
-        key={id}
-        id="animation"
-        src={iconValue}
-        onClick={() => this.clickElement(this.props.key)}
-        opacity={opacity}
-        speed={speed}
-        yCoordinate={yCoordinate}
-        xCoordinate={this.props.xCoordinate}
-        clicked={this.state.clicked}
-      />
+      <div>
+        <ElementComp
+          key={id}
+          id="animation"
+          src={iconValue}
+          onClick={() => this.clickElement(this.props.key)}
+          opacity={opacity}
+          speed={speed}
+          yCoordinate={yCoordinate}
+          xCoordinate={this.props.xCoordinate}
+          clicked={this.state.clicked}
+        />
+        <Incentive />
+      </div>
     );
   }
 }

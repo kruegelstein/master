@@ -1,4 +1,4 @@
-//  
+//
 
 import styled, { keyframes } from "styled-components";
 
@@ -19,7 +19,6 @@ const Incentive = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  cursor: pointer;
   line-height: 8rem;
   text-align: center;
   vertical-align: middle;

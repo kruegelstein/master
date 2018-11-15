@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 // Styled componets
 import Element from "../Element/ElementContainer.js";
+import DashBoard from "../../dashBoard/DashBoardContainer.js";
+// import Incentive from "../Incentives/IncentiveContainer.js";
 
 // Sounds
 import beep from "../../../sounds/Beep.mov";
@@ -14,8 +16,8 @@ import {
   getCoordinates
 } from "../../../utils/helper.js";
 
-// Interval to adapt is 12sec
-const ADAPTION_INTERVAL = 12000;
+// Interval to adapt is 10sec
+const ADAPTION_INTERVAL = 10000;
 
 class Elements extends Component {
   constructor(props) {
@@ -153,6 +155,8 @@ class Elements extends Component {
               />
             );
           })}
+          <DashBoard />
+          {/* <Incentive /> */}
           <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </div>
       );
