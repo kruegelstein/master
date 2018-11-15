@@ -1,7 +1,8 @@
-//  
-
 // Constants
-import { WRITE_ELEMENTS_TO_STATE } from "../constants/ActionTypes.js";
+import {
+  WRITE_ELEMENTS_TO_STATE,
+  GO_TO_USER_ID_INPUT
+} from "../constants/ActionTypes.js";
 
 const initialState = {
   elements: null
@@ -14,6 +15,8 @@ export const environment = (state = initialState, action = {}) => {
         ...state,
         elements: action.payload.elements
       };
+    case WRITE_ELEMENTS_TO_STATE:
+      return initialState;
     default:
       return { ...state };
   }
