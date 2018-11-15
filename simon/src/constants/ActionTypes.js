@@ -1,4 +1,4 @@
-//  
+//
 
 export const GO_TO_INTRO: "GO_TO_INTRO" = "GO_TO_INTRO";
 export const SET_USER_ID: "SET_USER_ID" = "SET_USER_ID";
@@ -29,3 +29,4 @@ export const ADD_POINTS: "ADD_POINTS" = "ADD_POINTS";
 export const SET_NEW_POINTS: "SET_NEW_POINTS" = "SET_NEW_POINTS";
 export const SET_NEW_PATTERNLENGTH: "SET_NEW_PATTERNLENGTH" =
   "SET_NEW_PATTERNLENGTH";
+export const SAVE_CLICK: "SAVE_CLICK" = "SAVE_CLICK";

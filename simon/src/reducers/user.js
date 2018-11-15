@@ -9,7 +9,8 @@ import {
   ADD_POINTS,
   NEXT_ROUND,
   SET_NEW_POINTS,
-  SET_NEW_PATTERNLENGTH
+  SET_NEW_PATTERNLENGTH,
+  SAVE_CLICK
 } from "../constants/ActionTypes.js";
 
 // Helper
@@ -28,7 +29,8 @@ const initialState = {
   opacity: 1,
   points: 0,
   pointsValue: 10,
-  patternLength: 5
+  patternLength: 5,
+  clicks: []
 };
 
 export const user = (state = initialState, action = {}) => {
@@ -43,6 +45,11 @@ export const user = (state = initialState, action = {}) => {
         ...state,
         points: state.points + action.payload.pointsValue
       };
+    case SAVE_CLICK:
+      return {
+        ...state,
+        clicks: state.clicks.concat([action.payload.click])
+      };
     case SET_NEW_POINTS:
       const currentPoints = action.payload.currentPoints;
       const pointsRollback = action.payload.rollback;
@@ -54,7 +61,8 @@ export const user = (state = initialState, action = {}) => {
     case NEXT_ROUND:
       return {
         ...state,
-        points: 0
+        points: 0,
+        clicks: []
       };
     case SET_DIMENSION:
       const dimension = action.payload.dimension;

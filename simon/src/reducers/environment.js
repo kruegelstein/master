@@ -15,7 +15,7 @@ export const environment = (state = initialState, action = {}) => {
         ...state,
         elements: action.payload.elements
       };
-    case WRITE_ELEMENTS_TO_STATE:
+    case GO_TO_USER_ID_INPUT:
       return initialState;
     default:
       return { ...state };

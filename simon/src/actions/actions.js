@@ -1,4 +1,4 @@
-//  
+//
 
 import {
   GO_TO_INTRO,
@@ -22,7 +22,8 @@ import {
   SET_DIMENSION,
   ADD_POINTS,
   SET_NEW_POINTS,
-  SET_NEW_PATTERNLENGTH
+  SET_NEW_PATTERNLENGTH,
+  SAVE_CLICK
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -39,6 +40,8 @@ export const showPreTraining = () => ({
   type: PRE_TRAINING,
   payload: {}
 });
+
+export const saveClick = click => ({ type: SAVE_CLICK, payload: { click } });
 
 export const writeToResults = (results, round, dimensionProperty) => ({
   type: WRITE_TO_RESULTS,

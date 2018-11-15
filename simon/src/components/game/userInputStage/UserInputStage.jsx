@@ -21,51 +21,6 @@ import {
 } from "../../../utils/results.js";
 
 class UserInputStage extends Component {
-  componentDidMount() {
-    const iOS =
-      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-    if (iOS) {
-      Pressure.set("#element", {
-        start: event => {
-          const clickId = this.state.clicks.length;
-          const clickStart = Date.now();
-          let clickInfo;
-          let xCoordinate;
-          let yCoordinate;
-          if (event.touches.length === 1) {
-            const touch = event.touches[0];
-            xCoordinate = touch.clientX;
-            yCoordinate = touch.clientY;
-            clickInfo = {
-              id: clickId,
-              x: xCoordinate,
-              y: yCoordinate,
-              clickStart
-            };
-          }
-          const oldClicks = this.state.clicks;
-          const newClick = [clickInfo];
-          const clicks = oldClicks.concat(newClick);
-          this.setState({
-            clicks
-          });
-        },
-        change: (force, event) => {
-          const currentClick = this.state.clicks[this.state.clicks.length - 1];
-          currentClick.force = force;
-        },
-        end: () => {
-          const currentClick = this.state.clicks[this.state.clicks.length - 1];
-          const clickEnd = Date.now();
-          const clickStart = currentClick.clickStart;
-          const clickDuration = getTime(clickStart, clickEnd);
-          currentClick.clickEnd = clickEnd;
-          currentClick.duration = clickDuration;
-        }
-      });
-    }
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -75,9 +30,79 @@ class UserInputStage extends Component {
       patternSize: this.props.patternLength,
       pattern: this.props.currentRound.pattern,
       selectedElements: [],
-      clicks: []
+      click: {
+        start: 0,
+        end: 0,
+        xCoordinate: 0,
+        yCoordinate: 0,
+        force: 0,
+        duration: 0
+      }
     };
     this.clicking = new Audio(click);
+  }
+
+  componentDidMount() {
+    const iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (iOS) {
+      Pressure.set("#element", {
+        start: event => {
+          const clickStart = Date.now();
+          let xCoordinate;
+          let yCoordinate;
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            xCoordinate = touch.clientX;
+            yCoordinate = touch.clientY;
+          }
+          this.setState({
+            ...this.state,
+            click: {
+              ...this.state.click,
+              start: clickStart,
+              xCoordinate,
+              yCoordinate
+            }
+          });
+        },
+        change: (force, event) => {
+          this.setState({
+            ...this.state,
+            click: { ...this.state.click, force }
+          });
+        },
+        end: () => {
+          const clickEnd = Date.now();
+          const clickStart = this.state.click.start;
+          const clickDuration = getTime(clickStart, clickEnd);
+          this.setState(
+            {
+              ...this.state,
+              click: {
+                ...this.state.click,
+                end: clickEnd,
+                duration: clickDuration
+              }
+            },
+            () => {
+              this.props.saveClick(this.state.click);
+              this.setState({
+                ...this.state,
+                click: {
+                  start: 0,
+                  end: 0,
+                  xCoordinate: 0,
+                  yCoordinate: 0,
+                  force: 0,
+                  duration: 0
+                }
+              });
+            }
+          );
+        }
+      });
+    }
   }
 
   componentWillMount() {
@@ -107,8 +132,8 @@ class UserInputStage extends Component {
     this.props.onNextRound();
   }
 
-  processResults(results) {
-    const enrichedResults = getEnrichedResults(results);
+  processResults(results, clicks) {
+    const enrichedResults = getEnrichedResults(results, clicks);
     let dimensionProperty;
     switch (this.props.dimension) {
       case "Speed":
@@ -235,7 +260,7 @@ class UserInputStage extends Component {
       });
       // Invoke timeout so the state is set
       setTimeout(() => {
-        this.processResults(this.state);
+        this.processResults(this.state, this.props.clicks);
       }, 1);
     }
   }

@@ -1,4 +1,4 @@
-//  
+//
 
 import { connect } from "react-redux";
 
@@ -15,7 +15,8 @@ import {
   setRollback,
   addPoints,
   setNewPoints,
-  setNewPatternLength
+  setNewPatternLength,
+  saveClick
 } from "../../../actions/actions.js";
 
 const mapStateToProps = state => ({
@@ -32,7 +33,8 @@ const mapStateToProps = state => ({
   rollback: state.user.rollback,
   patternLength: state.user.patternLength,
   points: state.user.points,
-  pointsValue: state.user.pointsValue
+  pointsValue: state.user.pointsValue,
+  clicks: state.user.clicks
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -62,6 +64,9 @@ const mapDispatchToProps = dispatch => ({
   },
   addPoints: round => {
     dispatch(addPoints(round));
+  },
+  saveClick: click => {
+    dispatch(saveClick(click));
   }
 });
 

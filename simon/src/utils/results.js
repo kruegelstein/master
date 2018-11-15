@@ -12,14 +12,14 @@ export const getTime = (start, end) => {
   return (end - start) / 1000;
 };
 
-export const getEnrichedResults = results => {
+export const getEnrichedResults = (results, clicksFromProps) => {
   // Results
   const pattern = results.pattern;
   const patternSize = results.patternSize;
   const selectedElements = results.selectedElements;
   const startTime = results.startTime;
   const endTime = results.endTime;
-  const clicks = results.clicks || [];
+  const clicks = clicksFromProps || [];
   // Calculate error, success, timeTaken
   const errors = getErrors(pattern, selectedElements);
   const errorRate = (errors / patternSize) * 100;
