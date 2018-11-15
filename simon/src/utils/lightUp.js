@@ -1,4 +1,4 @@
-//  
+//
 
 export const createPattern = (patternSize, elements) => {
   let availiableElements = elements;
@@ -31,7 +31,7 @@ export const getNewSpeed = (currentSpeed, rollback) => {
       return currentSpeed - linearStepSize;
     } else {
       // Do not reduce speed if speed is 75ms
-      if (currentSpeed === 75) return currentSpeed;
+      if (currentSpeed === 150) return currentSpeed;
       currentSpeed / 2;
     }
   } else {
