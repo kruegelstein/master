@@ -55,7 +55,7 @@ export const getOpacity = (round, rollback) => {
 };
 
 export const getAdaptationScore = (hits, misses) => {
-  return hits - misses;
+  return hits - misses * 2;
 };
 
 export const getIncentives = (round, rollback) => {
