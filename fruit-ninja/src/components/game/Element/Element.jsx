@@ -17,12 +17,12 @@ class Element extends Component {
   checkForAnimationEnd = () => {
     const element = document.getElementById("animation");
     element.addEventListener("animationend", () => {
-      this.props.missElement();
+      this.props.missElement(this.props.elementId);
     });
   };
   clickElement() {
     this.setState({ clicked: true });
-    this.props.hitElement();
+    this.props.hitElement(this.props.elementId);
     if (this.props.dimension === "Incentives") {
       this.props.toggleIncentives(this.props.isIncentiveActive);
       setTimeout(() => {
@@ -38,6 +38,7 @@ class Element extends Component {
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
     const id = Math.floor(Math.random() * 1000);
+    const xCoordinate = Math.floor(Math.random() * 800);
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
@@ -46,9 +47,10 @@ class Element extends Component {
         key={id}
         id="animation"
         src={iconValue}
-        onClick={() => this.clickElement()}
+        onClick={() => this.clickElement(this.props.key)}
         opacity={opacity}
         speed={speed}
+        xCoordinate={xCoordinate}
         clicked={this.state.clicked}
       />
     );

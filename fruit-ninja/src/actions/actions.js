@@ -18,7 +18,9 @@ import {
   RESET_HITS_AND_MISSES,
   HIT_ELEMENT,
   MISS_ELEMENT,
-  TOGGLE_INCENTIVES
+  TOGGLE_INCENTIVES,
+  CREATE_ELEMENT,
+  CHANGE_NUMBER_OF_ELEMENTS_TO_CREATE
 } from "../constants/ActionTypes.js";
 
 import { firebaseApp } from "../firebase.js";
@@ -40,14 +42,19 @@ export const resetClicks = () => ({
   payload: {}
 });
 
-export const hitElement = () => ({
-  type: HIT_ELEMENT,
-  payload: {}
+export const createElement = id => ({
+  type: CREATE_ELEMENT,
+  payload: { id }
 });
 
-export const missElement = () => ({
+export const hitElement = key => ({
+  type: HIT_ELEMENT,
+  payload: { key }
+});
+
+export const missElement = key => ({
   type: MISS_ELEMENT,
-  payload: {}
+  payload: { key }
 });
 
 export const resetHitsAndMisses = () => ({
@@ -71,6 +78,11 @@ export const changeActiveRows = activeRows => ({
 
 export const changeNumberOfActiveRows = rollback => ({
   type: CHANGE_NUMBER_OF_ACTIVE_ROWS,
+  payload: { rollback }
+});
+
+export const changeNumberOfElementsToCreate = rollback => ({
+  type: CHANGE_NUMBER_OF_ELEMENTS_TO_CREATE,
   payload: { rollback }
 });
 

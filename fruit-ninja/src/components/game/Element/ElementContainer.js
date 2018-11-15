@@ -18,11 +18,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  hitElement: () => {
-    dispatch(hitElement());
+  hitElement: key => {
+    dispatch(hitElement(key));
   },
-  missElement: () => {
-    dispatch(missElement());
+  missElement: key => {
+    dispatch(missElement(key));
   },
   toggleIncentives: currentState => {
     dispatch(toggleIncentives(currentState));

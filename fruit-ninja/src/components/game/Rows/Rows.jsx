@@ -14,9 +14,6 @@ import {
   getTime
 } from "../../../utils/helper.js";
 
-// Interval to adapt is 12sec
-const ADAPTION_INTERVAL = 12000;
-
 class Rows extends Component {
   constructor(props) {
     super(props);
