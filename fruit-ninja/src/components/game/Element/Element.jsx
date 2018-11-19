@@ -48,8 +48,7 @@ class Element extends Component {
     const array = Object.keys(icons);
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
-    const yCoordinate =
-      dimension === "Content" ? Math.floor(Math.random() * 200) : 0;
+    const yCoordinate = Math.floor(Math.random() * 400);
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
