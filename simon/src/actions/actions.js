@@ -1,7 +1,6 @@
 //
 
 import {
-  GO_TO_INTRO,
   SET_USER_ID,
   PRE_TRAINING,
   START_TRAINING,
@@ -32,7 +31,6 @@ export const goToUserIdInput = () => ({
   type: GO_TO_USER_ID_INPUT,
   payload: {}
 });
-export const goToIntro = () => ({ type: GO_TO_INTRO, payload: {} });
 
 export const startCountdown = () => ({ type: START_COUNTDOWN, payload: {} });
 

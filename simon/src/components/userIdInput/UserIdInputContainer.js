@@ -1,5 +1,3 @@
-//  
-
 import { connect } from "react-redux";
 
 // Wrapped component
@@ -8,7 +6,7 @@ import UserIdInput from "./UserIdInput.jsx";
 // Actions
 import {
   submitUserId,
-  goToIntro,
+  showPreTraining,
   selectDimension
 } from "../../actions/actions.js";
 
@@ -20,8 +18,11 @@ const mapDispatchToProps = dispatch => ({
   onStart: (id, dimension) => {
     dispatch(submitUserId(id));
     dispatch(selectDimension(dimension));
-    dispatch(goToIntro());
+    dispatch(showPreTraining());
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserIdInput);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserIdInput);
