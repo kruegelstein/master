@@ -1,5 +1,3 @@
-//  
-
 import { connect } from "react-redux";
 
 // Components
@@ -21,4 +19,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Results);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Results);
