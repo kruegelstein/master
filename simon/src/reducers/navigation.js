@@ -1,6 +1,5 @@
 // Constants
 import {
-  GO_TO_INTRO,
   PRE_TRAINING,
   START_TRAINING,
   START_COUNTDOWN,
@@ -11,7 +10,6 @@ import {
 } from "../constants/ActionTypes.js";
 
 const initialState = {
-  intro: false,
   preTraining: false,
   training: false,
   countdown: false,
@@ -22,15 +20,9 @@ const initialState = {
 
 export const navigation = (state = initialState, action = {}) => {
   switch (action.type) {
-    case GO_TO_INTRO:
-      return {
-        ...state,
-        intro: true
-      };
     case PRE_TRAINING:
       return {
         ...state,
-        intro: false,
         preTraining: true
       };
     case START_TRAINING:

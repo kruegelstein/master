@@ -25,7 +25,9 @@ class Element extends Component {
   };
 
   checkForAnimationEnd = () => {
-    const element = document.getElementById("animation");
+    const element = document.getElementById(
+      `animation-${this.props.elementId}`
+    );
     element.addEventListener("animationend", () => {
       this.setState({ clicked: true });
       this.props.missElement(this.props.elementId);
@@ -48,8 +50,7 @@ class Element extends Component {
     const array = Object.keys(icons);
     const icon = array[Math.floor(Math.random() * 4)];
     const iconValue = icons[icon];
-    const yCoordinate =
-      dimension === "Content" ? Math.floor(Math.random() * 200) : 0;
+    const yCoordinate = Math.floor(Math.random() * 400);
     const opacity =
       dimension === "Object clarity" ? getOpacity(round, rollback) : 1;
     const speed = dimension === "Speed" ? getSpeed(round, rollback) : 2.5;
@@ -57,13 +58,13 @@ class Element extends Component {
     return (
       <div>
         <ClickArea
-          onClick={event => this.clickElement(this.props.key)}
+          onClick={event => this.clickElement()}
           opacity={opacity}
           speed={speed}
           yCoordinate={yCoordinate}
           xCoordinate={this.props.xCoordinate}
           clicked={this.state.clicked}
-          id="animation"
+          id={`animation-${this.props.elementId}`}
         >
           <ElementComp src={iconValue} />
         </ClickArea>

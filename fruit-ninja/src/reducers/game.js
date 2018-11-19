@@ -5,7 +5,8 @@ import {
   HIT_ELEMENT,
   MISS_ELEMENT,
   CREATE_ELEMENT,
-  CHANGE_NUMBER_OF_ELEMENTS_TO_CREATE
+  CHANGE_NUMBER_OF_ELEMENTS_TO_CREATE,
+  GO_TO_USER_ID_INPUT
 } from "../constants/ActionTypes.js";
 
 const initialState = {
@@ -60,6 +61,8 @@ export const game = (state = initialState, action = {}) => {
         ...state,
         numberOfElementsToCreate: state.numberOfElementsToCreate + 1
       };
+    case GO_TO_USER_ID_INPUT:
+      return initialState;
     default:
       return { ...state };
   }

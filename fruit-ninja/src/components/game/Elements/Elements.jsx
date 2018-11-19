@@ -3,7 +3,6 @@ import React, { Component } from "react";
 // Styled componets
 import Element from "../Element/ElementContainer.js";
 import DashBoard from "../../dashBoard/DashBoardContainer.js";
-// import Incentive from "../Incentives/IncentiveContainer.js";
 
 // Sounds
 import beep from "../../../sounds/Beep.mov";
@@ -60,9 +59,9 @@ class Elements extends Component {
     this.saveResults();
     // Stop adapting after 10 rounds
     if (this.props.round === 10 || this.props.rollback) {
-      this.props.goToResults();
       clearInterval(this.elementInterval);
       clearInterval(this.adaptationInterval);
+      this.props.goToResults();
       return;
     }
     if (this.props.round < 3) {
@@ -156,7 +155,6 @@ class Elements extends Component {
             );
           })}
           <DashBoard />
-          {/* <Incentive /> */}
           <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </div>
       );

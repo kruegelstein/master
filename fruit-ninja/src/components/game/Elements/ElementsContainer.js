@@ -25,6 +25,7 @@ const mapStateToProps = state => ({
   misses: state.game.misses,
   clicks: state.user.clicks,
   elements: state.game.elements,
+  incentives: state.adaptation.incentives,
   numberOfElementsToCreate: state.game.numberOfElementsToCreate
 });
 
