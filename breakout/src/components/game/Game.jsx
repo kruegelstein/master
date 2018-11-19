@@ -326,7 +326,7 @@ class Game extends Component {
       h: 5,
       x: this.width / 2 - 100 / 2, // 100 => paddle.w
       y: this.height - 10,
-      speed: 18
+      speed: 15
     };
     this.bricks = [];
     this.ballOn = false;
