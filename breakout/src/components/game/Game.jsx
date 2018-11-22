@@ -6,9 +6,6 @@ import Pressure from "pressure";
 import Incentive from "./Incentive.js";
 import DashBoard from "../dashBoard/DashBoard.jsx";
 
-// Sounds
-import beep from "../../sound/Beep.mp4";
-
 // Components
 import Canvas from "./Canvas.js";
 
@@ -162,7 +159,6 @@ class Game extends Component {
       this.ballOn = true;
       this.gameOver = 0;
       this.interval = setInterval(this.triggerAdaptation, ADAPTION_INTERVAL);
-      this.play();
     });
 
     mc.on("panleft", event => {
@@ -238,7 +234,6 @@ class Game extends Component {
   };
 
   triggerAdaptation = () => {
-    this.play();
     // Only adapt if the game is active
     if (this.gameOver === 0) {
       // Calculate score
@@ -550,13 +545,6 @@ class Game extends Component {
     }
   };
 
-  play = () => {
-    const video = document.getElementById("video");
-    setTimeout(() => {
-      video.play();
-    }, 15);
-  };
-
   render() {
     return (
       <div style={{ height: "100%", width: "100%" }}>
@@ -573,7 +561,6 @@ class Game extends Component {
         <Incentive active={this.state.isIncentiveActive}>
           + {this.incentives}
         </Incentive>
-        <video id="video" src={beep} style={{ height: 0, width: 0 }} />
       </div>
     );
   }
