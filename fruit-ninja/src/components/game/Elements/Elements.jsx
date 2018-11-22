@@ -4,9 +4,6 @@ import React, { Component } from "react";
 import Element from "../Element/ElementContainer.js";
 import DashBoard from "../../dashBoard/DashBoardContainer.js";
 
-// Sounds
-import beep from "../../../sounds/Beep.mov";
-
 // Helper
 import {
   getOpacity,
@@ -53,7 +50,6 @@ class Elements extends Component {
   };
 
   triggerAdaptation = () => {
-    this.play();
     const score = getAdaptationScore(this.props.hits, this.props.misses);
     // Save results for the round
     this.saveResults();
@@ -134,11 +130,6 @@ class Elements extends Component {
     this.props.onSaveRound(round, hits, misses, clicks, dimensionProperty);
   };
 
-  play = () => {
-    const video = document.getElementById("video");
-    video.play();
-  };
-
   render() {
     const coordinates = getCoordinates(this.props.elements);
     if (this.props.gameStarted) {
@@ -155,7 +146,6 @@ class Elements extends Component {
             );
           })}
           <DashBoard />
-          <video id="video" src={beep} style={{ height: 0, width: 0 }} />
         </div>
       );
     }
