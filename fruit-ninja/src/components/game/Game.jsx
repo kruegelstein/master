@@ -34,7 +34,11 @@ class Game extends Component {
     this.setState(
       {
         ...this.state,
-        fallbackClick: { start: clickStart, xCoordinate, yCoordinate }
+        fallbackClick: {
+          start: clickStart || 0,
+          xCoordinate: xCoordinate || 0,
+          yCoordinate: yCoordinate || 0
+        }
       },
       () => {
         this.props.saveClick(this.state.fallbackClick);
@@ -75,8 +79,8 @@ class Game extends Component {
             click: {
               ...this.state.click,
               start: clickStart,
-              xCoordinate,
-              yCoordinate
+              xCoordinate: xCoordinate || 0,
+              yCoordinate: yCoordinate || 0
             }
           });
         },
