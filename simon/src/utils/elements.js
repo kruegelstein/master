@@ -1,7 +1,6 @@
-//  
 import React from "react";
 
-import Circle from "../components/circle/Circle.jsx";
+import Square from "../components/square/Square.jsx";
 
 // Constants
 import { theme } from "../constants/Theme.js";
@@ -20,7 +19,7 @@ export const createElements = numberToCreate => {
   let i = 0;
   for (i = 0; i < numberToCreate; i++) {
     elements.push(
-      <Circle
+      <Square
         active={false}
         key={generateID()}
         color="#373242"
